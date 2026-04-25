@@ -1,12 +1,13 @@
 import type { FastifyInstance } from 'fastify';
 import { disciplinaController } from '../controllers/DisciplinaController';
+import { deleteDisciplinaSchema, getDisciplinaByIdSchema, getDisciplinaSchema, postDisciplinaSchema, putDisciplinaSchema } from '../schemas/disciplina.schema.js';
 
 async function disciplinasRoutes(fastify: FastifyInstance) {
-    fastify.post('/', disciplinaController.create);
-    fastify.get('/', disciplinaController.get);
-    fastify.get('/:id', disciplinaController.getParamId);
-    fastify.delete('/:id', disciplinaController.delete);
-    fastify.put('/:id', disciplinaController.update);
+    fastify.post('/', postDisciplinaSchema, disciplinaController.create);
+    fastify.get('/', getDisciplinaSchema, disciplinaController.get);
+    fastify.get('/:id', getDisciplinaByIdSchema, disciplinaController.getParamId);
+    fastify.delete('/:id', deleteDisciplinaSchema, disciplinaController.delete);
+    fastify.put('/:id', putDisciplinaSchema, disciplinaController.update);
 }
 
 export default disciplinasRoutes;

@@ -1,12 +1,13 @@
 import type { FastifyInstance } from 'fastify';
 import { alunoController } from '../controllers/AlunoController.js';
+import { deleteAlunoSchema, getAlunoByIdSchema, getAlunoSchema, postAlunoSchema, putAlunoSchema } from '../schemas/aluno.schema.js';
 
 async function alunosRoutes(fastify: FastifyInstance) {
-    fastify.post('/', alunoController.create);
-    fastify.get('/', alunoController.get);
-    fastify.get('/:id', alunoController.getParamId);
-    fastify.delete('/:id', alunoController.delete);
-    fastify.put('/:id', alunoController.update);
+    fastify.post('/', postAlunoSchema, alunoController.create);
+    fastify.get('/', getAlunoSchema ,alunoController.get);
+    fastify.get('/:id', getAlunoByIdSchema, alunoController.getParamId);
+    fastify.delete('/:id', deleteAlunoSchema, alunoController.delete);
+    fastify.put('/:id', putAlunoSchema, alunoController.update);
 }
 
 export default alunosRoutes;
