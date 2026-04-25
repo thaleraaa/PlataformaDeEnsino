@@ -8,6 +8,7 @@ import administradoresRoutes from './routers/administrador.router.js';
 import disciplinasRoutes from './routers/disciplina.router.js';
 import modulosRoutes from './routers/modulo.router.js';
 import aulasRoutes from './routers/aula.router.js';
+import exerciciosRoutes from './routers/exercicio.router.js';
 
 const app = Fastify({ logger: true });
 
@@ -35,6 +36,7 @@ app.register(administradoresRoutes, { prefix: '/administradores'});
 app.register(disciplinasRoutes, {prefix: '/disciplinas'});
 app.register(modulosRoutes, {prefix: '/modulos'});
 app.register(aulasRoutes, {prefix: '/aulas'});
+app.register(exerciciosRoutes, {prefix: '/exercicios'});
 
 const start = async () => {
 	try {
