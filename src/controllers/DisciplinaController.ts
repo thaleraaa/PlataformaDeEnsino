@@ -1,9 +1,9 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { DisciplinaRepositoy } from "../repositories/DisciplinaRepository";
+import { DisciplinaRepository } from "../repositories/DisciplinaRepository";
 import type { Disciplina } from "../../generated/prisma/client";
 
 export class DisciplinaController {
-    private disciplinaRepository = new DisciplinaRepositoy();
+    private disciplinaRepository = new DisciplinaRepository();
 
     create = async (
         request : FastifyRequest<{Body: Omit<Disciplina,"id">}>,
