@@ -9,7 +9,11 @@ import disciplinasRoutes from './routers/disciplina.router.js';
 import modulosRoutes from './routers/modulo.router.js';
 import aulasRoutes from './routers/aula.router.js';
 import exerciciosRoutes from './routers/exercicio.router.js';
+<<<<<<< HEAD
 import simuladosRoutes from './routers/simulado.router.js';
+=======
+import alternativasRoutes from './routers/alternativa.router.js';
+>>>>>>> 16687b95727e8629b8745a3389b09ded077ead30
 
 const app = Fastify({ logger: true });
 
@@ -39,6 +43,7 @@ app.register(modulosRoutes, {prefix: '/modulos'});
 app.register(aulasRoutes, {prefix: '/aulas'});
 app.register(exerciciosRoutes, {prefix: '/exercicios'});
 app.register(simuladosRoutes, {prefix: '/simulados'});
+app.register(alternativasRoutes, {prefix: '/alternativas'});
 
 const start = async () => {
 	try {

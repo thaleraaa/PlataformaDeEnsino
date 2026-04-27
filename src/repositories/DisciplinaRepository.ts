@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import type { Disciplina } from "../../generated/prisma/client";
 
-export class DisciplinaRepositoy {
+export class DisciplinaRepository {
     public async findAll() : Promise<Disciplina[]> {
         return prisma.disciplina.findMany();
     }

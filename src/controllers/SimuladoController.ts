@@ -1,6 +1,6 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import type { Simulado } from "../../generated/prisma/client";
-import { SimuladoRepository } from "../repositories/SimuladoRepository";
+import { SimuladoRepository } from "../repositories/SImuladoRepository";
 
 export class SimuladoController {
     private simuladoRepository = new SimuladoRepository();
