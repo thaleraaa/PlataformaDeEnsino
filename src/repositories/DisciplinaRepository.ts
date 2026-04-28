@@ -32,4 +32,14 @@ export class DisciplinaRepository {
             }
         })
     }
+
+    public async countAulas (id : string) : Promise<Number> {
+        return prisma.disciplina.count({
+            where: {
+                modulos: {
+                    
+                }
+            }
+        })
+    }
 }

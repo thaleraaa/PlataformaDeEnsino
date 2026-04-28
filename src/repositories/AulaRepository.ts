@@ -35,4 +35,25 @@ export class AulaRepository {
             }
         });
     }
+
+    public async countByDisciplinaId(disciplina_id : string) : Promise<number> {
+        return prisma.aula.count({
+            where: {
+                modulo: {
+                    disciplina_id: disciplina_id
+                }
+            }
+        })
+    }
+
+    public async findByIdWithRelations(id : string) {
+        return prisma.aula.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                modulo: true
+            }
+        });
+    }
 }
