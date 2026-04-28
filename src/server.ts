@@ -12,6 +12,7 @@ import exerciciosRoutes from './routers/exercicio.router.js';
 import alternativasRoutes from './routers/alternativa.router.js';
 import simuladosRoutes from './routers/simulado.router.js';
 import resultadosRoutes from './routers/resultado.router.js';
+import conclusaoAulaRouters from './routers/conclusaoAula.router.js';
 
 const app = Fastify({ logger: true });
 
@@ -43,6 +44,7 @@ app.register(exerciciosRoutes, {prefix: '/exercicios'});
 app.register(alternativasRoutes, {prefix: '/alternativas'});
 app.register(simuladosRoutes, {prefix: '/simulados'});
 app.register(resultadosRoutes, {prefix: '/resultados'});
+app.register(conclusaoAulaRouters, {prefix: '/conclusao'});
 
 const start = async () => {
 	try {
