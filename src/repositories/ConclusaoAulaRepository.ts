@@ -25,4 +25,17 @@ export class ConclusaoAulaRepository {
             }
         });
     }
+
+    public async countByDisciplinaId(idAluno : string, idDisciplina : string) : Promise<number> {
+        return prisma.conclusaoAula.count({
+            where: {
+                aluno_id: idAluno,
+                aula: {
+                    modulo: {
+                        disciplina_id: idDisciplina
+                    }
+                }
+            }
+        });
+    }
 }
