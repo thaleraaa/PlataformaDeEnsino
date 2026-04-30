@@ -1,16 +1,38 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { professorRepository } from "../repositories/ProfessorRepository";
-import type { Professor } from "../../generated/prisma/client.js";
+import type { Professor, Conta } from "../../generated/prisma/client.js";
+import { hash } from "argon2";
+import { ContaRepository } from "../repositories/ContaRepository";
 
 export class ProfessorController {
 	private professorRepository = new professorRepository();
+	private contaRepository = new ContaRepository();
 
 	create = async (
-		request: FastifyRequest<{ Body: Omit<Professor, "id"> }>,
+		request: FastifyRequest<{ Body: Omit<Professor & Conta, "id"> }>,
 		reply: FastifyReply,
 	) => {
-		const professor = request.body;
-		const novoProfessor = await this.professorRepository.create(professor);
+		const professor = request.body as Pick<Professor, "CRM" | "salario" | "adm_id">;
+		const conta = request.body as Pick<Conta, "nome" | "email" | "senha">;
+
+		if (!conta.senha) {
+			return reply.status(400).send({ message: "A senha e necessaria." });
+		}
+
+		const senhaHash = await hash(conta.senha);
+		const contaNova = await this.contaRepository.create({
+			email: conta.email,
+			nome: conta.nome,
+			role: "PROFESSOR",
+			senha: senhaHash
+		});
+
+		const novoProfessor = await this.professorRepository.create({
+			CRM: professor.CRM,
+			salario: professor.salario,
+			adm_id: professor.adm_id,
+			conta_id: contaNova.id
+		});
 
 		return reply.status(201).send(novoProfessor);
 	};

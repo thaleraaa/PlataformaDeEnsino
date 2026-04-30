@@ -1,24 +1,24 @@
 export const disciplinaSchema = {
-  type: 'object',
-  properties: {
-    id: { 
-        type: 'string' 
-    },
-    nome: { 
-        type: 'string'
-    },
-    professor_id: {
-        type: 'string' 
-    },
-    created_at: {
-        type: 'string',
-        format: 'date-time'
-    },
-    updated_at: {
-        type: 'string',
-        format: 'date-time'
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        nome: {
+            type: 'string'
+        },
+        professor_id: {
+            type: 'string'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time'
+        }
     }
-  },
 } as const;
 
 export const disciplinaBodySchema = {
@@ -51,8 +51,8 @@ const disciplinaIdParamsSchema = {
     properties: {
         id: {
             type: 'string'
-        }
-    },
+        },
+    }
 } as const;
 
 export const getDisciplinaSchema = {
@@ -64,7 +64,8 @@ export const getDisciplinaSchema = {
                 type: 'array',
                 items: disciplinaSchema
             }
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -74,10 +75,9 @@ export const getDisciplinaByIdSchema = {
         summary: 'Busca a disciplina pelo ID',
         params: disciplinaIdParamsSchema,
         response: {
-            200: {
-                disciplinaSchema
-            }
-        }
+            200: disciplinaSchema
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -87,10 +87,9 @@ export const postDisciplinaSchema = {
         summary: 'Cria uma disciplina',
         body: disciplinaBodySchema,
         response: {
-            201: {
-                disciplinaSchema
-            }
-        }
+            201: disciplinaSchema
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -102,7 +101,8 @@ export const putDisciplinaSchema = {
         body: disciplinaUpdateBodySchema,
         response: {
             200: disciplinaSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -113,6 +113,7 @@ export const deleteDisciplinaSchema = {
         params: disciplinaIdParamsSchema,
         response: {
             200: disciplinaSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }

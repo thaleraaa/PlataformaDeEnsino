@@ -1,9 +1,12 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { AdministradorRepository } from "../repositories/AdministradorRepository";
-import type { Administrador } from "../../generated/prisma/client";
+import type { Administrador, Conta } from "../../generated/prisma/client";
+import { hash } from "argon2";
+import { ContaRepository } from "../repositories/ContaRepository";
 
 export class AdministradorController {
     private administradorRepository = new AdministradorRepository();
+    private contaRepository = new ContaRepository();
 
     get = async (
         request : FastifyRequest,
@@ -24,11 +27,28 @@ export class AdministradorController {
     }
 
     create = async (
-        request : FastifyRequest<{Body: Omit<Administrador,'id'>}>,
+        request : FastifyRequest<{Body: Omit<Administrador & Conta,'id'>}>,
         reply : FastifyReply
     ) => {
-        const adm = request.body;
-        const novoADM = await this.administradorRepository.create(adm);
+        const adm = request.body as Pick<Administrador, "ativo">;
+        const conta = request.body as Pick<Conta, "nome" | "email" | "senha">;
+
+        if (!conta.senha) {
+            return reply.status(400).send({ message: "A senha e necessaria." });
+        }
+
+        const senhaHash = await hash(conta.senha);
+        const contaNova = await this.contaRepository.create({
+            email: conta.email,
+            nome: conta.nome,
+            role: "ADMINISTRADOR",
+            senha: senhaHash
+        });
+
+        const novoADM = await this.administradorRepository.create({
+            ativo: adm.ativo,
+            conta_id: contaNova.id
+        });
         return reply.status(201).send(novoADM);
     }
 

@@ -16,15 +16,14 @@ datasource db {
 model Aluno {
   id String @id @default(uuid())
 
-  nome String
   periodo String
   faculdade String
 
-  email String @unique
-  senha String
-
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  conta_id String @unique
+  conta Conta @relation(fields: [conta_id], references: [id])
 
   resultado Resultado[]
   progresso Progresso[]
@@ -35,13 +34,11 @@ model Administrador {
   id String @id @default(uuid())
   ativo Boolean
 
-  nome String
-  email String @unique
-  senha String
-
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   
+  conta_id String @unique
+  conta Conta @relation(fields: [conta_id], references: [id])
 
   professor Professor[]
 }
@@ -51,12 +48,12 @@ model Professor {
   CRM String @unique
   salario Float
 
-  nome String
-  email String @unique
-  senha String
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  conta_id String @unique
+  conta Conta @relation(fields: [conta_id], references: [id])
 
   adm_id String
   administrador Administrador @relation(fields: [adm_id], references: [id])
@@ -64,6 +61,24 @@ model Professor {
   disciplina Disciplina[]
   exercicio Exercicio[]
   simulado Simulado[]
+}
+
+enum Role {
+  ADMINISTRADOR
+  PROFESSOR
+  ALUNO
+}
+
+model Conta {
+  id String @id @default(uuid())
+  nome String
+  email String @unique
+  senha String
+  role Role
+
+  aluno Aluno?
+  professor Professor?
+  administrador Administrador?
 }
 
 model Disciplina {

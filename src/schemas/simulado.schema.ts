@@ -60,8 +60,8 @@ const simuladoIdParamsSchema = {
     properties: {
         id: {
             type: 'string'
-        }
-    },
+        },
+    }
 } as const;
 
 export const getSimuladoSchema = {
@@ -73,7 +73,8 @@ export const getSimuladoSchema = {
                 type: 'array',
                 items: simuladoSchema
             }
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -84,7 +85,8 @@ export const getSimuladoByIdSchema = {
         params: simuladoIdParamsSchema,
         response: {
             200: simuladoSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -95,7 +97,8 @@ export const createSimuladoSchema = {
         body: simuladoBodySchema,
         response: {
             201: simuladoSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -107,7 +110,8 @@ export const updateSimuladoSchema = {
         body: simuladoUpdateBodySchema,
         response: {
             200: simuladoSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -118,6 +122,7 @@ export const deleteSimuladoSchema = {
         params: simuladoIdParamsSchema,
         response: {
             200: simuladoSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }

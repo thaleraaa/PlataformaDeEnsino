@@ -1,24 +1,24 @@
 export const moduloSchema = {
-  type: 'object',
-  properties: {
-    id: { 
-        type: 'string' 
-    },
-    nome: { 
-        type: 'string'
-    },
-    disciplina_id: {
-        type: 'string' 
-    },
-    created_at: {
-        type: 'string',
-        format: 'date-time'
-    },
-    updated_at: {
-        type: 'string',
-        format: 'date-time'
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        nome: {
+            type: 'string'
+        },
+        disciplina_id: {
+            type: 'string'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time'
+        }
     }
-  },
 } as const;
 
 export const moduloBodySchema = {
@@ -54,8 +54,8 @@ const moduloIdParamsSchema = {
     properties: {
         id: {
             type: 'string'
-        }
-    },
+        },
+    }
 } as const;
 
 export const getModuloSchema = {
@@ -67,7 +67,8 @@ export const getModuloSchema = {
                 type: 'array',
                 items: moduloSchema
             }
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -77,10 +78,9 @@ export const getModuloByIdSchema = {
         summary: 'Busca o módulo pelo ID',
         params: moduloIdParamsSchema,
         response: {
-            200: {
-                moduloSchema
-            }
-        }
+            200: moduloSchema
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -90,10 +90,9 @@ export const postModuloSchema = {
         summary: 'Cria um módulo',
         body: moduloBodySchema,
         response: {
-            201: {
-                moduloSchema
-            }
-        }
+            201: moduloSchema
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -105,7 +104,8 @@ export const putModuloSchema = {
         body: moduloUpdateBodySchema,
         response: {
             200: moduloSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }
 
@@ -116,6 +116,7 @@ export const deleteModuloSchema = {
         params: moduloIdParamsSchema,
         response: {
             200: moduloSchema
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 }

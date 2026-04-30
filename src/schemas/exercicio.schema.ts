@@ -1,33 +1,33 @@
 export const exercicioSchema = {
-  type: 'object',
-  properties: {
-    id: { 
-        type: 'string' 
-    },
-    enunciado: { 
-        type: 'string'
-    },
-    dificuldade: { 
-        type: 'string'
-    },
-    professor_id: {
-        type: 'string'
-    },
-    aula_id: {
-        type: 'string'
-    },
-    simulado_id: {
-        type: 'string'
-    },
-    created_at: {
-        type: 'string',
-        format: 'date-time'
-    },
-    updated_at: {
-        type: 'string',
-        format: 'date-time'
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        enunciado: {
+            type: 'string'
+        },
+        dificuldade: {
+            type: 'string'
+        },
+        professor_id: {
+            type: 'string'
+        },
+        aula_id: {
+            type: 'string'
+        },
+        simulado_id: {
+            type: 'string'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time'
+        },
     }
-  },
 } as const;
 
 export const exercicioBodySchema = {
@@ -79,19 +79,20 @@ const exercicioIdParamsSchema = {
     properties: {
         id: {
             type: 'string'
-        }
-    },
+        },
+    }
 } as const;
 
 export const getExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
         summary: 'Lista todos os exercícios',
+        security: [{ bearerAuth: [] }],
         response: {
             200: {
                 type: 'array',
                 items: exercicioSchema
-            }
+            },
         }
     }
 }
@@ -100,10 +101,11 @@ export const getExercicioByIdSchema = {
     schema: {
         tags: ['Exercicios'],
         summary: 'Busca o exercício pelo ID',
+        security: [{ bearerAuth: [] }],
         params: exercicioIdParamsSchema,
         response: {
             200: exercicioSchema
-        }
+        },
     }
 }
 
@@ -111,10 +113,11 @@ export const postExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
         summary: 'Cria um exercício',
+        security: [{ bearerAuth: [] }],
         body: exercicioBodySchema,
         response: {
             201: exercicioSchema
-        }
+        },
     }
 }
 
@@ -122,11 +125,12 @@ export const putExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
         summary: 'Atualiza os dados de um exercício',
+        security: [{ bearerAuth: [] }],
         params: exercicioIdParamsSchema,
         body: exercicioUpdateBodySchema,
         response: {
             200: exercicioSchema
-        }
+        },
     }
 }
 
@@ -134,9 +138,10 @@ export const deleteExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
         summary: 'Delete um exercício',
+        security: [{ bearerAuth: [] }],
         params: exercicioIdParamsSchema,
         response: {
             200: exercicioSchema
-        }
+        },
     }
 }

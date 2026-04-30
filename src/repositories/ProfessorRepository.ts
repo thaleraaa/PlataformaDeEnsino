@@ -4,20 +4,51 @@ import type { Professor } from '../../generated/prisma/client'
 export class professorRepository {
     
     public async findAll() : Promise<Professor[]> {
-        return prisma.professor.findMany();
+        return prisma.professor.findMany({
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
+            }
+        });
     }
 
     public async findById(id : string) : Promise<Professor | null> {
         return prisma.professor.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
             }
         });
     }
 
-    public async create(data : Omit<Professor, 'id'>) : Promise<Professor> {
+    public async create(data : Omit<Professor, 'id' | "created_at" | "updated_at">) : Promise<Professor> {
         return prisma.professor.create({
-            data
+            data,
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
+            }
         });
     }
 
@@ -26,7 +57,17 @@ export class professorRepository {
             where: {
                 id: id
             },
-            data
+            data,
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
+            }
         });
     }
 
@@ -34,6 +75,16 @@ export class professorRepository {
         return prisma.professor.delete({
             where: {
                 id: id
+            },
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
             }
         });
     }

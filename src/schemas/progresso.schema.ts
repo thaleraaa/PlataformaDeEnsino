@@ -53,7 +53,8 @@ export const getProgressoSchema = {
                 type: 'array',
                 items: progressoSchema
             }
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 };
 
@@ -67,7 +68,8 @@ export const getProgressoByAlunoSchema = {
                 type: 'array',
                 items: progressoSchema
             }
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 };
 
@@ -81,6 +83,7 @@ export const getProgressoByDisciplinaSchema = {
                 type: 'array',
                 items: progressoSchema
             }
-        }
+        },
+        security: [{ bearerAuth: [] }]
     }
 };

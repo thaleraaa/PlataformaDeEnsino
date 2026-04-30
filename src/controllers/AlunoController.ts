@@ -1,16 +1,38 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { AlunoRepository } from "../repositories/AlunoRepository";
-import type { Aluno } from "../../generated/prisma/client.js";
+import type { Aluno, Conta } from "../../generated/prisma/client.js";
+import { hash } from 'argon2';
+import { ContaRepository } from "../repositories/ContaRepository";
 
 export class AlunoController {
     private alunoRepository = new AlunoRepository();
+    private contaRepository = new ContaRepository();
 
     create = async (
-        request: FastifyRequest<{ Body: Omit<Aluno, "id"> }>,
+        request: FastifyRequest<{ Body: Omit<Aluno & Conta, "id" | "created_at" | "updated_at"> }>,
         reply: FastifyReply,
     ) => {
-        const aluno = request.body;
-        const novoAluno = await this.alunoRepository.create(aluno);
+
+        const aluno = request.body as Pick<Aluno, "periodo" | "faculdade">;
+        const conta = request.body as Pick<Conta, "nome" | "email" | "senha">;
+
+        if(!aluno) {
+            return reply.status(400).send({message: "A senha é necessaria."});
+        }
+        const senhaHash = await hash(conta.senha);
+
+        const contaNova = await this.contaRepository.create({
+            email: conta.email,
+            nome: conta.nome,
+            role: 'ALUNO',
+            senha: senhaHash
+        });
+        
+        const novoAluno = await this.alunoRepository.create({
+            periodo: aluno.periodo,
+            faculdade: aluno.faculdade,
+            conta_id: contaNova.id
+        });
 
         return reply.status(201).send(novoAluno);
     };

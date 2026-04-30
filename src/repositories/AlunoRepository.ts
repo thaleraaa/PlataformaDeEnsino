@@ -1,10 +1,21 @@
 import {prisma} from '../../lib/prisma.js'
-import type { Aluno } from '../../generated/prisma/client.js'
+import type { Aluno, Prisma } from '../../generated/prisma/client.js'
 
 export class AlunoRepository {
 
     public async findAll() : Promise<Aluno[]> {
-        return prisma.aluno.findMany();
+        return prisma.aluno.findMany({
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
+            }
+        });
     }
 
 
@@ -12,12 +23,35 @@ export class AlunoRepository {
         return prisma.aluno.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
             }
         });
     }
 
-    public async create(data: Omit<Aluno, 'id'>) : Promise<Aluno> {
-        return prisma.aluno.create({data})
+    public async create(
+        data: Omit<Aluno, 'id' | "created_at" | "updated_at">) : Promise<Aluno> {
+        return prisma.aluno.create({
+            data,
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
+            }
+        })
     }
 
     public async update(id : string, data: Partial<Omit<Aluno, 'id' | 'senha'>>) : Promise<Aluno> {
