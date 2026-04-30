@@ -1,33 +1,36 @@
 export const professorSchema = {
-  type: 'object',
-  properties: {
-    id: { 
-        type: 'string' 
-    },
-    nome: { 
-        type: 'string'
-    },
-    CRM: { 
-        type: 'string'
-    },
-    salario: { 
-        type: 'number'
-    },
-    email: {
-        type: 'string' 
-    },
-    adm_id: {
-        type: 'string'
-    },
-    created_at: {
-        type: 'string',
-        format: 'date-time'
-    },
-    updated_at: {
-        type: 'string',
-        format: 'date-time'
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        CRM: {
+            type: 'string'
+        },
+        salario: {
+            type: 'number'
+        },
+        conta: {
+            type: 'object',
+            properties: {
+                id: { type: 'string' },
+                nome: { type: 'string' },
+                email: { type: 'string' },
+                role: { type: 'string' }
+            }
+        },
+        adm_id: {
+            type: 'string'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time'
+        }
     }
-  },
 } as const;
 
 export const professorBodySchema = {
@@ -81,19 +84,20 @@ const professorIdParamsSchema = {
     properties: {
         id: {
             type: 'string'
-        }
-    },
+        },
+    }
 } as const;
 
 export const getProfessorSchema = {
     schema: {
         tags: ['Professores'],
         summary: 'Lista todos os professores',
+        security: [{ bearerAuth: [] }],
         response: {
             200: {
                 type: 'array',
                 items: professorSchema
-            }
+            },
         }
     }
 }
@@ -102,12 +106,11 @@ export const getProfessorByIdSchema = {
     schema: {
         tags: ['Professores'],
         summary: 'Busca o professor pelo ID',
+        security: [{ bearerAuth: [] }],
         params: professorIdParamsSchema,
         response: {
-            200: {
-                professorSchema
-            }
-        }
+            200: professorSchema
+        },
     }
 }
 
@@ -117,10 +120,8 @@ export const postProfessorSchema = {
         summary: 'Cria um professor',
         body: professorBodySchema,
         response: {
-            201: {
-                professorSchema
-            }
-        }
+            201: professorSchema
+        },
     }
 }
 
@@ -128,11 +129,12 @@ export const putProfessorSchema = {
     schema: {
         tags: ['Professores'],
         summary: 'Atualiza os dados de um professor',
+        security: [{ bearerAuth: [] }],
         params: professorIdParamsSchema,
         body: professorUpdateBodySchema,
         response: {
             200: professorSchema
-        }
+        },
     }
 }
 
@@ -140,9 +142,10 @@ export const deleteProfessorSchema = {
     schema: {
         tags: ['Professores'],
         summary: 'Delete um professor',
+        security: [{ bearerAuth: [] }],
         params: professorIdParamsSchema,
         response: {
             200: professorSchema
-        }
+        },
     }
 }

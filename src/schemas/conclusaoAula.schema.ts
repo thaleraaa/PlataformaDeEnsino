@@ -65,31 +65,34 @@ export const getConclusaoAulaByAlunoAndAulaSchema = {
     schema: {
         tags: ['Conclusões de Aula'],
         summary: 'Busca conclusão de aula por aluno e aula',
+        security: [{ bearerAuth: [] }],
         params: conclusaoAulaAlunoAulaParamsSchema,
         response: {
             200: conclusaoAulaSchema
-        }
+        },
     }
-};
+}
 
 export const createConclusaoAulaSchema = {
     schema: {
         tags: ['Conclusões de Aula'],
         summary: 'Cria uma conclusão de aula',
+        security: [{ bearerAuth: [] }],
         body: conclusaoAulaBodySchema,
         response: {
             201: conclusaoAulaSchema
-        }
+        },
     }
-};
+}
 
 export const deleteConclusaoAulaSchema = {
     schema: {
         tags: ['Conclusões de Aula'],
         summary: 'Deleta uma conclusão de aula',
+        security: [{ bearerAuth: [] }],
         params: conclusaoAulaIdParamsSchema,
         response: {
             200: conclusaoAulaSchema
-        }
+        },
     }
-};
+}

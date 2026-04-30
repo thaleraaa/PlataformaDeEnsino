@@ -117,95 +117,103 @@ export const getResultadoSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Lista todos os resultados',
+        security: [{ bearerAuth: [] }],
         response: {
             200: {
                 type: 'array',
                 items: resultadoSchema
-            }
+            },
         }
     }
-};
+}
 
 export const getResultadoByIdSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Busca um resultado pelo ID',
+        security: [{ bearerAuth: [] }],
         params: resultadoIdParamsSchema,
         response: {
             200: resultadoSchema
-        }
+        },
     }
-};
+}
 
 export const getResultadoByAlunoAndSimuladoSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Busca resultado de um aluno em um simulado específico',
+        security: [{ bearerAuth: [] }],
         params: resultadoAlunoSimuladoParamsSchema,
         response: {
             200: resultadoSchema
-        }
+        },
     }
-};
+}
 
 export const getResultadoByAlunoSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Lista todos os resultados de um aluno',
+        security: [{ bearerAuth: [] }],
         params: resultadoAlunoParamsSchema,
         response: {
             200: {
                 type: 'array',
                 items: resultadoSchema
-            }
+            },
         }
     }
-};
+}
 
 export const getResultadoBySimuladoSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Lista todos os resultados de um simulado',
+        security: [{ bearerAuth: [] }],
         params: resultadoSimuladoParamsSchema,
         response: {
             200: {
                 type: 'array',
                 items: resultadoSchema
-            }
+            },
         }
     }
-};
+}
 
 export const createResultadoSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Cria um novo resultado',
+        security: [{ bearerAuth: [] }],
         body: resultadoBodySchema,
         response: {
             201: resultadoSchema
-        }
+        },
     }
-};
+}
 
 export const updateResultadoSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Atualiza um resultado',
+        security: [{ bearerAuth: [] }],
         params: resultadoIdParamsSchema,
         body: resultadoUpdateBodySchema,
         response: {
             200: resultadoSchema
-        }
+        },
     }
-};
+}
 
 export const deleteResultadoSchema = {
     schema: {
         tags: ['Resultados'],
         summary: 'Deleta um resultado',
+        security: [{ bearerAuth: [] }],
         params: resultadoIdParamsSchema,
         response: {
             200: resultadoSchema
-        }
+        },
     }
-};
+}

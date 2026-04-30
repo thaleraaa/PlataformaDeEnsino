@@ -63,19 +63,20 @@ const alternativaIdParamsSchema = {
     properties: {
         id: {
             type: 'string'
-        }
-    },
+        },
+    }
 } as const;
 
 export const getAlternativaSchema = {
     schema: {
         tags: ['Alternativas'],
         summary: 'Lista todas as alternativas da plataforma',
+        security: [{ bearerAuth: [] }],
         response: {
             200: {
                 type: 'array',
                 items: alternativaSchema
-            }
+            },
         }
     }
 }
@@ -84,11 +85,11 @@ export const getAlternativaByIdSchema = {
     schema: {
         tags: ['Alternativas'],
         summary: 'Busca a alternativa pelo ID',
+        security: [{ bearerAuth: [] }],
+        params: alternativaIdParamsSchema,
         response: {
-            200: {
-                alternativaSchema
-            }
-        }
+            200: alternativaSchema
+        },
     }
 }
 
@@ -96,12 +97,11 @@ export const postAlternativaSchema = {
     schema: {
         tags: ['Alternativas'],
         summary: 'Cria uma alternativa',
+        security: [{ bearerAuth: [] }],
         body: alternativaBodySchema,
         response: {
-            201: {
-                alternativaSchema
-            }
-        }
+            201: alternativaSchema
+        },
     }
 }
 
@@ -109,11 +109,12 @@ export const putAlternativaSchema = {
     schema: {
         tags: ['Alternativas'],
         summary: 'Atualiza os dados de uma alternativa',
+        security: [{ bearerAuth: [] }],
         params: alternativaIdParamsSchema,
         body: alternativaUpdateBodySchema,
         response: {
             200: alternativaSchema
-        }
+        },
     }
 }
 
@@ -121,9 +122,10 @@ export const deleteAlternativaSchema = {
     schema: {
         tags: ['Alternativas'],
         summary: 'Delete uma alternativa',
+        security: [{ bearerAuth: [] }],
         params: alternativaIdParamsSchema,
         response: {
             200: alternativaSchema
-        }
+        },
     }
 }

@@ -5,8 +5,15 @@ export class AdministradorRepository {
 
     public async findAll() : Promise<Omit<Administrador, "senha">[]> {
         return prisma.administrador.findMany({
-            omit: {
-                senha: true
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
             }
         });
     }
@@ -16,17 +23,33 @@ export class AdministradorRepository {
             where: {
                 id: id
             },
-            omit: {
-                senha: true
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
             }
         });
     }
 
-    public async create(data : Omit<Administrador, 'id'>) : Promise<Omit<Administrador, "senha">> {
+    public async create(
+        data : Omit<Administrador, "id" | "created_at" | "updated_at">
+    ) : Promise<Omit<Administrador, "senha">> {
         return prisma.administrador.create({
             data,
-            omit: {
-                senha: true
+            include: {
+                conta: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        email: true,
+                        role: true
+                    }
+                }
             }
         });
     }
@@ -37,9 +60,6 @@ export class AdministradorRepository {
                 id: id
             },
             data,
-            omit: {
-                senha: true
-            }
         });
     }
 
@@ -47,9 +67,6 @@ export class AdministradorRepository {
         return prisma.administrador.delete({
             where: {
                 id: id
-            },
-            omit: {
-                senha: true
             }
         });
     }
