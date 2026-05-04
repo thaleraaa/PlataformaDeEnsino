@@ -10,10 +10,13 @@ export class ConclusaoAulaController {
     private aulaRepository = new AulaRepository();
 
     create = async (
-        request : FastifyRequest<{Body: Omit<ConclusaoAula, 'id' | 'dataConclusao' | 'created_at' | 'updated_at'>}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { aluno_id, aula_id } = request.body;
+        const { aluno_id, aula_id } = request.body as Omit<
+            ConclusaoAula,
+            'id' | 'dataConclusao' | 'created_at' | 'updated_at'
+        >;
         
         const aulaConcluida = await this.conclusaoAulaRepository.create({aluno_id, aula_id });
         
@@ -27,19 +30,19 @@ export class ConclusaoAulaController {
     }
 
     delete = async (
-        request : FastifyRequest<{Params: {id : string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const {id} = request.params;
+        const { id } = request.params as { id: string };
         const aulaNaoConcluida = await this.conclusaoAulaRepository.delete(id);
         return reply.status(200).send(aulaNaoConcluida);
     }
 
     getParamByIdAulaIdAluno = async (
-        request : FastifyRequest<{Params: {aluno_id : string, aula_id: string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const {aluno_id, aula_id} = request.params;
+        const { aluno_id, aula_id } = request.params as { aluno_id: string; aula_id: string };
         const conclusoesAula = await this.conclusaoAulaRepository.findByAulaEAluno(aluno_id,aula_id);
         return reply.status(200).send(conclusoesAula);
     }

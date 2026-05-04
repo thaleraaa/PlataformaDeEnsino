@@ -9,10 +9,9 @@ export class AlunoController {
     private contaRepository = new ContaRepository();
 
     create = async (
-        request: FastifyRequest<{ Body: Omit<Aluno & Conta, "id" | "created_at" | "updated_at"> }>,
+        request: FastifyRequest,
         reply: FastifyReply,
     ) => {
-
         const aluno = request.body as Pick<Aluno, "periodo" | "faculdade">;
         const conta = request.body as Pick<Conta, "nome" | "email" | "senha">;
 
@@ -46,30 +45,30 @@ export class AlunoController {
     }
 
     getParamId = async (
-        request : FastifyRequest <{Params: {id : string}}>,
-        reply : FastifyReply
+        request: FastifyRequest,
+        reply: FastifyReply
     ) => {
-        const { id } = request.params;
+        const { id } = request.params as { id: string };
         const aluno = await this.alunoRepository.findById(id);
         return reply.status(200).send(aluno);
     }
 
     delete = async (
-        request : FastifyRequest <{Params: {id : string}}>,
-        reply : FastifyReply
+        request: FastifyRequest,
+        reply: FastifyReply
     ) => {
-        const { id } = request.params;
-        const aluno = await this.alunoRepository.delete(id)
+        const { id } = request.params as { id: string };
+        const aluno = await this.alunoRepository.delete(id);
         return reply.status(200).send(aluno);
     }
 
     update = async (
-        request : FastifyRequest <{Params: {id : string}, Body: Partial<Omit<Aluno, 'id' | 'senha'>>}>,
-        reply : FastifyReply
+        request: FastifyRequest,
+        reply: FastifyReply
     ) => {
-        const aluno = request.body;
-        const { id } = request.params;
-        const alunoEditado = await this.alunoRepository.update(id, aluno)
+        const { id } = request.params as { id: string };
+        const aluno = request.body as Partial<Omit<Aluno, 'id' | 'senha'>>;
+        const alunoEditado = await this.alunoRepository.update(id, aluno);
         return reply.status(200).send(alunoEditado);
     }
 }

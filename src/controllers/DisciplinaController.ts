@@ -6,10 +6,10 @@ export class DisciplinaController {
     private disciplinaRepository = new DisciplinaRepository();
 
     create = async (
-        request : FastifyRequest<{Body: Omit<Disciplina,"id">}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const disciplina = request.body;
+        const disciplina = request.body as Omit<Disciplina, "id">;
         const novoDisciplina = await this.disciplinaRepository.create(disciplina);
         return reply.status(201).send(novoDisciplina);
     }
@@ -23,29 +23,29 @@ export class DisciplinaController {
     }
 
     getParamId = async (
-        request : FastifyRequest<{Params: {id : string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const {id} = request.params;
+        const { id } = request.params as { id: string };
         const disciplinaBuscada = await this.disciplinaRepository.findById(id);
         return reply.status(200).send(disciplinaBuscada);
     }
 
     update = async (
-        request : FastifyRequest<{Params: {id : string}, Body: Omit<Disciplina, "id">}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const disciplina = request.body;
-        const {id} = request.params;
+        const disciplina = request.body as Omit<Disciplina, "id">;
+        const { id } = request.params as { id: string };
         const disciplinaMudada = await this.disciplinaRepository.update(id, disciplina);
         return reply.status(200).send(disciplinaMudada);
     }
 
     delete = async (
-        request : FastifyRequest<{Params: {id : string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const {id} = request.params;
+        const { id } = request.params as { id: string };
         const disciplinaDeletada = await this.disciplinaRepository.delete(id);
         return reply.status(200).send(disciplinaDeletada);
     }

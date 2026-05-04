@@ -7,10 +7,10 @@ export class ExercicioController {
     private exercicioRepository = new ExercicioRepository();
 
     create = async (
-        request: FastifyRequest<{Body: Omit<Exercicio, 'id'>}>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const exercicio = request.body;
+        const exercicio = request.body as Omit<Exercicio, 'id'>;
         const novoExercicio = await this.exercicioRepository.create(exercicio);
         return reply.status(201).send(novoExercicio);
     }
@@ -24,29 +24,29 @@ export class ExercicioController {
     }
 
     getParamId = async (
-        request: FastifyRequest<{Params: {id: string}}>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params;
+        const { id } = request.params as { id: string };
         const exercicio = await this.exercicioRepository.findById(id);
         return reply.status(200).send(exercicio);
     }
 
     delete = async (
-        request: FastifyRequest<{Params: {id: string}}>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params;
+        const { id } = request.params as { id: string };
         const exercicio = await this.exercicioRepository.delete(id);
         return reply.status(200).send(exercicio);
     }
 
     update = async (
-        request: FastifyRequest<{Params: {id: string}, Body: Partial<Omit<Exercicio, 'id' | 'professor_id'>>}>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const exercicio = request.body;
-        const { id } = request.params;
+        const exercicio = request.body as Partial<Omit<Exercicio, 'id' | 'professor_id'>>;
+        const { id } = request.params as { id: string };
         const exercicioEditado = await this.exercicioRepository.update(id, exercicio);
         return reply.status(200).send(exercicioEditado);
     }

@@ -5,11 +5,12 @@ import {
     createConclusaoAulaSchema,
     deleteConclusaoAulaSchema
 } from "../schemas/conclusaoAula.schema.js";
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 async function conclusaoAulaRouters(fastify:FastifyInstance) {
-    fastify.post('/', createConclusaoAulaSchema, conclusaoAulaController.create);
-    fastify.delete('/:id', deleteConclusaoAulaSchema, conclusaoAulaController.delete);
-    fastify.get('/:aluno_id/:aula_id', getConclusaoAulaByAlunoAndAulaSchema, conclusaoAulaController.getParamByIdAulaIdAluno);
+    fastify.post('/', { ...createConclusaoAulaSchema, preHandler: [authMiddleware] }, conclusaoAulaController.create);
+    fastify.delete('/:id', { ...deleteConclusaoAulaSchema, preHandler: [authMiddleware] }, conclusaoAulaController.delete);
+    fastify.get('/:aluno_id/:aula_id', { ...getConclusaoAulaByAlunoAndAulaSchema, preHandler: [authMiddleware] }, conclusaoAulaController.getParamByIdAulaIdAluno);
 }
 
 export default conclusaoAulaRouters;

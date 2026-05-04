@@ -14,68 +14,67 @@ export class ResultadoController {
     };
 
     getParamId = async (
-        request: FastifyRequest<{ Params: { id: string } }>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params;
+        const { id } = request.params as { id: string };
         const resultado = await this.resultadoRepository.findById(id);
         return reply.status(200).send(resultado);
     };
 
     getByAlunoAndSimulado = async (
-        request: FastifyRequest<{ Params: { aluno_id: string; simulado_id: string } }>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { aluno_id, simulado_id } = request.params;
+        const { aluno_id, simulado_id } = request.params as { aluno_id: string; simulado_id: string };
         const resultado = await this.resultadoRepository.findByAlunoAndSimulado(aluno_id, simulado_id);
         return reply.status(200).send(resultado);
     };
 
     getByAluno = async (
-        request: FastifyRequest<{ Params: { aluno_id: string } }>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { aluno_id } = request.params;
+        const { aluno_id } = request.params as { aluno_id: string };
         const resultados = await this.resultadoRepository.findByAluno(aluno_id);
         return reply.status(200).send(resultados);
     };
 
     getBySimulado = async (
-        request: FastifyRequest<{ Params: { simulado_id: string } }>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { simulado_id } = request.params;
+        const { simulado_id } = request.params as { simulado_id: string };
         const resultados = await this.resultadoRepository.findBySimulado(simulado_id);
         return reply.status(200).send(resultados);
     };
 
     create = async (
-        request: FastifyRequest<{ Body: Omit<Resultado, 'id' | 'created_at' | 'updated_at'> }>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const resultado = request.body;
+        const resultado = request.body as Omit<Resultado, 'id' | 'created_at' | 'updated_at'>;
         const novoResultado = await this.resultadoRepository.create(resultado);
         return reply.status(201).send(novoResultado);
     };
 
     update = async (
-        request: FastifyRequest<{
-            Params: { id: string };
-            Body: Partial<Omit<Resultado, 'id' | 'created_at' | 'updated_at' | 'aluno_id' | 'simulado_id'>>;
-        }>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params;
-        const resultado = request.body;
+        const { id } = request.params as { id: string };
+        const resultado = request.body as Partial<
+            Omit<Resultado, 'id' | 'created_at' | 'updated_at' | 'aluno_id' | 'simulado_id'>
+        >;
         const resultadoEditado = await this.resultadoRepository.update(id, resultado);
         return reply.status(200).send(resultadoEditado);
     };
 
     delete = async (
-        request: FastifyRequest<{ Params: { id: string } }>,
+        request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params;
+        const { id } = request.params as { id: string };
         const resultadoDeletado = await this.resultadoRepository.delete(id);
         return reply.status(200).send(resultadoDeletado);
     };
