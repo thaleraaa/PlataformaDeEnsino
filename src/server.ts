@@ -15,7 +15,6 @@ import resultadosRoutes from './routers/resultado.router.js';
 import conclusaoAulaRouters from './routers/conclusaoAula.router.js';
 import progressoRouters from './routers/progresso.router.js';
 import authRoutes from './routers/auth.router.js';
-import { authMiddleware } from './middlewares/auth.middleware.js';
 
 const app = Fastify({ logger: true });
 
@@ -61,33 +60,6 @@ app.register(resultadosRoutes, { prefix: '/resultados' });
 app.register(conclusaoAulaRouters, { prefix: '/conclusao' });
 app.register(progressoRouters, { prefix: '/progressos' });
 
-const PUBLIC_ROUTES = ['/auth/login', '/docs', '/docs/'];
-
-app.addHook('onRequest', async (request, reply) => {
-	if (!request.url) {
-		return reply.code(400).send({ error: 'Bad Request' });
-	}
-
-	const url = request.url!.split('?')[0] ?? request.url! // ignora query string
-
-  if (PUBLIC_ROUTES.includes(url) || url.startsWith('/docs')) {
-		return;
-	}
-
-  if (url === ('/alunos/') && request.method === 'POST') {
-    return;
-  }
-
-  if (url === ('/professores/') && request.method === 'POST') {
-    return;
-  }
-
-  if (url === ('/administradores/') && request.method === 'POST') {
-    return;
-  }
-
-	await authMiddleware(request, reply);
-});
 
 const start = async () => {
   try {

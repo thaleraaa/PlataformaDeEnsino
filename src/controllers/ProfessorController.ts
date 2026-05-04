@@ -9,7 +9,7 @@ export class ProfessorController {
 	private contaRepository = new ContaRepository();
 
 	create = async (
-		request: FastifyRequest<{ Body: Omit<Professor & Conta, "id"> }>,
+		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
 		const professor = request.body as Pick<Professor, "CRM" | "salario" | "adm_id">;
@@ -46,29 +46,29 @@ export class ProfessorController {
 	};
 
 	getParamId = async (
-		request: FastifyRequest<{ Params: { id: string } }>,
+		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const { id } = request.params;
+		const { id } = request.params as { id: string };
 		const professor = await this.professorRepository.findById(id);
 		return reply.status(200).send(professor);
 	};
 
 	delete = async (
-		request: FastifyRequest<{ Params: { id: string } }>,
+		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const { id } = request.params;
+		const { id } = request.params as { id: string };
 		const professor = await this.professorRepository.delete(id);
 		return reply.status(200).send(professor);
 	};
 
 	update = async (
-		request: FastifyRequest<{ Params: { id: string }, Body: Partial<Omit<Professor, 'id' | 'senha'>> }>,
+		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const professor = request.body;
-		const { id } = request.params;
+		const professor = request.body as Partial<Omit<Professor, 'id' | 'senha'>>;
+		const { id } = request.params as { id: string };
 		const professorEditado = await this.professorRepository.update(id, professor);
 		return reply.status(200).send(professorEditado);
 	};

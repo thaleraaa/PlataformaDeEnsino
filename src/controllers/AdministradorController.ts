@@ -18,16 +18,16 @@ export class AdministradorController {
     }
 
     getParamId = async (
-        request : FastifyRequest<{Params: {id : string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const {id} = request.params;
+        const { id } = request.params as { id: string };
         const adm = await this.administradorRepository.findById(id);
         return reply.status(200).send(adm);
     }
 
     create = async (
-        request : FastifyRequest<{Body: Omit<Administrador & Conta,'id'>}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
         const adm = request.body as Pick<Administrador, "ativo">;
@@ -53,20 +53,20 @@ export class AdministradorController {
     }
 
     delete = async (
-        request : FastifyRequest<{Params: {id : string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params;
+        const { id } = request.params as { id: string };
         const adm = await this.administradorRepository.delete(id);
         return reply.status(200).send(adm);
     }
 
     update = async (
-        request : FastifyRequest<{Params: {id : string}, Body: Partial<Omit<Administrador, 'id' | 'senha'>>}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const adm = request.body;
-        const { id } = request.params;
+        const adm = request.body as Partial<Omit<Administrador, 'id' | 'senha'>>;
+        const { id } = request.params as { id: string };
         const admEditado = await this.administradorRepository.update(id, adm);
         return reply.status(200).send(admEditado);
     }

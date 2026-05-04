@@ -26,12 +26,22 @@ export const loginController = async (
         return reply.status(401).send({message: "Email ou senha incorreto"});
     }
 
+    let userId: string | undefined;
+
+    if (user.role === 'ALUNO') {
+        userId = user.aluno?.id;
+    } else if (user.role === 'ADMINISTRADOR') {
+        userId = user.administrador?.id;
+    } else if (user.role === 'PROFESSOR') {
+        userId = user.professor?.id;
+    }
+
     const token = jwt.sign(
         {
-            email: email,
-            id: user.id
+            id: userId,
+            role: user.role
         },
-        process.env.JWT_SECRET as string,
+        process.env.JWT_SECRET || 'secret',
         {
             expiresIn: '1h'
         }
