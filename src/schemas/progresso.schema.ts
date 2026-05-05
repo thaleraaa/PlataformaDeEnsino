@@ -58,6 +58,20 @@ export const getProgressoSchema = {
     }
 };
 
+export const getMeProgressoSchema = {
+    schema: {
+        tags: ['Progresso'],
+        summary: 'Lista o seu progresso',
+        response: {
+            200: {
+                type: 'array',
+                items: progressoSchema
+            }
+        },
+        security: [{ bearerAuth: [] }]
+    }
+};
+
 export const getProgressoByAlunoSchema = {
     schema: {
         tags: ['Progresso'],
