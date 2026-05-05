@@ -26,6 +26,15 @@ export class AdministradorController {
         return reply.status(200).send(adm);
     }
 
+    getDetail = async (
+        request : FastifyRequest,
+        reply : FastifyReply
+    ) => {
+        const id = (request as any).user?.id;
+        const adm = await this.administradorRepository.findById(id);
+        return reply.status(200).send(adm);
+    }
+
     create = async (
         request : FastifyRequest,
         reply : FastifyReply
@@ -66,7 +75,11 @@ export class AdministradorController {
         reply : FastifyReply
     ) => {
         const adm = request.body as Partial<Omit<Administrador, 'id' | 'senha'>>;
-        const { id } = request.params as { id: string };
+
+        const id  = (request as any).user?.id;
+        if(!id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
         const admEditado = await this.administradorRepository.update(id, adm);
         return reply.status(200).send(admEditado);
     }

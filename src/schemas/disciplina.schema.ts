@@ -24,13 +24,10 @@ export const disciplinaSchema = {
 export const disciplinaBodySchema = {
     type: 'object',
     required: [
-        'nome', 'professor_id'
+        'nome'
     ],
     properties: {
         nome: {
-            type: 'string'
-        },
-        professor_id: {
             type: 'string'
         }
     }
@@ -84,7 +81,7 @@ export const getDisciplinaByIdSchema = {
 export const postDisciplinaSchema = {
     schema: {
         tags: ['Disciplinas'],
-        summary: 'Cria uma disciplina',
+        summary: '(PROFESSOR) Cria uma disciplina',
         body: disciplinaBodySchema,
         response: {
             201: disciplinaSchema
@@ -96,7 +93,7 @@ export const postDisciplinaSchema = {
 export const putDisciplinaSchema = {
     schema: {
         tags: ['Disciplinas'],
-        summary: 'Atualiza os dados de uma disciplina',
+        summary: '(PROFESSOR/ADMINISTRADOR) Atualiza os dados de uma disciplina',
         params: disciplinaIdParamsSchema,
         body: disciplinaUpdateBodySchema,
         response: {
@@ -109,7 +106,7 @@ export const putDisciplinaSchema = {
 export const deleteDisciplinaSchema = {
     schema: {
         tags: ['Disciplinas'],
-        summary: 'Delete uma disciplina',
+        summary: '(PROFESSOR/ADMINISTRADOR) Delete uma disciplina',
         params: disciplinaIdParamsSchema,
         response: {
             200: disciplinaSchema

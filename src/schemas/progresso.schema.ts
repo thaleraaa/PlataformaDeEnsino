@@ -47,7 +47,7 @@ const progressoDisciplinaParamsSchema = {
 export const getProgressoSchema = {
     schema: {
         tags: ['Progresso'],
-        summary: 'Lista o progresso de todos os alunos',
+        summary: '(PROFESSOR/ADMINISTRADOR) Lista o progresso de todos os alunos',
         response: {
             200: {
                 type: 'array',
@@ -61,7 +61,7 @@ export const getProgressoSchema = {
 export const getProgressoByAlunoSchema = {
     schema: {
         tags: ['Progresso'],
-        summary: 'Busca o progresso de um aluno',
+        summary: '(PROFESSOR/ADMINISTRADOR) Busca o progresso de um aluno',
         params: progressoAlunoParamsSchema,
         response: {
             200: {
@@ -76,7 +76,7 @@ export const getProgressoByAlunoSchema = {
 export const getProgressoByDisciplinaSchema = {
     schema: {
         tags: ['Progresso'],
-        summary: 'Busca o progresso dos alunos em uma disciplina',
+        summary: '(PROFESSOR/ADMINISTRADOR) Busca o progresso dos alunos em uma disciplina',
         params: progressoDisciplinaParamsSchema,
         response: {
             200: {

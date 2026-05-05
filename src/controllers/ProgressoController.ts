@@ -14,20 +14,20 @@ export class ProgressoController {
     }
 
     getParamAlunoId = async(
-        request : FastifyRequest<{Params: {aluno_id : string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const {aluno_id} = request.params;
+        const {aluno_id} = request.params as {aluno_id : string};
         const progressos = await this.progressoRepository.findByAlunoId(aluno_id);
         return reply.status(200).send(progressos);
 
     }
 
     getParamDisciplinaId = async(
-        request : FastifyRequest<{Params: {disciplina_id : string}}>,
+        request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const {disciplina_id} = request.params;
+        const {disciplina_id} = request.params as {disciplina_id : string};
         const progressos = await this.progressoRepository.findByDisciplinaId(disciplina_id);
         return reply.status(200).send(progressos);
     }

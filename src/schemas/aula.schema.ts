@@ -105,7 +105,7 @@ export const getAulaByIdSchema = {
 export const postAulaSchema = {
     schema: {
         tags: ['Aulas'],
-        summary: 'Cria uma aula',
+        summary: '(PROFESSOR) Cria uma aula',
         security: [{ bearerAuth: [] }],
         body: aulaBodySchema,
         response: {
@@ -117,7 +117,7 @@ export const postAulaSchema = {
 export const putAulaSchema = {
     schema: {
         tags: ['Aulas'],
-        summary: 'Atualiza os dados de uma aula',
+        summary: '(PROFESSOR/ADMINISTRADOR) Atualiza os dados de uma aula',
         security: [{ bearerAuth: [] }],
         params: aulaIdParamsSchema,
         body: aulaUpdateBodySchema,
@@ -130,7 +130,7 @@ export const putAulaSchema = {
 export const deleteAulaSchema = {
     schema: {
         tags: ['Aulas'],
-        summary: 'Delete uma aula',
+        summary: '(PROFESSOR/ADMINISTRADOR) Delete uma aula',
         security: [{ bearerAuth: [] }],
         params: aulaIdParamsSchema,
         response: {

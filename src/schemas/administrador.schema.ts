@@ -76,7 +76,7 @@ const administradorIdParamsSchema = {
 export const getAdministradorSchema = {
     schema: {
         tags: ['Administradores'],
-        summary: 'Lista todos os administradores',
+        summary: '(ADMINISTRADOR) Lista todos os administradores',
         security: [{ bearerAuth: [] }],
         response: {
             200: {
@@ -90,7 +90,7 @@ export const getAdministradorSchema = {
 export const getAdministradorByIdSchema = {
     schema: {
         tags: ['Administradores'],
-        summary: 'Busca o administrador pelo ID',
+        summary: '(ADMINISTRADOR) Busca o administrador pelo ID',
         security: [{ bearerAuth: [] }],
         params: administradorIdParamsSchema,
         response: {
@@ -99,10 +99,21 @@ export const getAdministradorByIdSchema = {
     }
 }
 
+export const getAdministradorDetail = {
+    schema: {
+        tags: ['Administradores'],
+        summary: '(ADMINISTRADOR) Buscar informações do próprio administrador',
+        security: [{ bearerAuth: []}],
+        response: {
+            200: administradorSchema
+        }
+    }
+}
+
 export const postAdministradorSchema = {
     schema: {
         tags: ['Administradores'],
-        summary: 'Cria um administrador',
+        summary: '(ADMINISTRADOR) Cria um administrador',
         body: administradorBodySchema,
         response: {
             201: administradorSchema
@@ -113,7 +124,7 @@ export const postAdministradorSchema = {
 export const putAdministradorSchema = {
     schema: {
         tags: ['Administradores'],
-        summary: 'Atualiza os dados de um administrador',
+        summary: '(ADMINISTRADOR) Atualiza os dados do proprio administrador',
         security: [{ bearerAuth: [] }],
         params: administradorIdParamsSchema,
         body: administradorUpdateBodySchema,
@@ -126,7 +137,7 @@ export const putAdministradorSchema = {
 export const deleteAdministradorSchema = {
     schema: {
         tags: ['Administradores'],
-        summary: 'Delete um administrador',
+        summary: '(ADMINISTRADOR) Delete um administrador',
         security: [{ bearerAuth: [] }],
         params: administradorIdParamsSchema,
         response: {

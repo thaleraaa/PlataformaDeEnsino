@@ -96,7 +96,7 @@ export const getAlternativaByIdSchema = {
 export const postAlternativaSchema = {
     schema: {
         tags: ['Alternativas'],
-        summary: 'Cria uma alternativa',
+        summary: '(PROFESSOR) Cria uma alternativa',
         security: [{ bearerAuth: [] }],
         body: alternativaBodySchema,
         response: {
@@ -108,7 +108,7 @@ export const postAlternativaSchema = {
 export const putAlternativaSchema = {
     schema: {
         tags: ['Alternativas'],
-        summary: 'Atualiza os dados de uma alternativa',
+        summary: '(PROFESSOR/ADMINISTRADOR) Atualiza os dados de uma alternativa',
         security: [{ bearerAuth: [] }],
         params: alternativaIdParamsSchema,
         body: alternativaUpdateBodySchema,
@@ -121,7 +121,7 @@ export const putAlternativaSchema = {
 export const deleteAlternativaSchema = {
     schema: {
         tags: ['Alternativas'],
-        summary: 'Delete uma alternativa',
+        summary: '(PROFESSOR/ADMINISTRADOR) Delete uma alternativa',
         security: [{ bearerAuth: [] }],
         params: alternativaIdParamsSchema,
         response: {

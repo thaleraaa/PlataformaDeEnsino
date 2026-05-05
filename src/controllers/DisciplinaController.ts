@@ -9,7 +9,14 @@ export class DisciplinaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const disciplina = request.body as Omit<Disciplina, "id">;
+        const disciplinaBody = request.body as Omit<Disciplina, "id">;
+        const professorId = (request as any).user?.id;
+
+        if (!professorId) {
+            return reply.status(401).send({ message: "Nao autenticado" });
+        }
+
+        const disciplina = { ...disciplinaBody, professor_id: professorId };
         const novoDisciplina = await this.disciplinaRepository.create(disciplina);
         return reply.status(201).send(novoDisciplina);
     }
@@ -35,7 +42,7 @@ export class DisciplinaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const disciplina = request.body as Omit<Disciplina, "id">;
+        const disciplina = request.body as Omit<Disciplina, "id" | "professor_id">;
         const { id } = request.params as { id: string };
         const disciplinaMudada = await this.disciplinaRepository.update(id, disciplina);
         return reply.status(200).send(disciplinaMudada);

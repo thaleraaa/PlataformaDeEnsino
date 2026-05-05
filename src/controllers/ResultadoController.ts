@@ -22,6 +22,18 @@ export class ResultadoController {
         return reply.status(200).send(resultado);
     };
 
+    getDetail = async (
+        request : FastifyRequest,
+        reply : FastifyReply
+    ) => {
+        const aluno_id = (request as any).user?.id;
+        if(!aluno_id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
+        const detailAluno = await this.resultadoRepository.findByAluno(aluno_id);
+        return reply.status(200).send(detailAluno);
+    }
+
     getByAlunoAndSimulado = async (
         request: FastifyRequest,
         reply: FastifyReply

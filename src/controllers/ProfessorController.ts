@@ -12,8 +12,8 @@ export class ProfessorController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const professor = request.body as Pick<Professor, "CRM" | "salario" | "adm_id">;
-		const conta = request.body as Pick<Conta, "nome" | "email" | "senha">;
+		const professor = request.body as Omit<Professor, "id" | "conta_id">;
+		const conta = request.body as Omit<Conta, "id" | "role">;
 
 		if (!conta.senha) {
 			return reply.status(400).send({ message: "A senha e necessaria." });
@@ -21,16 +21,20 @@ export class ProfessorController {
 
 		const senhaHash = await hash(conta.senha);
 		const contaNova = await this.contaRepository.create({
-			email: conta.email,
-			nome: conta.nome,
-			role: "PROFESSOR",
-			senha: senhaHash
+			...conta,
+			senha: senhaHash,
+			role: "PROFESSOR"
 		});
 
+		const adm_id = (request as any).user?.id;
+
+		if (!adm_id) {
+			return reply.status(401).send({ message: "Nao autenticado" });
+		}
+
 		const novoProfessor = await this.professorRepository.create({
-			CRM: professor.CRM,
-			salario: professor.salario,
-			adm_id: professor.adm_id,
+			...professor,
+			adm_id: adm_id,
 			conta_id: contaNova.id
 		});
 
@@ -58,8 +62,10 @@ export class ProfessorController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const { id } = request.params as { id: string };
-		const professor = await this.professorRepository.delete(id);
+		const professor_id = (request as any).user?.id;
+		if(!professor_id) {
+			return reply.status(401).send({message: "Não autorizado"});
+		}		const professor = await this.professorRepository.delete(professor_id);
 		return reply.status(200).send(professor);
 	};
 
@@ -67,11 +73,26 @@ export class ProfessorController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const professor = request.body as Partial<Omit<Professor, 'id' | 'senha'>>;
-		const { id } = request.params as { id: string };
-		const professorEditado = await this.professorRepository.update(id, professor);
+		const professor = request.body as Partial<Omit<Professor, 'id' | 'senha' | 'adm_id'>>;
+		const professor_id = (request as any).user?.id;
+		if(!professor_id) {
+			return reply.status(401).send({message: "Não autorizado"});
+		}
+		const professorEditado = await this.professorRepository.update(professor_id, professor);
 		return reply.status(200).send(professorEditado);
 	};
+
+	getMe = async (
+		request: FastifyRequest,
+		reply: FastifyReply
+	) => {
+		const professor_id = (request as any).user?.id;
+		if(!professor_id) {
+			return reply.status(401).send({message: "Não autorizado"});
+		}
+		const professorDetail = await this.professorRepository.findById(professor_id);
+		return reply.status(200).send(professorDetail);
+	}
 }
 
 export const professorController = new ProfessorController();

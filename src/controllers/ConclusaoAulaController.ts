@@ -13,11 +13,17 @@ export class ConclusaoAulaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { aluno_id, aula_id } = request.body as Omit<
+        const { aula_id } = request.body as Omit<
             ConclusaoAula,
             'id' | 'dataConclusao' | 'created_at' | 'updated_at'
         >;
-        
+
+        const aluno_id = (request as any).user?.id;
+
+        if(!aluno_id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
+
         const aulaConcluida = await this.conclusaoAulaRepository.create({aluno_id, aula_id });
         
         const aula = await this.aulaRepository.findByIdWithRelations(aula_id);
@@ -42,7 +48,13 @@ export class ConclusaoAulaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { aluno_id, aula_id } = request.params as { aluno_id: string; aula_id: string };
+        const { aula_id } = request.params as { aluno_id: string; aula_id: string };
+
+        const aluno_id  = (request as any).user?.id;
+        if(!aluno_id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
+
         const conclusoesAula = await this.conclusaoAulaRepository.findByAulaEAluno(aluno_id,aula_id);
         return reply.status(200).send(conclusoesAula);
     }

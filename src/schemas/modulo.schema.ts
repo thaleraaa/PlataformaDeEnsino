@@ -87,7 +87,7 @@ export const getModuloByIdSchema = {
 export const postModuloSchema = {
     schema: {
         tags: ['Modulos'],
-        summary: 'Cria um módulo',
+        summary: '(PROFESSOR) Cria um módulo',
         body: moduloBodySchema,
         response: {
             201: moduloSchema
@@ -99,7 +99,7 @@ export const postModuloSchema = {
 export const putModuloSchema = {
     schema: {
         tags: ['Modulos'],
-        summary: 'Atualiza os dados de um módulo',
+        summary: '(PROFESSOR/ADMINISTRADOR) Atualiza os dados de um módulo',
         params: moduloIdParamsSchema,
         body: moduloUpdateBodySchema,
         response: {
@@ -112,7 +112,7 @@ export const putModuloSchema = {
 export const deleteModuloSchema = {
     schema: {
         tags: ['Modulos'],
-        summary: 'Delete um módulo',
+        summary: '(PROFESSOR/ADMINISTRADOR) Delete um módulo',
         params: moduloIdParamsSchema,
         response: {
             200: moduloSchema

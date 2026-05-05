@@ -11,7 +11,17 @@ export class ExercicioController {
         reply: FastifyReply
     ) => {
         const exercicio = request.body as Omit<Exercicio, 'id'>;
-        const novoExercicio = await this.exercicioRepository.create(exercicio);
+
+        const professor_id = (request as any).user?.id;
+
+        if (!professor_id) {
+            return reply.status(401).send({ message: "Nao autenticado" });
+        }
+
+        const novoExercicio = await this.exercicioRepository.create({
+            ...exercicio,
+            professor_id,
+        });
         return reply.status(201).send(novoExercicio);
     }
 
