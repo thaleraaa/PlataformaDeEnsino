@@ -56,6 +56,15 @@ export class DisciplinaController {
         const disciplinaDeletada = await this.disciplinaRepository.delete(id);
         return reply.status(200).send(disciplinaDeletada);
     }
+
+    getModulos = async (
+        request: FastifyRequest,
+        reply: FastifyReply
+    ) => {
+        const {id} = request.params as {id : string}
+        const modulos = await this.disciplinaRepository.buscaModulos(id);
+        return reply.status(200).send(modulos);
+    }
 }
 
 export const disciplinaController = new DisciplinaController();

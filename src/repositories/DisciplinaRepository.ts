@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import type { Disciplina } from "../../generated/prisma/client";
+import type { Disciplina, Modulo } from "../../generated/prisma/client";
 
 export class DisciplinaRepository {
     public async findAll() : Promise<Disciplina[]> {
@@ -39,6 +39,14 @@ export class DisciplinaRepository {
                 modulos: {
                     
                 }
+            }
+        })
+    }
+
+    public async buscaModulos (disciplina_id : string) : Promise<Modulo[]> {
+        return prisma.modulo.findMany({
+            where: {
+                disciplina_id: disciplina_id
             }
         })
     }

@@ -1,3 +1,5 @@
+import { moduloSchema } from "./modulo.schema";
+
 export const disciplinaSchema = {
     type: 'object',
     properties: {
@@ -75,6 +77,21 @@ export const getDisciplinaByIdSchema = {
             200: disciplinaSchema
         },
         security: [{ bearerAuth: [] }]
+    }
+}
+
+export const getModulosByDisciplinaIdSchema = {
+    schema: {
+        tags: ['Disciplinas'],
+        summary: 'Busca todos os modulos de uma disciplina',
+        params: disciplinaIdParamsSchema,
+        security: [{ bearerAuth: [] }],
+        response: {
+            200: {
+                type: 'array',
+                items: moduloSchema
+            }
+        }
     }
 }
 
