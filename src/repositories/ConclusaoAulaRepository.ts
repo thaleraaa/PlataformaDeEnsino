@@ -7,10 +7,13 @@ export class ConclusaoAulaRepository {
         return prisma.conclusaoAula.create({data});
     }
     // delete
-    public async delete(id : string) : Promise<ConclusaoAula> {
+    public async delete(aula_id : string, aluno_id : string) : Promise<ConclusaoAula> {
         return prisma.conclusaoAula.delete({
             where: {
-                id: id
+                aluno_id_aula_id: {
+                    aluno_id: aluno_id,
+                    aula_id: aula_id
+                }
             }
         });
     }
@@ -21,6 +24,18 @@ export class ConclusaoAulaRepository {
                 aluno_id_aula_id: {
                     aluno_id: idAluno,
                     aula_id: idAula
+                }
+            },
+            include: {
+                aula: {
+                    select: {
+                        nome: true,
+                        modulo: {
+                            select: {
+                                nome: true
+                            }
+                        }
+                    }
                 }
             }
         });

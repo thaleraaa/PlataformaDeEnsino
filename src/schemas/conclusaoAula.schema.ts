@@ -11,8 +11,21 @@ export const conclusaoAulaSchema = {
         aluno_id: {
             type: 'string'
         },
-        aula_id: {
-            type: 'string'
+        aula: {
+            type: 'object',
+            properties: {
+                nome: {
+                    type: 'string'
+                },
+                modulo: {
+                    type: 'object',
+                    properties: {
+                        nome: {
+                            type: 'string'
+                        }
+                    }
+                }
+            }
         },
         created_at: {
             type: 'string',
@@ -37,9 +50,9 @@ export const conclusaoAulaBodySchema = {
 
 const conclusaoAulaIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['aula_id'],
     properties: {
-        id: {
+        aula_id: {
             type: 'string'
         }
     }
@@ -72,7 +85,7 @@ export const createConclusaoAulaSchema = {
         tags: ['Conclusões de Aula'],
         summary: 'Cria uma conclusão de aula',
         security: [{ bearerAuth: [] }],
-        body: conclusaoAulaBodySchema,
+        params: conclusaoAulaBodySchema,
         response: {
             201: conclusaoAulaSchema
         },

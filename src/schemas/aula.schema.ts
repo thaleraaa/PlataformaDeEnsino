@@ -139,26 +139,3 @@ export const deleteAulaSchema = {
     }
 }
 
-const aulaCountParamsSchema = {
-    type: 'object',
-    required: ['disciplina_id'],
-    properties: {
-        disciplina_id: {
-            type: 'string'
-        }
-    }
-} as const;
-
-export const getAulaCountByDisciplinaSchema = {
-    schema: {
-        tags: ['Aulas'],
-        summary: 'Conta o total de aulas de uma disciplina',
-        security: [{ bearerAuth: [] }],
-        params: aulaCountParamsSchema,
-        response: {
-            200: {
-                type: 'number'
-            },
-        }
-    }
-}
