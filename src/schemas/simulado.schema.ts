@@ -27,7 +27,7 @@ export const simuladoSchema = {
 export const simuladoBodySchema = {
     type: 'object',
     required: [
-        'quantidadeQuestao', 'tempoMaximo', 'professor_id'
+        'quantidadeQuestao', 'tempoMaximo'
     ],
     properties: {
         quantidadeQuestao: {
@@ -35,9 +35,6 @@ export const simuladoBodySchema = {
         },
         tempoMaximo: {
             type: 'integer'
-        },
-        professor_id: {
-            type: 'string'
         }
     }
 } as const;
@@ -93,7 +90,7 @@ export const getSimuladoByIdSchema = {
 export const createSimuladoSchema = {
     schema: {
         tags: ['Simulados'],
-        summary: 'Cria um novo simulado',
+        summary: '(PROFESSOR) Cria um novo simulado',
         body: simuladoBodySchema,
         response: {
             201: simuladoSchema
@@ -105,7 +102,7 @@ export const createSimuladoSchema = {
 export const updateSimuladoSchema = {
     schema: {
         tags: ['Simulados'],
-        summary: 'Atualiza um simulado',
+        summary: '(PROFESSOR/ADMINISTRADOR) Atualiza um simulado',
         params: simuladoIdParamsSchema,
         body: simuladoUpdateBodySchema,
         response: {
@@ -118,7 +115,7 @@ export const updateSimuladoSchema = {
 export const deleteSimuladoSchema = {
     schema: {
         tags: ['Simulados'],
-        summary: 'Deleta um simulado',
+        summary: '(PROFESSOR/ADMINISTRADOR) Deleta um simulado',
         params: simuladoIdParamsSchema,
         response: {
             200: simuladoSchema

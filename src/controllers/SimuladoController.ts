@@ -27,7 +27,11 @@ export class SimuladoController {
         reply : FastifyReply
     ) => {
         const simulado = request.body as Omit<Simulado, 'id'>;
-        const novoSimulado = await this.simuladoRepository.create(simulado);
+        const professor_id = (request as any).user?.id;
+        if(!professor_id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
+        const novoSimulado = await this.simuladoRepository.create({...simulado, professor_id: professor_id});
         return reply.status(201).send(novoSimulado);
     }
 
@@ -35,7 +39,7 @@ export class SimuladoController {
         request: FastifyRequest,
         reply : FastifyReply
     ) => {
-        const simulado = request.body as Partial<Omit<Simulado, "id">>;
+        const simulado = request.body as Partial<Omit<Simulado, "id" | "professor_id">>;
         const { id } = request.params as { id: string };
         const simuladoEditado = await this.simuladoRepository.update(id, simulado);
         return reply.status(200).send(simuladoEditado);

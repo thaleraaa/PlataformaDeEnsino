@@ -33,16 +33,13 @@ export const exercicioSchema = {
 export const exercicioBodySchema = {
     type: 'object',
     required: [
-        'enunciado', 'dificuldade', 'professor_id'
+        'enunciado', 'dificuldade'
     ],
     properties: {
         enunciado: {
             type: 'string'
         },
         dificuldade: {
-            type: 'string'
-        },
-        professor_id: {
             type: 'string'
         },
         aula_id: {
@@ -112,7 +109,7 @@ export const getExercicioByIdSchema = {
 export const postExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
-        summary: 'Cria um exercício',
+        summary: '(PROFESSOR) Cria um exercício',
         security: [{ bearerAuth: [] }],
         body: exercicioBodySchema,
         response: {
@@ -124,7 +121,7 @@ export const postExercicioSchema = {
 export const putExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
-        summary: 'Atualiza os dados de um exercício',
+        summary: '(PROFESSOR/ADMINISTRADOR) Atualiza os dados de um exercício',
         security: [{ bearerAuth: [] }],
         params: exercicioIdParamsSchema,
         body: exercicioUpdateBodySchema,
@@ -137,7 +134,7 @@ export const putExercicioSchema = {
 export const deleteExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
-        summary: 'Delete um exercício',
+        summary: '(PROFESSOR/ADMINISTRADOR) Delete um exercício',
         security: [{ bearerAuth: [] }],
         params: exercicioIdParamsSchema,
         response: {

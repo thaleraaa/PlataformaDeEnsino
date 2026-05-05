@@ -80,24 +80,6 @@ export const alunoCreateBodySchema = {
     }
 } as const;
 
-export const alunoUpdateBodySchema = {
-    type: 'object',
-    properties: {
-        nome: {
-            type: 'string'
-        },
-        periodo: {
-            type: 'string'
-        },
-        faculdade: {
-            type: 'string'
-        },
-        email: {
-            type: 'string'
-        }
-    }
-} as const;
-
 const alunoIdParamsSchema = {
     type: 'object',
     required: ['id'],
@@ -111,7 +93,7 @@ const alunoIdParamsSchema = {
 export const getAlunoSchema = {
     schema: {
         tags: ['Alunos'],
-        summary: 'Lista todos os alunos',
+        summary: '(ADMINISTRADOR) Lista todos os alunos',
         security: [{ bearerAuth: [] }],
         response: {
             200: {
@@ -125,9 +107,8 @@ export const getAlunoSchema = {
 export const getAlunoByIdSchema = {
     schema: {
         tags: ['Alunos'],
-        summary: 'Busca o aluno pelo ID',
+        summary: 'Busca o proprio aluno',
         security: [{ bearerAuth: [] }],
-        params: alunoIdParamsSchema,
         response: {
             200: alunoSchema
         },
@@ -148,22 +129,19 @@ export const postAlunoSchema = {
 export const putAlunoSchema = {
     schema: {
         tags: ['Alunos'],
-        summary: 'Atualiza os dados de um aluno',
+        summary: 'Atualiza os dados do proprio aluno',
         security: [{ bearerAuth: [] }],
-        params: alunoIdParamsSchema,
-        body: alunoUpdateBodySchema,
         response: {
             200: alunoSchema
-        },
+        }
     }
 }
 
 export const deleteAlunoSchema = {
     schema: {
         tags: ['Alunos'],
-        summary: 'Delete um aluno',
+        summary: 'Deleta o proprio aluno',
         security: [{ bearerAuth: [] }],
-        params: alunoIdParamsSchema,
         response: {
             200: alunoSchema
         },

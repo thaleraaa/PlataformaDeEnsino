@@ -8,18 +8,23 @@ import {
     getResultadoBySimuladoSchema,
     createResultadoSchema,
     updateResultadoSchema,
-    deleteResultadoSchema
+    deleteResultadoSchema,
+    getResultadoByMeSchema
 } from '../schemas/resultado.schema.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
+import { isProfessor } from '../middlewares/isProfessor.js';
+import { isProfessorOrAdministrador } from '../middlewares/isProfessorOrAdministrador.js';
 
 async function resultadosRoutes(fastify: FastifyInstance) {
-    fastify.get('/', getResultadoSchema, resultadoController.get);
-    fastify.get('/:id', getResultadoByIdSchema, resultadoController.getParamId);
-    fastify.get('/aluno/:aluno_id', getResultadoByAlunoSchema, resultadoController.getByAluno);
-    fastify.get('/simulado/:simulado_id', getResultadoBySimuladoSchema, resultadoController.getBySimulado);
-    fastify.get('/aluno/:aluno_id/simulado/:simulado_id', getResultadoByAlunoAndSimuladoSchema, resultadoController.getByAlunoAndSimulado);
-    fastify.post('/', createResultadoSchema, resultadoController.create);
-    fastify.put('/:id', updateResultadoSchema, resultadoController.update);
-    fastify.delete('/:id', deleteResultadoSchema, resultadoController.delete);
+    fastify.get('/', { ...getResultadoSchema, preHandler: [authMiddleware, isProfessor] }, resultadoController.get);
+    fastify.get('/me', { ...getResultadoByMeSchema, preHandler: authMiddleware }, resultadoController.getDetail);
+    fastify.get('/:id', { ...getResultadoByIdSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, resultadoController.getParamId);
+    fastify.get('/aluno/:aluno_id', { ...getResultadoByAlunoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, resultadoController.getByAluno);
+    fastify.get('/simulado/:simulado_id', { ...getResultadoBySimuladoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, resultadoController.getBySimulado);
+    fastify.get('/aluno/:aluno_id/simulado/:simulado_id', { ...getResultadoByAlunoAndSimuladoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, resultadoController.getByAlunoAndSimulado);
+    fastify.post('/', { ...createResultadoSchema, preHandler: authMiddleware }, resultadoController.create);
+    fastify.put('/:id', { ...updateResultadoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, resultadoController.update);
+    fastify.delete('/:id', { ...deleteResultadoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, resultadoController.delete);
 }
 
 export default resultadosRoutes;

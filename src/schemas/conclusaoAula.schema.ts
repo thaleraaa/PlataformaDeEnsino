@@ -27,11 +27,8 @@ export const conclusaoAulaSchema = {
 
 export const conclusaoAulaBodySchema = {
     type: 'object',
-    required: ['aluno_id', 'aula_id'],
+    required: ['aula_id'],
     properties: {
-        aluno_id: {
-            type: 'string'
-        },
         aula_id: {
             type: 'string'
         }
@@ -50,11 +47,8 @@ const conclusaoAulaIdParamsSchema = {
 
 const conclusaoAulaAlunoAulaParamsSchema = {
     type: 'object',
-    required: ['aluno_id', 'aula_id'],
+    required: ['aula_id'],
     properties: {
-        aluno_id: {
-            type: 'string'
-        },
         aula_id: {
             type: 'string'
         }

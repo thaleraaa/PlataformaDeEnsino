@@ -48,7 +48,10 @@ export class AlunoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
+        const id  = (request as any).user?.id;
+        if(!id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
         const aluno = await this.alunoRepository.findById(id);
         return reply.status(200).send(aluno);
     }
@@ -57,7 +60,10 @@ export class AlunoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
+        const id  = (request as any).user?.id;
+        if(!id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }        
         const aluno = await this.alunoRepository.delete(id);
         return reply.status(200).send(aluno);
     }
@@ -66,8 +72,11 @@ export class AlunoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
         const aluno = request.body as Partial<Omit<Aluno, 'id' | 'senha'>>;
+        const id  = (request as any).user?.id;
+        if(!id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
         const alunoEditado = await this.alunoRepository.update(id, aluno);
         return reply.status(200).send(alunoEditado);
     }

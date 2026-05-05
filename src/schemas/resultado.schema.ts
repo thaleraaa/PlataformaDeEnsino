@@ -33,7 +33,7 @@ export const resultadoSchema = {
 
 export const resultadoBodySchema = {
     type: 'object',
-    required: ['nota', 'tempoSegundos', 'simulado_id', 'aluno_id'],
+    required: ['nota', 'tempoSegundos', 'simulado_id'],
     properties: {
         nota: {
             type: 'number'
@@ -46,9 +46,6 @@ export const resultadoBodySchema = {
             format: 'date-time'
         },
         simulado_id: {
-            type: 'string'
-        },
-        aluno_id: {
             type: 'string'
         }
     }
@@ -115,7 +112,7 @@ const resultadoAlunoSimuladoParamsSchema = {
 
 export const getResultadoSchema = {
     schema: {
-        tags: ['Resultados'],
+        tags: ['(PROFESSOR) Resultados'],
         summary: 'Lista todos os resultados',
         security: [{ bearerAuth: [] }],
         response: {
@@ -130,7 +127,7 @@ export const getResultadoSchema = {
 export const getResultadoByIdSchema = {
     schema: {
         tags: ['Resultados'],
-        summary: 'Busca um resultado pelo ID',
+        summary: '(PROFESSOR/ADMINISTRADOR) Busca um resultado pelo ID',
         security: [{ bearerAuth: [] }],
         params: resultadoIdParamsSchema,
         response: {
@@ -142,7 +139,7 @@ export const getResultadoByIdSchema = {
 export const getResultadoByAlunoAndSimuladoSchema = {
     schema: {
         tags: ['Resultados'],
-        summary: 'Busca resultado de um aluno em um simulado específico',
+        summary: '(PROFESSOR/ADMINISTRADOR) Busca resultado de um aluno em um simulado específico',
         security: [{ bearerAuth: [] }],
         params: resultadoAlunoSimuladoParamsSchema,
         response: {
@@ -154,7 +151,7 @@ export const getResultadoByAlunoAndSimuladoSchema = {
 export const getResultadoByAlunoSchema = {
     schema: {
         tags: ['Resultados'],
-        summary: 'Lista todos os resultados de um aluno',
+        summary: '(PROFESSOR/ADMINISTRADOR) Lista todos os resultados de um aluno',
         security: [{ bearerAuth: [] }],
         params: resultadoAlunoParamsSchema,
         response: {
@@ -166,10 +163,25 @@ export const getResultadoByAlunoSchema = {
     }
 }
 
+export const getResultadoByMeSchema = {
+    schema: {
+        tags: ['Resultados'],
+        summary: 'Lista todos os seus resultados',
+        security: [{ bearerAuth: [] }],
+        response: {
+            200: {
+                type: 'array',
+                items: resultadoSchema
+            },
+        }
+    }
+}
+
+
 export const getResultadoBySimuladoSchema = {
     schema: {
         tags: ['Resultados'],
-        summary: 'Lista todos os resultados de um simulado',
+        summary: '(PROFESSOR/ADMINISTRADOR) Lista todos os resultados de um simulado',
         security: [{ bearerAuth: [] }],
         params: resultadoSimuladoParamsSchema,
         response: {
@@ -196,7 +208,7 @@ export const createResultadoSchema = {
 export const updateResultadoSchema = {
     schema: {
         tags: ['Resultados'],
-        summary: 'Atualiza um resultado',
+        summary: '(PROFESSOR/ADMINISTRADOR) Atualiza um resultado',
         security: [{ bearerAuth: [] }],
         params: resultadoIdParamsSchema,
         body: resultadoUpdateBodySchema,
@@ -209,7 +221,7 @@ export const updateResultadoSchema = {
 export const deleteResultadoSchema = {
     schema: {
         tags: ['Resultados'],
-        summary: 'Deleta um resultado',
+        summary: '(PROFESSOR/ADMINISTRADOR) Deleta um resultado',
         security: [{ bearerAuth: [] }],
         params: resultadoIdParamsSchema,
         response: {
