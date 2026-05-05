@@ -8,13 +8,25 @@ export class ProgressoRepository {
     private aulaRepository = new AulaRepository();
     private conclusaoAulaRepository = new ConclusaoAulaRepository();
 
-    public async upsert(aluno_id: string, disciplina_id: string) : Promise<Progresso> {
+    public async upsert(aluno_id: string, disciplina_id: string) : Promise<Progresso | null> {
 
         const totalAulas = await this.aulaRepository.countByDisciplinaId(disciplina_id);
 
         const aulasConcluidasAluno = await this.conclusaoAulaRepository.countByDisciplinaId(aluno_id, disciplina_id);
             
-        const porcentagem = (100*aulasConcluidasAluno)/totalAulas
+        if (totalAulas === 0 || aulasConcluidasAluno === 0) {
+            await prisma.progresso.delete({
+                where: {
+                    aluno_id_disciplina_id: {
+                        aluno_id,
+                        disciplina_id
+                    }
+                }
+            });
+            return null;
+        }
+
+        const porcentagem = (100 * aulasConcluidasAluno) / totalAulas
     
         // Faz upsert com a porcentagem calculada
         return prisma.progresso.upsert({
@@ -43,6 +55,13 @@ export class ProgressoRepository {
         return prisma.progresso.findMany({
             where: {
                 aluno_id: aluno_id
+            },
+            include: {
+                disciplina: {
+                    select: {
+                        nome: true,   
+                    }
+                }
             }
         });
     }

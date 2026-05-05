@@ -1,9 +1,11 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { DisciplinaRepository } from "../repositories/DisciplinaRepository";
 import type { Disciplina } from "../../generated/prisma/client";
+import { AulaRepository } from "../repositories/AulaRepository";
 
 export class DisciplinaController {
     private disciplinaRepository = new DisciplinaRepository();
+    private aulaRepository = new AulaRepository();
 
     create = async (
         request : FastifyRequest,
@@ -64,6 +66,15 @@ export class DisciplinaController {
         const {id} = request.params as {id : string}
         const modulos = await this.disciplinaRepository.buscaModulos(id);
         return reply.status(200).send(modulos);
+    }
+
+    countAulas = async (
+        request: FastifyRequest,
+        reply: FastifyReply
+    ) => {
+        const { id } = request.params as { id: string };
+        const totalAulas = await this.aulaRepository.countByDisciplinaId(id);
+        return reply.status(200).send(totalAulas);
     }
 }
 

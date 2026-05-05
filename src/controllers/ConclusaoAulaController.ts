@@ -13,7 +13,7 @@ export class ConclusaoAulaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { aula_id } = request.body as Omit<
+        const { aula_id } = request.params as Omit<
             ConclusaoAula,
             'id' | 'dataConclusao' | 'created_at' | 'updated_at'
         >;
@@ -39,8 +39,22 @@ export class ConclusaoAulaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const aulaNaoConcluida = await this.conclusaoAulaRepository.delete(id);
+        const { aula_id } = request.params as { aula_id: string };
+
+        const aluno_id  = (request as any).user?.id;
+
+        if(!aluno_id) {
+            return reply.status(401).send({message: "Não autorizado"});
+        }
+
+        const aulaNaoConcluida = await this.conclusaoAulaRepository.delete(aula_id, aluno_id);
+
+
+        const aula = await this.aulaRepository.findByIdWithRelations(aulaNaoConcluida.aula_id);
+        if (aula) {
+            await this.progressoRepository.upsert(aulaNaoConcluida.aluno_id, aula.modulo.disciplina_id);
+        }
+
         return reply.status(200).send(aulaNaoConcluida);
     }
 
@@ -48,7 +62,7 @@ export class ConclusaoAulaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { aula_id } = request.params as { aluno_id: string; aula_id: string };
+        const { aula_id } = request.params as { aula_id: string };
 
         const aluno_id  = (request as any).user?.id;
         if(!aluno_id) {

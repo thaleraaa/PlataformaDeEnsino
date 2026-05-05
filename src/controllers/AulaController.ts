@@ -51,15 +51,6 @@ export class AulaController {
         return reply.status(200).send(aulaEditada);
     }
 
-    countByDisciplinaId = async (
-        request : FastifyRequest,
-        reply : FastifyReply
-    ) => {
-        const { disciplina_id } = request.params as { disciplina_id: string };
-        const totalAulas = await this.aulaRepository.countByDisciplinaId(disciplina_id);
-        return reply.status(200).send(totalAulas);
-    }
-    
 }
 
 export const aulaController = new AulaController();

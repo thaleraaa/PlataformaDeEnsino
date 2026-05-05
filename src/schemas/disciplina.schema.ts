@@ -95,6 +95,20 @@ export const getModulosByDisciplinaIdSchema = {
     }
 }
 
+export const getAulaCountByDisciplinaIdSchema = {
+    schema: {
+        tags: ['Disciplinas'],
+        summary: 'Conta o total de aulas de uma disciplina',
+        params: disciplinaIdParamsSchema,
+        security: [{ bearerAuth: [] }],
+        response: {
+            200: {
+                type: 'number'
+            }
+        }
+    }
+}
+
 export const postDisciplinaSchema = {
     schema: {
         tags: ['Disciplinas'],

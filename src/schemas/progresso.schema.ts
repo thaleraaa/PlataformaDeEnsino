@@ -10,9 +10,14 @@ export const progressoSchema = {
         aluno_id: {
             type: 'string'
         },
-        disciplina_id: {
-            type: 'string'
-        },
+        disciplina: {
+            type: 'object',
+            properties: {
+                nome: {
+                    type: 'string'
+                }
+            }
+        }, 
         created_at: {
             type: 'string',
             format: 'date-time'
