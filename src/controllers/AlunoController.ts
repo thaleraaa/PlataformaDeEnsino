@@ -3,6 +3,7 @@ import { AlunoRepository } from "../repositories/AlunoRepository";
 import type { Aluno, Conta } from "../../generated/prisma/client.js";
 import { hash } from 'argon2';
 import { ContaRepository } from "../repositories/ContaRepository";
+import { prisma } from "../../lib/prisma.js";
 
 export class AlunoController {
     private alunoRepository = new AlunoRepository();
@@ -15,25 +16,41 @@ export class AlunoController {
         const aluno = request.body as Pick<Aluno, "periodo" | "faculdade">;
         const conta = request.body as Pick<Conta, "nome" | "email" | "senha">;
 
-        if(!aluno) {
+        if(!conta.senha) {
             return reply.status(400).send({message: "A senha é necessaria."});
         }
         const senhaHash = await hash(conta.senha);
 
-        const contaNova = await this.contaRepository.create({
-            email: conta.email,
-            nome: conta.nome,
-            role: 'ALUNO',
-            senha: senhaHash
-        });
-        
-        const novoAluno = await this.alunoRepository.create({
-            periodo: aluno.periodo,
-            faculdade: aluno.faculdade,
-            conta_id: contaNova.id
+        const contaNova = await prisma.conta.create({
+            data: {
+                email: conta.email,
+                nome: conta.nome,
+                role: 'ALUNO',
+                senha: senhaHash,
+                aluno: {
+                    create: {
+                        periodo: aluno.periodo,
+                        faculdade: aluno.faculdade
+                    }
+                }
+            },
+            include: {
+                aluno: {
+                    include: {
+                        conta: {
+                            select: {
+                                id: true,
+                                nome: true,
+                                email: true,
+                                role: true
+                            }
+                        }
+                    }
+                }
+            }
         });
 
-        return reply.status(201).send(novoAluno);
+        return reply.status(201).send(contaNova.aluno);
     };
 
     get = async (

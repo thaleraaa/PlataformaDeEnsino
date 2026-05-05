@@ -112,8 +112,8 @@ const resultadoAlunoSimuladoParamsSchema = {
 
 export const getResultadoSchema = {
     schema: {
-        tags: ['(PROFESSOR) Resultados'],
-        summary: 'Lista todos os resultados',
+        tags: ['Resultados'],
+        summary: '(PROFESSOR) Lista todos os resultados',
         security: [{ bearerAuth: [] }],
         response: {
             200: {

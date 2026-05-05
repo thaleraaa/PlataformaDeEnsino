@@ -116,7 +116,6 @@ export const getProfessorMeSchema = {
         tags: ['Professores'],
         summary: '(PROFESSOR) Busca o próprio professor',
         security: [{ bearerAuth: [] }],
-        params: professorIdParamsSchema,
         response: {
             200: professorSchema
         },
@@ -140,7 +139,6 @@ export const putProfessorSchema = {
         tags: ['Professores'],
         summary: '(PROFESSOR) Atualiza os dados do próprio professor',
         security: [{ bearerAuth: [] }],
-        params: professorIdParamsSchema,
         body: professorUpdateBodySchema,
         response: {
             200: professorSchema
@@ -153,7 +151,6 @@ export const deleteProfessorSchema = {
         tags: ['Professores'],
         summary: '(PROFESSOR) Delete o próprio professor',
         security: [{ bearerAuth: [] }],
-        params: professorIdParamsSchema,
         response: {
             200: professorSchema
         },

@@ -126,8 +126,6 @@ export const putAdministradorSchema = {
         tags: ['Administradores'],
         summary: '(ADMINISTRADOR) Atualiza os dados do proprio administrador',
         security: [{ bearerAuth: [] }],
-        params: administradorIdParamsSchema,
-        body: administradorUpdateBodySchema,
         response: {
             200: administradorSchema
         },

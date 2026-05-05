@@ -2,43 +2,59 @@ import type { FastifyRequest, FastifyReply } from "fastify";
 import { professorRepository } from "../repositories/ProfessorRepository";
 import type { Professor, Conta } from "../../generated/prisma/client.js";
 import { hash } from "argon2";
-import { ContaRepository } from "../repositories/ContaRepository";
+import { prisma } from "../../lib/prisma.js";
 
 export class ProfessorController {
 	private professorRepository = new professorRepository();
-	private contaRepository = new ContaRepository();
 
 	create = async (
 		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const professor = request.body as Omit<Professor, "id" | "conta_id">;
-		const conta = request.body as Omit<Conta, "id" | "role">;
+		const professor = request.body as Pick<Professor, "CRM" | "salario">;
+		const conta = request.body as Pick<Conta, "nome" | "email" | "senha">;
 
 		if (!conta.senha) {
 			return reply.status(400).send({ message: "A senha e necessaria." });
 		}
 
-		const senhaHash = await hash(conta.senha);
-		const contaNova = await this.contaRepository.create({
-			...conta,
-			senha: senhaHash,
-			role: "PROFESSOR"
-		});
-
 		const adm_id = (request as any).user?.id;
-
 		if (!adm_id) {
 			return reply.status(401).send({ message: "Nao autenticado" });
 		}
 
-		const novoProfessor = await this.professorRepository.create({
-			...professor,
-			adm_id: adm_id,
-			conta_id: contaNova.id
+		const senhaHash = await hash(conta.senha);
+		const contaNova = await prisma.conta.create({
+			data: {
+				email: conta.email,
+				nome: conta.nome,
+				role: "PROFESSOR",
+				senha: senhaHash,
+				professor: {
+					create: {
+						CRM: professor.CRM,
+						salario: professor.salario,
+						adm_id: adm_id
+					}
+				}
+			},
+			include: {
+				professor: {
+					include: {
+						conta: {
+							select: {
+								id: true,
+								nome: true,
+								email: true,
+								role: true
+							}
+						}
+					}
+				}
+			}
 		});
 
-		return reply.status(201).send(novoProfessor);
+		return reply.status(201).send(contaNova.professor);
 	};
 
 	get = async (

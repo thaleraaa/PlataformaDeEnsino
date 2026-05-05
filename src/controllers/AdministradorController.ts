@@ -3,6 +3,7 @@ import { AdministradorRepository } from "../repositories/AdministradorRepository
 import type { Administrador, Conta } from "../../generated/prisma/client";
 import { hash } from "argon2";
 import { ContaRepository } from "../repositories/ContaRepository";
+import { prisma } from "../../lib/prisma.js";
 
 export class AdministradorController {
     private administradorRepository = new AdministradorRepository();
@@ -47,18 +48,35 @@ export class AdministradorController {
         }
 
         const senhaHash = await hash(conta.senha);
-        const contaNova = await this.contaRepository.create({
-            email: conta.email,
-            nome: conta.nome,
-            role: "ADMINISTRADOR",
-            senha: senhaHash
+        const contaNova = await prisma.conta.create({
+            data: {
+                email: conta.email,
+                nome: conta.nome,
+                role: "ADMINISTRADOR",
+                senha: senhaHash,
+                administrador: {
+                    create: {
+                        ativo: adm.ativo
+                    }
+                }
+            },
+            include: {
+                administrador: {
+                    include: {
+                        conta: {
+                            select: {
+                                id: true,
+                                nome: true,
+                                email: true,
+                                role: true
+                            }
+                        }
+                    }
+                }
+            }
         });
 
-        const novoADM = await this.administradorRepository.create({
-            ativo: adm.ativo,
-            conta_id: contaNova.id
-        });
-        return reply.status(201).send(novoADM);
+        return reply.status(201).send(contaNova.administrador);
     }
 
     delete = async (
