@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import type { Modulo } from "../../generated/prisma/client";
+import type { Aula, Modulo } from "../../generated/prisma/client";
 
 export class ModuloRepository {
 
@@ -34,6 +34,14 @@ export class ModuloRepository {
         return prisma.modulo.delete({
             where: {
                 id: id
+            }
+        });
+    }
+
+    public async buscaAulas (modulo_id: string) : Promise<Aula[]> {
+        return prisma.aula.findMany({
+            where: {
+                modulo_id
             }
         });
     }

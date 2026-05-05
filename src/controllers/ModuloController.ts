@@ -49,6 +49,15 @@ export class ModuloController {
         const moduloEditado = await this.moduloRepository.update(id, modulo);
         return reply.status(200).send(moduloEditado);
     }
+
+    getAulas = async (
+        request: FastifyRequest,
+        reply: FastifyReply
+    ) => {
+        const { id } = request.params as { id: string };
+        const aulas = await this.moduloRepository.buscaAulas(id);
+        return reply.status(200).send(aulas);
+    }
 }
 
 export const moduloController = new ModuloController();

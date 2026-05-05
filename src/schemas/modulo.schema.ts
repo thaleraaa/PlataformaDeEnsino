@@ -1,3 +1,5 @@
+import { aulaSchema } from "./aula.schema";
+
 export const moduloSchema = {
     type: 'object',
     properties: {
@@ -57,6 +59,21 @@ const moduloIdParamsSchema = {
         },
     }
 } as const;
+
+export const getAulasByModuloIdSchema = {
+    schema: {
+        tags: ['Modulos'],
+        summary: 'Busca todas as aulas de um modulo',
+        params: moduloIdParamsSchema,
+        security: [{ bearerAuth: [] }],
+        response: {
+            200: {
+                type: 'array',
+                items: aulaSchema
+            }
+        }
+    }
+}
 
 export const getModuloSchema = {
     schema: {
