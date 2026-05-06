@@ -27,7 +27,7 @@ export const alternativaSchema = {
 export const alternativaBodySchema = {
     type: 'object',
     required: [
-        'texto', 'correta', 'exercicio_id'
+        'texto', 'correta'
     ],
     properties: {
         texto: {
@@ -35,9 +35,6 @@ export const alternativaBodySchema = {
         },
         correta: {
             type: 'boolean'
-        },
-        exercicio_id: {
-            type: 'string'
         }
     }
 } as const;
@@ -50,18 +47,25 @@ export const alternativaUpdateBodySchema = {
         },
         correta: {
             type: 'boolean'
-        },
+        }
+    }
+} as const;
+
+const exercicioIdParamsSchema = {
+    type: 'object',
+    required: ['exercicio_id'],
+    properties: {
         exercicio_id: {
             type: 'string'
-        }
+        },
     }
 } as const;
 
 const alternativaIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['alternativa_id'],
     properties: {
-        id: {
+        alternativa_id: {
             type: 'string'
         },
     }
@@ -98,6 +102,7 @@ export const postAlternativaSchema = {
         tags: ['Alternativas'],
         summary: '(PROFESSOR) Cria uma alternativa',
         security: [{ bearerAuth: [] }],
+        params: exercicioIdParamsSchema,
         body: alternativaBodySchema,
         response: {
             201: alternativaSchema

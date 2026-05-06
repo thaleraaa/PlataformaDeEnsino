@@ -22,8 +22,8 @@ export class AdministradorController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const adm = await this.administradorRepository.findById(id);
+        const { administrador_id } = request.params as { administrador_id: string };
+        const adm = await this.administradorRepository.findById(administrador_id);
         return reply.status(200).send(adm);
     }
 
@@ -83,8 +83,8 @@ export class AdministradorController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const adm = await this.administradorRepository.delete(id);
+        const { administrador_id } = request.params as { administrador_id: string };
+        const adm = await this.administradorRepository.delete(administrador_id);
         return reply.status(200).send(adm);
     }
 

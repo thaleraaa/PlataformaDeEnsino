@@ -9,7 +9,7 @@ import { isProfessor } from "../middlewares/isProfessor";
 async function professoresRoutes(fastify: FastifyInstance) {
     fastify.post('/', { ...postProfessorSchema, preHandler: [authMiddleware, isAdministrador] }, professorController.create);
     fastify.get('/', { ...getProfessorSchema, preHandler: [authMiddleware, isAdministrador] }, professorController.get);
-    fastify.get('/:id', { ...getProfessorByIdSchema, preHandler: [authMiddleware, isAdministrador] }, professorController.getParamId);   
+    fastify.get('/:professor_id', { ...getProfessorByIdSchema, preHandler: [authMiddleware, isAdministrador] }, professorController.getParamId);   
     fastify.get('/me', {...getProfessorMeSchema, preHandler: [authMiddleware, isProfessor]}, professorController.getMe);
     fastify.delete('/', { ...deleteProfessorSchema, preHandler: [authMiddleware, isProfessor] }, professorController.delete);
     fastify.put('/', { ...putProfessorSchema, preHandler: [authMiddleware, isProfessor] }, professorController.update);

@@ -3,9 +3,12 @@ import type { Aula, Modulo } from "../../generated/prisma/client";
 
 export class ModuloRepository {
 
-    public async create (data : Omit<Modulo, 'id'>) : Promise<Modulo> {
+    public async create (disciplina_id: string, data : Omit<Modulo, 'id' | 'disciplina_id'>) : Promise<Modulo> {
         return prisma.modulo.create({
-            data
+            data: {
+                ...data,
+                disciplina_id
+            }
         });
     }
 

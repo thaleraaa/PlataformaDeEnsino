@@ -7,11 +7,11 @@ import { isProfessorOrAdministrador } from "../middlewares/isProfessorOrAdminist
 
 
 export function alternativasRoutes(fastify: FastifyInstance) {
-    fastify.post('/', { ...postAlternativaSchema, preHandler: [authMiddleware, isProfessor] }, alternativaController.create);
+    fastify.post('/exercicio/:exercicio_id', { ...postAlternativaSchema, preHandler: [authMiddleware, isProfessor] }, alternativaController.create);
     fastify.get('/', { ...getAlternativaSchema, preHandler: [authMiddleware] }, alternativaController.get);
-    fastify.get('/:id', { ...getAlternativaByIdSchema, preHandler: [authMiddleware] }, alternativaController.getParamId);
-    fastify.delete('/:id', { ...deleteAlternativaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, alternativaController.delete);
-    fastify.put('/:id', { ...putAlternativaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, alternativaController.update);
+    fastify.get('/:alternativa_id', { ...getAlternativaByIdSchema, preHandler: [authMiddleware] }, alternativaController.getParamId);
+    fastify.delete('/:alternativa_id', { ...deleteAlternativaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, alternativaController.delete);
+    fastify.put('/:alternativa_id', { ...putAlternativaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, alternativaController.update);
 }
 
 export default alternativasRoutes;

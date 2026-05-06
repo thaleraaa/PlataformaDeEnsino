@@ -46,9 +46,9 @@ export const disciplinaUpdateBodySchema = {
 
 const disciplinaIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['disciplina_id'],
     properties: {
-        id: {
+        disciplina_id: {
             type: 'string'
         },
     }

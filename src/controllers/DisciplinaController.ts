@@ -35,8 +35,8 @@ export class DisciplinaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const disciplinaBuscada = await this.disciplinaRepository.findById(id);
+        const { disciplina_id } = request.params as { disciplina_id: string };
+        const disciplinaBuscada = await this.disciplinaRepository.findById(disciplina_id);
         return reply.status(200).send(disciplinaBuscada);
     }
 
@@ -45,8 +45,8 @@ export class DisciplinaController {
         reply : FastifyReply
     ) => {
         const disciplina = request.body as Omit<Disciplina, "id" | "professor_id">;
-        const { id } = request.params as { id: string };
-        const disciplinaMudada = await this.disciplinaRepository.update(id, disciplina);
+        const { disciplina_id } = request.params as { disciplina_id: string };
+        const disciplinaMudada = await this.disciplinaRepository.update(disciplina_id, disciplina);
         return reply.status(200).send(disciplinaMudada);
     }
 
@@ -54,8 +54,8 @@ export class DisciplinaController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const disciplinaDeletada = await this.disciplinaRepository.delete(id);
+        const { disciplina_id } = request.params as { disciplina_id: string };
+        const disciplinaDeletada = await this.disciplinaRepository.delete(disciplina_id);
         return reply.status(200).send(disciplinaDeletada);
     }
 
@@ -63,8 +63,8 @@ export class DisciplinaController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const {id} = request.params as {id : string}
-        const modulos = await this.disciplinaRepository.buscaModulos(id);
+        const { disciplina_id } = request.params as { disciplina_id: string };
+        const modulos = await this.disciplinaRepository.buscaModulos(disciplina_id);
         return reply.status(200).send(modulos);
     }
 
@@ -72,8 +72,8 @@ export class DisciplinaController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const totalAulas = await this.aulaRepository.countByDisciplinaId(id);
+        const { disciplina_id } = request.params as { disciplina_id: string };
+        const totalAulas = await this.aulaRepository.countByDisciplinaId(disciplina_id);
         return reply.status(200).send(totalAulas);
     }
 }

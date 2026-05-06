@@ -71,9 +71,9 @@ export const professorUpdateBodySchema = {
 
 const professorIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['professor_id'],
     properties: {
-        id: {
+        professor_id: {
             type: 'string'
         },
     }

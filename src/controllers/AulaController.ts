@@ -10,8 +10,9 @@ export class AulaController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const aula = request.body as Omit<Aula, 'id'>;
-        const aulaNova = await this.aulaRepository.create(aula);
+        const aula = request.body as Omit<Aula, 'id' | 'modulo_id'>;
+        const { modulo_id } = request.params as { modulo_id: string };
+        const aulaNova = await this.aulaRepository.create(modulo_id, aula);
         return reply.status(201).send(aulaNova);
     }
 
@@ -27,8 +28,8 @@ export class AulaController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const aula = await this.aulaRepository.findById(id);
+        const { aula_id } = request.params as { aula_id: string };
+        const aula = await this.aulaRepository.findById(aula_id);
         return reply.status(200).send(aula);
     }
 
@@ -36,8 +37,8 @@ export class AulaController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const aula = await this.aulaRepository.delete(id);
+        const { aula_id } = request.params as { aula_id: string };
+        const aula = await this.aulaRepository.delete(aula_id);
         return reply.status(200).send(aula);
     }
 
@@ -46,8 +47,8 @@ export class AulaController {
         reply: FastifyReply
     ) => {
         const aula = request.body as Partial<Omit<Aula, 'id'>>;
-        const { id } = request.params as { id: string };
-        const aulaEditada = await this.aulaRepository.update(id, aula);
+        const { aula_id } = request.params as { aula_id: string };
+        const aulaEditada = await this.aulaRepository.update(aula_id, aula);
         return reply.status(200).send(aulaEditada);
     }
 

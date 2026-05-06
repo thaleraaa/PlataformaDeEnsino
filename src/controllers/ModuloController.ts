@@ -9,8 +9,9 @@ export class ModuloController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const modulo = request.body as Omit<Modulo, 'id'>;
-        const moduloCriado = await this.moduloRepository.create(modulo);
+        const modulo = request.body as Omit<Modulo, 'id' | 'disciplina_id'>;
+        const { disciplina_id } = request.params as { disciplina_id: string };
+        const moduloCriado = await this.moduloRepository.create(disciplina_id, modulo);
         return reply.status(201).send(moduloCriado);
     }
 
@@ -26,8 +27,8 @@ export class ModuloController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const modulo = await this.moduloRepository.getParamId(id);
+        const { modulo_id } = request.params as { modulo_id: string };
+        const modulo = await this.moduloRepository.getParamId(modulo_id);
         return reply.status(200).send(modulo);
     }
 
@@ -35,8 +36,8 @@ export class ModuloController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const modulo = await this.moduloRepository.delete(id);
+        const { modulo_id } = request.params as { modulo_id: string };
+        const modulo = await this.moduloRepository.delete(modulo_id);
         return reply.status(200).send(modulo);
     }
 
@@ -45,8 +46,8 @@ export class ModuloController {
         reply : FastifyReply
     ) => {
         const modulo = request.body as Partial<Omit<Modulo, 'id'>>;
-        const { id } = request.params as { id: string };
-        const moduloEditado = await this.moduloRepository.update(id, modulo);
+        const { modulo_id } = request.params as { modulo_id: string };
+        const moduloEditado = await this.moduloRepository.update(modulo_id, modulo);
         return reply.status(200).send(moduloEditado);
     }
 
@@ -54,8 +55,8 @@ export class ModuloController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const aulas = await this.moduloRepository.buscaAulas(id);
+        const { modulo_id } = request.params as { modulo_id: string };
+        const aulas = await this.moduloRepository.buscaAulas(modulo_id);
         return reply.status(200).send(aulas);
     }
 }

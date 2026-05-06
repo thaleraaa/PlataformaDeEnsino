@@ -53,9 +53,9 @@ export const simuladoUpdateBodySchema = {
 
 const simuladoIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['simulado_id'],
     properties: {
-        id: {
+        simulado_id: {
             type: 'string'
         },
     }

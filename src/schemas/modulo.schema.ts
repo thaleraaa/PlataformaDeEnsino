@@ -26,13 +26,10 @@ export const moduloSchema = {
 export const moduloBodySchema = {
     type: 'object',
     required: [
-        'nome', 'disciplina_id'
+        'nome'
     ],
     properties: {
         nome: {
-            type: 'string'
-        },
-        disciplina_id: {
             type: 'string'
         }
     }
@@ -50,11 +47,21 @@ export const moduloUpdateBodySchema = {
     }
 } as const;
 
+const disciplinaIdParamsSchema = {
+    type: 'object',
+    required: ['disciplina_id'],
+    properties: {
+        disciplina_id: {
+            type: 'string'
+        },
+    }
+} as const;
+
 const moduloIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['modulo_id'],
     properties: {
-        id: {
+        modulo_id: {
             type: 'string'
         },
     }
@@ -106,6 +113,7 @@ export const postModuloSchema = {
         tags: ['Modulos'],
         summary: '(PROFESSOR) Cria um módulo',
         body: moduloBodySchema,
+        params: disciplinaIdParamsSchema,
         response: {
             201: moduloSchema
         },

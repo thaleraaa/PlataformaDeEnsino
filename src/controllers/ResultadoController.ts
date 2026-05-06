@@ -17,8 +17,8 @@ export class ResultadoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const resultado = await this.resultadoRepository.findById(id);
+        const { resultado_id } = request.params as { resultado_id: string };
+        const resultado = await this.resultadoRepository.findById(resultado_id);
         return reply.status(200).send(resultado);
     };
 
@@ -74,11 +74,11 @@ export class ResultadoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
+        const { resultado_id } = request.params as { resultado_id: string };
         const resultado = request.body as Partial<
             Omit<Resultado, 'id' | 'created_at' | 'updated_at' | 'aluno_id' | 'simulado_id'>
         >;
-        const resultadoEditado = await this.resultadoRepository.update(id, resultado);
+        const resultadoEditado = await this.resultadoRepository.update(resultado_id, resultado);
         return reply.status(200).send(resultadoEditado);
     };
 
@@ -86,8 +86,8 @@ export class ResultadoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const resultadoDeletado = await this.resultadoRepository.delete(id);
+        const { resultado_id } = request.params as { resultado_id: string };
+        const resultadoDeletado = await this.resultadoRepository.delete(resultado_id);
         return reply.status(200).send(resultadoDeletado);
     };
 }

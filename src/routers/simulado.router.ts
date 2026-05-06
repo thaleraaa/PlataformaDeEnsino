@@ -8,9 +8,9 @@ import { isProfessorOrAdministrador } from "../middlewares/isProfessorOrAdminist
 async function simuladosRoutes (fastify : FastifyInstance) {
     fastify.post('/', { ...createSimuladoSchema, preHandler: [authMiddleware, isProfessor] }, simuladoController.create);
     fastify.get('/', { ...getSimuladoSchema, preHandler: [authMiddleware] }, simuladoController.get);
-    fastify.get('/:id', { ...getSimuladoByIdSchema, preHandler: [authMiddleware] }, simuladoController.getParamId);
-    fastify.put('/:id', { ...updateSimuladoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, simuladoController.update);
-    fastify.delete('/:id', { ...deleteSimuladoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, simuladoController.delete);
+    fastify.get('/:simulado_id', { ...getSimuladoByIdSchema, preHandler: [authMiddleware] }, simuladoController.getParamId);
+    fastify.put('/:simulado_id', { ...updateSimuladoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, simuladoController.update);
+    fastify.delete('/:simulado_id', { ...deleteSimuladoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, simuladoController.delete);
 }
 
 export default simuladosRoutes;

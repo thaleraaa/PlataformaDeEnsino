@@ -6,11 +6,11 @@ import { isProfessorOrAdministrador } from '../middlewares/isProfessorOrAdminist
 import { isProfessor } from '../middlewares/isProfessor.js';
 
 async function aulasRoutes(fastify: FastifyInstance) {
-    fastify.post('/', { ...postAulaSchema, preHandler: [authMiddleware, isProfessor] }, aulaController.create);
+    fastify.post('/modulo/:modulo_id', { ...postAulaSchema, preHandler: [authMiddleware, isProfessor] }, aulaController.create);
     fastify.get('/', { ...getAulaSchema, preHandler: [authMiddleware] }, aulaController.get);
-    fastify.get('/:id', { ...getAulaByIdSchema, preHandler: [authMiddleware] }, aulaController.getParamId);
-    fastify.delete('/:id', { ...deleteAulaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, aulaController.delete);
-    fastify.put('/:id', { ...putAulaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, aulaController.update);
+    fastify.get('/:aula_id', { ...getAulaByIdSchema, preHandler: [authMiddleware] }, aulaController.getParamId);
+    fastify.delete('/:aula_id', { ...deleteAulaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, aulaController.delete);
+    fastify.put('/:aula_id', { ...putAulaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, aulaController.update);
 }
 
 export default aulasRoutes;

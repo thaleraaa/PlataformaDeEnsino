@@ -30,7 +30,7 @@ export const aulaSchema = {
 export const aulaBodySchema = {
     type: 'object',
     required: [
-        'nome', 'videoAula', 'texto', 'modulo_id'
+        'nome', 'videoAula', 'texto'
     ],
     properties: {
         nome: {
@@ -40,9 +40,6 @@ export const aulaBodySchema = {
             type: 'string'
         },
         texto: {
-            type: 'string'
-        },
-        modulo_id: {
             type: 'string'
         }
     }
@@ -59,21 +56,32 @@ export const aulaUpdateBodySchema = {
         },
         texto: {
             type: 'string'
-        },
+        }
+    }
+} as const;
+
+const moduloIdParamsSchema = {
+    type: 'object',
+    required: ['modulo_id'],
+    properties: {
         modulo_id: {
             type: 'string'
-        }
+        },
     }
 } as const;
 
 const aulaIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['aula_id'],
     properties: {
-        id: {
+        aula_id: {
             type: 'string'
         },
     }
+} as const;
+
+const aulaIdAndModuloParamsSchema = {
+    allOf: [aulaIdParamsSchema, moduloIdParamsSchema]
 } as const;
 
 export const getAulaSchema = {
@@ -119,7 +127,7 @@ export const putAulaSchema = {
         tags: ['Aulas'],
         summary: '(PROFESSOR/ADMINISTRADOR) Atualiza os dados de uma aula',
         security: [{ bearerAuth: [] }],
-        params: aulaIdParamsSchema,
+        params: aulaIdAndModuloParamsSchema,
         body: aulaUpdateBodySchema,
         response: {
             200: aulaSchema
