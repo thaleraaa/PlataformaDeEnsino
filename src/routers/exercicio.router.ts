@@ -8,10 +8,10 @@ import { isProfessorOrAdministrador } from '../middlewares/isProfessorOrAdminist
 async function exerciciosRoutes(fastify: FastifyInstance) {
     fastify.post('/', { ...postExercicioSchema, preHandler: [authMiddleware, isProfessor] }, exercicioController.create);
     fastify.get('/', getExercicioSchema, exercicioController.get);
-    fastify.get('/:id', getExercicioByIdSchema, exercicioController.getParamId);
-    fastify.delete('/:id', { ...deleteExercicioSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, exercicioController.delete);
-    fastify.put('/:id', { ...putExercicioSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, exercicioController.update);
-    fastify.get('/alternativas/:id', { ...getAlternativasByExercicioSchema, preHandler: [authMiddleware] }, exercicioController.getAlternativa);
+    fastify.get('/:exercicio_id', getExercicioByIdSchema, exercicioController.getParamId);
+    fastify.delete('/:exercicio_id', { ...deleteExercicioSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, exercicioController.delete);
+    fastify.put('/:exercicio_id', { ...putExercicioSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, exercicioController.update);
+    fastify.get('/:exercicio_id/alternativas', { ...getAlternativasByExercicioSchema, preHandler: [authMiddleware] }, exercicioController.getAlternativa);
 }
 
 export default exerciciosRoutes;

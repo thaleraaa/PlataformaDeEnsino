@@ -6,12 +6,12 @@ import { isProfessor } from '../middlewares/isProfessor.js';
 import { isProfessorOrAdministrador } from "../middlewares/isProfessorOrAdministrador";
 
 async function modulosRoutes(fastify: FastifyInstance) {
-    fastify.post('/', { ...postModuloSchema, preHandler: [authMiddleware, isProfessor] }, moduloController.create);
+    fastify.post('/disciplina/:disciplina_id', { ...postModuloSchema, preHandler: [authMiddleware, isProfessor] }, moduloController.create);
     fastify.get('/', { ...getModuloSchema, preHandler: [authMiddleware] }, moduloController.get);
-    fastify.get('/:id/aulas', { ...getAulasByModuloIdSchema, preHandler: [authMiddleware] }, moduloController.getAulas);
-    fastify.get('/:id', { ...getModuloByIdSchema, preHandler: [authMiddleware] }, moduloController.getParamId);
-    fastify.delete('/:id', { ...deleteModuloSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, moduloController.delete);
-    fastify.put('/:id', { ...putModuloSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, moduloController.update);
+    fastify.get('/:modulo_id/aulas', { ...getAulasByModuloIdSchema, preHandler: [authMiddleware] }, moduloController.getAulas);
+    fastify.get('/:modulo_id', { ...getModuloByIdSchema, preHandler: [authMiddleware] }, moduloController.getParamId);
+    fastify.delete('/:modulo_id', { ...deleteModuloSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, moduloController.delete);
+    fastify.put('/:modulo_id', { ...putModuloSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, moduloController.update);
 }
 
 export default modulosRoutes

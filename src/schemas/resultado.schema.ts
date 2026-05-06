@@ -69,9 +69,9 @@ export const resultadoUpdateBodySchema = {
 
 const resultadoIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['resultado_id'],
     properties: {
-        id: {
+        resultado_id: {
             type: 'string'
         }
     }

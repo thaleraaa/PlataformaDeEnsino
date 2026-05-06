@@ -15,8 +15,13 @@ export class AulaRepository {
         });
     }
 
-    public async create(data : Omit<Aula, 'id'>) : Promise<Aula> {
-        return prisma.aula.create({data});
+    public async create(modulo_id: string, data : Omit<Aula, 'id' | 'modulo_id'>) : Promise<Aula> {
+        return prisma.aula.create({
+            data: {
+                ...data,
+                modulo_id
+            }
+        });
     }
 
     public async update(id : string, data : Partial<Omit<Aula, 'id'>>) : Promise<Aula> {

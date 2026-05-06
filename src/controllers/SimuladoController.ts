@@ -17,8 +17,8 @@ export class SimuladoController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const simulado = await this.simuladoRepository.findById(id);
+        const { simulado_id } = request.params as { simulado_id: string };
+        const simulado = await this.simuladoRepository.findById(simulado_id);
         return reply.status(200).send(simulado);
     }
 
@@ -40,8 +40,8 @@ export class SimuladoController {
         reply : FastifyReply
     ) => {
         const simulado = request.body as Partial<Omit<Simulado, "id" | "professor_id">>;
-        const { id } = request.params as { id: string };
-        const simuladoEditado = await this.simuladoRepository.update(id, simulado);
+        const { simulado_id } = request.params as { simulado_id: string };
+        const simuladoEditado = await this.simuladoRepository.update(simulado_id, simulado);
         return reply.status(200).send(simuladoEditado);
     }
 
@@ -49,8 +49,8 @@ export class SimuladoController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const simuladoDeletado = await this.simuladoRepository.delete(id);
+        const { simulado_id } = request.params as { simulado_id: string };
+        const simuladoDeletado = await this.simuladoRepository.delete(simulado_id);
         return reply.status(200).send(simuladoDeletado);
     }
 

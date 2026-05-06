@@ -72,9 +72,9 @@ export const exercicioUpdateBodySchema = {
 
 const exercicioIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['exercicio_id'],
     properties: {
-        id: {
+        exercicio_id: {
             type: 'string'
         },
     }

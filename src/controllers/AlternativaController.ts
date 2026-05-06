@@ -9,8 +9,12 @@ export class AlternativaController {
         request: FastifyRequest,
         reply: FastifyReply,
     ) => {
-        const alternativa = request.body as Omit<Alternativa, "id">;
-        const novaAlternativa = await this.alternativaRepository.create(alternativa);
+        const alternativa = request.body as Omit<Alternativa, "id" | "exercicio_id">;
+        const { exercicio_id } = request.params as { exercicio_id: string };
+        const novaAlternativa = await this.alternativaRepository.create({
+            ...alternativa,
+            exercicio_id
+        });
 
         return reply.status(201).send(novaAlternativa);
     };
@@ -27,8 +31,8 @@ export class AlternativaController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const alternativa = await this.alternativaRepository.findById(id);
+        const { alternativa_id } = request.params as { alternativa_id: string };
+        const alternativa = await this.alternativaRepository.findById(alternativa_id);
         return reply.status(200).send(alternativa);
     }
 
@@ -36,8 +40,8 @@ export class AlternativaController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const alternativa = await this.alternativaRepository.delete(id)
+        const { alternativa_id } = request.params as { alternativa_id: string };
+        const alternativa = await this.alternativaRepository.delete(alternativa_id)
         return reply.status(200).send(alternativa);
     }
 
@@ -46,8 +50,8 @@ export class AlternativaController {
         reply: FastifyReply
     ) => {
         const alternativa = request.body as Partial<Omit<Alternativa, 'id'>>;
-        const { id } = request.params as { id: string };
-        const alternativaEditada = await this.alternativaRepository.update(id, alternativa)
+        const { alternativa_id } = request.params as { alternativa_id: string };
+        const alternativaEditada = await this.alternativaRepository.update(alternativa_id, alternativa)
         return reply.status(200).send(alternativaEditada);
     }
 }

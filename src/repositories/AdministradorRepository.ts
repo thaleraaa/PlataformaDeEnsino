@@ -64,9 +64,12 @@ export class AdministradorRepository {
     }
 
     public async delete (id: string) : Promise<Omit<Administrador, "senha">> {
-        return prisma.administrador.delete({
+        return prisma.administrador.update({
             where: {
                 id: id
+            },
+            data: {
+                ativo: false
             }
         });
     }

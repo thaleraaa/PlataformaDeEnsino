@@ -37,8 +37,8 @@ export class ExercicioController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const exercicio = await this.exercicioRepository.findById(id);
+        const { exercicio_id } = request.params as { exercicio_id: string };
+        const exercicio = await this.exercicioRepository.findById(exercicio_id);
         return reply.status(200).send(exercicio);
     }
 
@@ -46,8 +46,8 @@ export class ExercicioController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const { id } = request.params as { id: string };
-        const exercicio = await this.exercicioRepository.delete(id);
+        const { exercicio_id } = request.params as { exercicio_id: string };
+        const exercicio = await this.exercicioRepository.delete(exercicio_id);
         return reply.status(200).send(exercicio);
     }
 
@@ -56,8 +56,8 @@ export class ExercicioController {
         reply: FastifyReply
     ) => {
         const exercicio = request.body as Partial<Omit<Exercicio, 'id' | 'professor_id'>>;
-        const { id } = request.params as { id: string };
-        const exercicioEditado = await this.exercicioRepository.update(id, exercicio);
+        const { exercicio_id } = request.params as { exercicio_id: string };
+        const exercicioEditado = await this.exercicioRepository.update(exercicio_id, exercicio);
         return reply.status(200).send(exercicioEditado);
     }
     

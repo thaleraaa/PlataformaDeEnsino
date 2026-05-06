@@ -75,6 +75,10 @@ export const loginController = async (
             return reply.status(404).send({ message: "Administrador nao encontrado" });
         }
 
+        if (user.administrador.ativo === false) {
+            return reply.status(401).send({ message: "Administrador desativado" });
+        }
+
         return reply.status(200).send({
             administrador: user.administrador,
             token

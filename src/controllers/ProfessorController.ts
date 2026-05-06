@@ -69,8 +69,8 @@ export class ProfessorController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const { id } = request.params as { id: string };
-		const professor = await this.professorRepository.findById(id);
+		const { professor_id } = request.params as { professor_id: string };
+		const professor = await this.professorRepository.findById(professor_id);
 		return reply.status(200).send(professor);
 	};
 

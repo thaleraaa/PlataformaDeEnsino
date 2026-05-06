@@ -59,9 +59,9 @@ export const administradorUpdateBodySchema = {
 
 const administradorIdParamsSchema = {
     type: 'object',
-    required: ['id'],
+    required: ['administrador_id'],
     properties: {
-        id: {
+        administrador_id: {
             type: 'string'
         },
     }
@@ -130,7 +130,7 @@ export const putAdministradorSchema = {
 export const deleteAdministradorSchema = {
     schema: {
         tags: ['Administradores'],
-        summary: '(ADMINISTRADOR) Delete um administrador',
+        summary: '(ADMINISTRADOR) Desativa um administrador',
         security: [{ bearerAuth: [] }],
         params: administradorIdParamsSchema,
         response: {
