@@ -80,6 +80,15 @@ const exercicioIdParamsSchema = {
     }
 } as const;
 
+const alternativaTextoSchema = {
+    type: 'object',
+    properties: {
+        texto: {
+            type: 'string'
+        }
+    }
+} as const;
+
 export const getExercicioSchema = {
     schema: {
         tags: ['Exercicios'],
@@ -139,6 +148,21 @@ export const deleteExercicioSchema = {
         params: exercicioIdParamsSchema,
         response: {
             200: exercicioSchema
+        },
+    }
+}
+
+export const getAlternativasByExercicioSchema = {
+    schema: {
+        tags: ['Exercicios'],
+        summary: 'Lista alternativas do exercício pelo ID',
+        security: [{ bearerAuth: [] }],
+        params: exercicioIdParamsSchema,
+        response: {
+            200: {
+                type: 'array',
+                items: alternativaTextoSchema
+            }
         },
     }
 }

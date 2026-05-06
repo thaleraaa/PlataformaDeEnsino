@@ -1,4 +1,4 @@
-import type { Exercicio } from "../../generated/prisma/client";
+import type { Alternativa, Exercicio } from "../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 export class ExercicioRepository {
@@ -34,5 +34,13 @@ export class ExercicioRepository {
                 id: id
             }
         });
+    }
+
+    public async findAlternativaByExercicioID(exercicio_id : string) : Promise<Alternativa[]> {
+        return prisma.alternativa.findMany({
+            where: {
+                id: exercicio_id
+            }
+        })
     }
 }

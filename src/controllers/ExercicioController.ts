@@ -61,6 +61,15 @@ export class ExercicioController {
         return reply.status(200).send(exercicioEditado);
     }
     
+    getAlternativa = async (
+        request: FastifyRequest,
+        reply: FastifyReply
+    ) => {
+        const {exercicio_id} = request.params as {exercicio_id : string}
+        const alternativas = await this.exercicioRepository.findAlternativaByExercicioID(exercicio_id);
+        return reply.status(200).send(alternativas);
+    }
+
 }
 
 export const exercicioController = new ExercicioController();

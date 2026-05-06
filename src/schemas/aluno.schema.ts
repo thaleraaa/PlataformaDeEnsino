@@ -55,6 +55,24 @@ export const alunoBodySchema = {
     }
 } as const;
 
+export const putalunoBodySchema = {
+    type: 'object',
+    properties: {
+        nome: {
+            type: 'string'
+        },
+        periodo: {
+            type: 'string'
+        },
+        faculdade: {
+            type: 'string'
+        },
+        email: {
+            type: 'string'
+        }
+    }
+} as const;
+
 export const alunoCreateBodySchema = {
     type: 'object',
     required: [
@@ -131,6 +149,7 @@ export const putAlunoSchema = {
         tags: ['Alunos'],
         summary: 'Atualiza os dados do proprio aluno',
         security: [{ bearerAuth: [] }],
+        body: putalunoBodySchema,
         response: {
             200: alunoSchema
         }

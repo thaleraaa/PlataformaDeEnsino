@@ -28,7 +28,8 @@ export class ProgressoController {
         const aluno_id  = (request as any).user?.id;
         if(!aluno_id) {
             return reply.status(401).send({message: "Não autorizado"});
-        }        const progressos = await this.progressoRepository.findByAlunoId(aluno_id);
+        }        
+        const progressos = await this.progressoRepository.findByAlunoId(aluno_id);
         return reply.status(200).send(progressos);
     }
 

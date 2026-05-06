@@ -13,7 +13,7 @@ async function progressoRouters(fastify: FastifyInstance) {
     fastify.get('/', { ...getProgressoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, progressoController.get);
     fastify.get('/aluno/:aluno_id', { ...getProgressoByAlunoSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, progressoController.getParamAlunoId);
     fastify.get('/disciplina/:disciplina_id', { ...getProgressoByDisciplinaSchema, preHandler: [authMiddleware, isProfessorOrAdministrador] }, progressoController.getParamDisciplinaId);
-    fastify.get('/me', {...getMeProgressoSchema, preHandler: [authMiddleware]}, progressoController.getParamAlunoId)
+    fastify.get('/me', {...getMeProgressoSchema, preHandler: [authMiddleware]}, progressoController.getParamMeId)
 }
 
 export default progressoRouters;
