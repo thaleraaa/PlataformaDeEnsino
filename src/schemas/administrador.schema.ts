@@ -51,12 +51,6 @@ export const administradorBodySchema = {
 export const administradorUpdateBodySchema = {
     type: 'object',
     properties: {
-        nome: {
-            type: 'string'
-        },
-        email: {
-            type: 'string'
-        },
         ativo: {
             type: 'boolean'
         }
@@ -125,6 +119,7 @@ export const putAdministradorSchema = {
     schema: {
         tags: ['Administradores'],
         summary: '(ADMINISTRADOR) Atualiza os dados do proprio administrador',
+        body: administradorUpdateBodySchema,
         security: [{ bearerAuth: [] }],
         response: {
             200: administradorSchema

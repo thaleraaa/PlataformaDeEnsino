@@ -13,4 +13,16 @@ export class ContaRepository {
             }
         });
     }
+
+    public async update(
+        conta_id: string,
+        data: Pick<Conta, 'nome' | 'email'>
+    ) : Promise <Conta> {
+        return prisma.conta.update({
+            where: {
+                id: conta_id
+            },
+            data
+        });
+    }
 }

@@ -60,17 +60,11 @@ export const professorBodySchema = {
 export const professorUpdateBodySchema = {
     type: 'object',
     properties: {
-        nome: {
-            type: 'string'
-        },
         CRM: {
             type: 'string'
         },
         salario: {
             type: 'number'
-        },
-        email: {
-            type: 'string'
         }
     }
 } as const;

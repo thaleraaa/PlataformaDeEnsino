@@ -52,7 +52,7 @@ export class professorRepository {
         });
     }
 
-    public async update(id : string, data : Partial<Omit<Professor, 'id' | 'senha'>>) : Promise<Professor> {
+    public async update(id : string, data : Partial<Pick<Professor, 'CRM' | 'salario'>>) : Promise<Professor> {
         return prisma.professor.update({
             where: {
                 id: id

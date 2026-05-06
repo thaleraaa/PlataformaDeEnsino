@@ -89,7 +89,7 @@ export class AlunoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const aluno = request.body as Partial<Omit<Aluno, 'id' | 'senha'>>;
+        const aluno = request.body as Partial<Pick<Aluno, 'periodo' | 'faculdade'>>;
         const id  = (request as any).user?.id;
         if(!id) {
             return reply.status(401).send({message: "Não autorizado"});

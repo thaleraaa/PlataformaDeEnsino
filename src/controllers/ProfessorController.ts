@@ -89,7 +89,7 @@ export class ProfessorController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		const professor = request.body as Partial<Omit<Professor, 'id' | 'senha' | 'adm_id'>>;
+		const professor = request.body as Partial<Pick<Professor, 'CRM' | 'salario'>>;
 		const professor_id = (request as any).user?.id;
 		if(!professor_id) {
 			return reply.status(401).send({message: "Não autorizado"});

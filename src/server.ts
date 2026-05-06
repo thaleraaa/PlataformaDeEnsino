@@ -15,6 +15,7 @@ import resultadosRoutes from './routers/resultado.router.js';
 import conclusaoAulaRouters from './routers/conclusaoAula.router.js';
 import progressoRouters from './routers/progresso.router.js';
 import authRoutes from './routers/auth.router.js';
+import contaRoutes from './routers/conta.router.js';
 
 const app = Fastify({ logger: true });
 
@@ -50,6 +51,7 @@ app.register(authRoutes, { prefix: '/auth' });
 app.register(alunosRoutes, { prefix: '/alunos' });
 app.register(professoresRoutes, { prefix: '/professores' });
 app.register(administradoresRoutes, { prefix: '/administradores' });
+app.register(contaRoutes, { prefix: '/contas' });
 app.register(disciplinasRoutes, { prefix: '/disciplinas' });
 app.register(modulosRoutes, { prefix: '/modulos' });
 app.register(aulasRoutes, { prefix: '/aulas' });

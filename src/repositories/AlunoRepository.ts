@@ -54,7 +54,7 @@ export class AlunoRepository {
         })
     }
 
-    public async update(id : string, data: Partial<Omit<Aluno, 'id' | 'senha'>>) : Promise<Aluno> {
+    public async update(id : string, data: Partial<Pick<Aluno, 'periodo' | 'faculdade'>>) : Promise<Aluno> {
         return prisma.aluno.update({
             where: {
                 id: id

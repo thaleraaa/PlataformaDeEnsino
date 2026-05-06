@@ -92,7 +92,7 @@ export class AdministradorController {
         request : FastifyRequest,
         reply : FastifyReply
     ) => {
-        const adm = request.body as Partial<Omit<Administrador, 'id' | 'senha'>>;
+        const adm = request.body as Partial<Pick<Administrador, 'ativo'>>;
 
         const id  = (request as any).user?.id;
         if(!id) {

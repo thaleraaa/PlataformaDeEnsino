@@ -39,7 +39,8 @@ export const loginController = async (
     const token = jwt.sign(
         {
             id: userId,
-            role: user.role
+            role: user.role,
+            conta_id: user.id
         },
         process.env.JWT_SECRET || 'secret',
         {

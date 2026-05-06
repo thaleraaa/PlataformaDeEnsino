@@ -58,16 +58,10 @@ export const alunoBodySchema = {
 export const putalunoBodySchema = {
     type: 'object',
     properties: {
-        nome: {
-            type: 'string'
-        },
         periodo: {
             type: 'string'
         },
         faculdade: {
-            type: 'string'
-        },
-        email: {
             type: 'string'
         }
     }

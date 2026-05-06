@@ -54,7 +54,7 @@ export class AdministradorRepository {
         });
     }
 
-    public async update (id: string, data : Partial<Omit<Administrador, 'id'>>) : Promise<Omit<Administrador, "senha">> {
+    public async update (id: string, data : Partial<Pick<Administrador, 'ativo'>>) : Promise<Omit<Administrador, "senha">> {
         return prisma.administrador.update({
             where: {
                 id: id
