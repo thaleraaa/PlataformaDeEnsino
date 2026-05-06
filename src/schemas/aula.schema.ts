@@ -1,3 +1,5 @@
+import { exercicioComEnunciado } from "./exercicio.schema";
+
 export const aulaSchema = {
     type: 'object',
     properties: {
@@ -144,6 +146,21 @@ export const deleteAulaSchema = {
         response: {
             200: aulaSchema
         },
+    }
+}
+
+export const getExerciciosByAulaSchema = {
+    schema: {
+        tags: ['Aulas'],
+        summary: 'Lista todos os exercicios de uma aula',
+        security: [{bearerAuth: []}],
+        params: aulaIdParamsSchema,
+        response: {
+            200: {
+                type: 'array',
+                items: exercicioComEnunciado
+            }
+        }
     }
 }
 

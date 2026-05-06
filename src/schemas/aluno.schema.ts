@@ -92,16 +92,6 @@ export const alunoCreateBodySchema = {
     }
 } as const;
 
-const alunoIdParamsSchema = {
-    type: 'object',
-    required: ['id'],
-    properties: {
-        id: {
-            type: 'string'
-        },
-    }
-} as const;
-
 export const getAlunoSchema = {
     schema: {
         tags: ['Alunos'],

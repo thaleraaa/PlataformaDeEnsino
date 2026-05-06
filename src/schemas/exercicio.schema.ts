@@ -30,6 +30,41 @@ export const exercicioSchema = {
     }
 } as const;
 
+export const exercicioComEnunciado = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        enunciado: {
+            type: 'string'
+        },
+        dificuldade: {
+            type: 'string'
+        },
+        aula_id: {
+            type: 'string'
+        },
+        simulado_id: {
+            type: 'string'
+        },
+        alternativa: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    id: {
+                        type: 'string'
+                    },
+                    texto: {
+                        type: 'string'
+                    }
+                }
+            }
+        }
+    }
+} as const;
+
 export const exercicioBodySchema = {
     type: 'object',
     required: [

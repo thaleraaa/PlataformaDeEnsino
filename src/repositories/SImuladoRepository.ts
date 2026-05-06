@@ -34,4 +34,19 @@ export class SimuladoRepository {
             }
         })
     }
+    public async findByExercicioBySimulado(simulado_id: string) {
+        return prisma.exercicio.findMany({
+            where: {
+                simulado_id: simulado_id
+            },
+            include: {
+                alternativa: {
+                    select: {
+                        id: true,
+                        texto: true
+                    }
+                }
+            }
+        })
+    }
 }

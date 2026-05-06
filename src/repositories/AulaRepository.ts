@@ -1,4 +1,4 @@
-import type { Aula } from "../../generated/prisma/client";
+import type { Aula, Exercicio } from "../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 export class AulaRepository {
@@ -60,5 +60,21 @@ export class AulaRepository {
                 modulo: true
             }
         });
+    }
+   
+    public async findByExercicioByAula(aula_id: string) : Promise<Exercicio[]> {
+        return prisma.exercicio.findMany({
+            where: {
+                aula_id: aula_id
+            },
+            include: {
+                alternativa: {
+                    select: {
+                        id: true,
+                        texto: true
+                    }
+                }
+            }
+        })
     }
 }
