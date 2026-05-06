@@ -23,7 +23,7 @@ export const loginController = async (
     const senhaValida = await argon2.verify(user.senha, senha);
 
     if (!senhaValida) {
-        return reply.status(401).send({message: "Email ou senha incorreto"});
+        return reply.status(401).send({message: "Email ou senha está incorreta"});
     }
 
     let userId: string | undefined;
@@ -62,6 +62,10 @@ export const loginController = async (
     if (user.role === 'PROFESSOR') {
         if (!user.professor) {
             return reply.status(404).send({ message: "Professor nao encontrado" });
+        }
+
+        if (user.professor.ativo === false) {
+            return reply.status(401).send({ message: "Professor desativado" });
         }
 
         return reply.status(200).send({

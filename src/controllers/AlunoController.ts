@@ -77,12 +77,17 @@ export class AlunoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
-        const id  = (request as any).user?.id;
-        if(!id) {
+        const conta_id = (request as any).user?.conta_id;
+        if(!conta_id) {
             return reply.status(401).send({message: "Não autorizado"});
         }        
-        const aluno = await this.alunoRepository.delete(id);
-        return reply.status(200).send(aluno);
+        const contaDeletada = await prisma.conta.delete({
+            where: {
+                id: conta_id
+            }
+        });
+
+        return reply.status(200).send(contaDeletada);
     }
 
     update = async (

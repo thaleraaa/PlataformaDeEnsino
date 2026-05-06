@@ -58,17 +58,10 @@ export const aulaUpdateBodySchema = {
         },
         texto: {
             type: 'string'
-        }
-    }
-} as const;
-
-const moduloIdParamsSchema = {
-    type: 'object',
-    required: ['modulo_id'],
-    properties: {
+        },
         modulo_id: {
             type: 'string'
-        },
+        }
     }
 } as const;
 
@@ -82,9 +75,6 @@ const aulaIdParamsSchema = {
     }
 } as const;
 
-const aulaIdAndModuloParamsSchema = {
-    allOf: [aulaIdParamsSchema, moduloIdParamsSchema]
-} as const;
 
 export const getAulaSchema = {
     schema: {
@@ -129,7 +119,7 @@ export const putAulaSchema = {
         tags: ['Aulas'],
         summary: '(PROFESSOR/ADMINISTRADOR) Atualiza os dados de uma aula',
         security: [{ bearerAuth: [] }],
-        params: aulaIdAndModuloParamsSchema,
+        params: aulaIdParamsSchema,
         body: aulaUpdateBodySchema,
         response: {
             200: aulaSchema

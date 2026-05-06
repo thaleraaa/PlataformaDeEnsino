@@ -34,6 +34,7 @@ export class ProfessorController {
 					create: {
 						CRM: professor.CRM,
 						salario: professor.salario,
+						ativo: true,
 						adm_id: adm_id
 					}
 				}

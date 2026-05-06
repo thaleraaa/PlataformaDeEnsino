@@ -23,7 +23,7 @@ model Aluno {
   updated_at DateTime @updatedAt
 
   conta_id String @unique
-  conta Conta @relation(fields: [conta_id], references: [id])
+  conta Conta @relation(fields: [conta_id], references: [id], onDelete: Cascade)
 
   resultado Resultado[]
   progresso Progresso[]
@@ -47,6 +47,7 @@ model Professor {
   id String @id @default(uuid())
   CRM String @unique
   salario Float
+  ativo Boolean @default(true)
 
 
   created_at DateTime @default(now())
@@ -185,7 +186,7 @@ model Resultado {
   simulado Simulado @relation(fields: [simulado_id], references: [id])
 
   aluno_id String
-  aluno Aluno @relation(fields: [aluno_id], references: [id])
+  aluno Aluno @relation(fields: [aluno_id], references: [id], onDelete: Cascade)
 
   @@unique([aluno_id, simulado_id])
 }
@@ -198,7 +199,7 @@ model Progresso {
   updated_at DateTime @updatedAt
 
   aluno_id String
-  aluno Aluno @relation(fields: [aluno_id], references: [id])
+  aluno Aluno @relation(fields: [aluno_id], references: [id], onDelete: Cascade)
 
   disciplina_id String
   disciplina Disciplina @relation(fields: [disciplina_id], references: [id])
@@ -214,7 +215,7 @@ model ConclusaoAula {
   updated_at DateTime @updatedAt
 
   aluno_id String
-  aluno Aluno @relation(fields: [aluno_id], references: [id])
+  aluno Aluno @relation(fields: [aluno_id], references: [id], onDelete: Cascade)
 
   aula_id String
   aula Aula @relation(fields: [aula_id], references: [id])

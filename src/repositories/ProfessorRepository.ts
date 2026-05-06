@@ -72,9 +72,12 @@ export class professorRepository {
     }
 
     public async delete(id : string) : Promise<Professor> {
-        return prisma.professor.delete({
+        return prisma.professor.update({
             where: {
                 id: id
+            },
+            data: {
+                ativo: false
             },
             include: {
                 conta: {

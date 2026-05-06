@@ -10,6 +10,9 @@ export const professorSchema = {
         salario: {
             type: 'number'
         },
+        ativo: {
+            type: 'boolean'
+        },
         conta: {
             type: 'object',
             properties: {
