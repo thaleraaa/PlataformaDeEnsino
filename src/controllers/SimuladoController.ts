@@ -54,6 +54,15 @@ export class SimuladoController {
         return reply.status(200).send(simuladoDeletado);
     }
 
+    getParamExercicio = async (
+        request: FastifyRequest,
+        reply: FastifyReply
+    ) => {
+        const { simulado_id } = request.params as { simulado_id: string };
+        const exercicios = await this.simuladoRepository.findByExercicioBySimulado(simulado_id);
+        return reply.status(200).send(exercicios);
+    }
+
 }
 
 export const simuladoController = new SimuladoController();

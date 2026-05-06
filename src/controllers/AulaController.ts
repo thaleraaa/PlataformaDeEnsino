@@ -52,6 +52,15 @@ export class AulaController {
         return reply.status(200).send(aulaEditada);
     }
 
+    getParamExercicio = async (
+        request: FastifyRequest,
+        reply: FastifyReply
+    ) => {
+        const { aula_id } = request.params as { aula_id: string };
+        const exercicios = await this.aulaRepository.findByExercicioByAula(aula_id);
+        return reply.status(200).send(exercicios);
+    }
+
 }
 
 export const aulaController = new AulaController();

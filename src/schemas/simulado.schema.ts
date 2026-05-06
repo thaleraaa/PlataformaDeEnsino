@@ -1,3 +1,5 @@
+import { exercicioComEnunciado } from "./exercicio.schema";
+
 export const simuladoSchema = {
     type: 'object',
     properties: {
@@ -121,5 +123,20 @@ export const deleteSimuladoSchema = {
             200: simuladoSchema
         },
         security: [{ bearerAuth: [] }]
+    }
+}
+
+export const getExerciciosBySimuladoSchema = {
+    schema: {
+        tags: ['Simulados'],
+        summary: 'Lista todos os exercicios de um simulado',
+        security: [{bearerAuth: []}],
+        params: simuladoIdParamsSchema,
+        response: {
+            200: {
+                type: 'array',
+                items: exercicioComEnunciado
+            }
+        }
     }
 }
