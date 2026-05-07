@@ -39,7 +39,7 @@ export class ExercicioRepository {
     public async findAlternativaByExercicioID(exercicio_id : string) : Promise<Alternativa[]> {
         return prisma.alternativa.findMany({
             where: {
-                id: exercicio_id
+                exercicio_id: exercicio_id
             }
         })
     }
