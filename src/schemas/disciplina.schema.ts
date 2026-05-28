@@ -1,24 +1,26 @@
 import { moduloSchema } from "./modulo.schema";
+import { aulaSchema } from "./aula.schema";
 
 export const disciplinaSchema = {
     type: 'object',
     properties: {
-        id: {
-            type: 'string'
-        },
-        nome: {
-            type: 'string'
-        },
-        professor_id: {
-            type: 'string'
-        },
-        created_at: {
-            type: 'string',
-            format: 'date-time'
-        },
-        updated_at: {
-            type: 'string',
-            format: 'date-time'
+        id: { type: 'string' },
+        nome: { type: 'string' },
+        professor_id: { type: 'string' },
+        created_at: { type: 'string', format: 'date-time' },
+        updated_at: { type: 'string', format: 'date-time' },
+        modulos: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    ...moduloSchema.properties,
+                    aula: {
+                        type: 'array',
+                        items: aulaSchema
+                    }
+                }
+            }
         }
     }
 } as const;

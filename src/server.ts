@@ -21,6 +21,7 @@ const app = Fastify({ logger: true });
 
 await app.register(cors, {
   origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 });
 
 await app.register(fastifySwagger, {
@@ -61,7 +62,6 @@ app.register(simuladosRoutes, { prefix: '/simulados' });
 app.register(resultadosRoutes, { prefix: '/resultados' });
 app.register(conclusaoAulaRouters, { prefix: '/conclusao' });
 app.register(progressoRouters, { prefix: '/progressos' });
-
 
 const start = async () => {
   try {

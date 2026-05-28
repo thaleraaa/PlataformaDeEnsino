@@ -3,7 +3,15 @@ import type { Disciplina, Modulo } from "../../generated/prisma/client";
 
 export class DisciplinaRepository {
     public async findAll() : Promise<Disciplina[]> {
-        return prisma.disciplina.findMany();
+        return prisma.disciplina.findMany({
+            include: {
+                modulos: {
+                    include: {
+                        aula: true
+                    }
+                }
+            }
+        });
     }
     public async findById(id : string) : Promise<Disciplina | null> {
         return prisma.disciplina.findUnique({

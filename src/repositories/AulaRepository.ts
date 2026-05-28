@@ -11,6 +11,18 @@ export class AulaRepository {
         return prisma.aula.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                exercicio: {
+                    include: {
+                        alternativa: true
+                    }
+                },
+                modulo: {
+                    include: {
+                        disciplina: true
+                    }
+                }
             }
         });
     }
