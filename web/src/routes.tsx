@@ -10,6 +10,7 @@ import { Layout } from './components/Layout';
 import type { Role } from './mockData';
 import { DisciplinasProfessor } from './pages/DisciplinasProfessor';
 import { CriarExercicio } from './pages/CriarExercicio';
+import { Register } from './components/Register';
 
 
 interface RouteConfig {
@@ -112,6 +113,15 @@ export const createRouter = (config: RouteConfig) => {
   }
 
   return createBrowserRouter([
+    {
+      path: '/',
+      element: <Layout userRole={config.role} userName={config.userName} />,
+      children: baseChildren,
+    },
+    {
+    path: '/register',
+    Component: Register, 
+    },
     {
       path: '/',
       element: <Layout userRole={config.role} userName={config.userName} />,
