@@ -11,7 +11,7 @@ import type { Role } from './mockData';
 import { DisciplinasProfessor } from './pages/DisciplinasProfessor';
 import { CriarExercicio } from './pages/CriarExercicio';
 import { Register } from './components/Register';
-import { GerenciarProfessores } from './pages/GerenciarProfessores';
+
 
 interface RouteConfig {
   role: Role;
@@ -43,30 +43,72 @@ export const createRouter = (config: RouteConfig) => {
 
   if (config.role === 'ALUNO') {
     baseChildren.push(
-      { path: 'disciplinas', Component: Disciplinas },
-      { path: 'aula/:id', Component: Aula },
-      { path: 'simulados', Component: Simulados },
-      { path: 'resultados', Component: Resultados },
-      { path: 'perfil', Component: () => <div>Perfil do Aluno</div> }
+      {
+        path: 'disciplinas',
+        Component: Disciplinas,
+      },
+      {
+        path: 'aula/:id',
+        Component: Aula,
+      },
+      {
+        path: 'simulados',
+        Component: Simulados,
+      },
+      {
+        path: 'resultados',
+        Component: Resultados,
+      },
+      {
+        path: 'perfil',
+        Component: () => <div>Perfil do Aluno</div>,
+      }
     );
   }
 
   if (config.role === 'PROFESSOR') {
     baseChildren.push(
-      { path: 'disciplinas', Component: DisciplinasProfessor },
-      { path: 'criar-exercicios', Component: CriarExercicio },
-      { path: 'criar-simulados', Component: () => <div>Criar Simulados</div> },
-      { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
-      { path: 'perfil', Component: () => <div>Perfil do Professor</div> },
-      { path: 'aula/:id', Component: Aula }
+      {
+        path: 'disciplinas',
+        Component: DisciplinasProfessor,
+      },
+      {
+        path: 'criar-exercicios',
+        Component: CriarExercicio,
+      },
+      {
+        path: 'criar-simulados',
+        Component: () => <div>Criar Simulados</div>,
+      },
+      {
+        path: 'alunos',
+        Component: () => <div>Gerenciar Alunos</div>,
+      },
+      {
+        path: 'perfil',
+        Component: () => <div>Perfil do Professor</div>,
+      },
+      {
+        path: 'aula/:id',
+        Component: Aula,
+      }
     );
   }
 
   if (config.role === 'ADMINISTRADOR') {
     baseChildren.push(
-      { path: 'professores', Component: GerenciarProfessores },
-      { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
-      { path: 'configuracoes', Component: () => <div>Configurações</div> }
+      {
+        path: 'professores',
+        Component: () => <div>Gerenciar Professores</div>,
+      },
+      {
+        path: 'alunos',
+        Component: () => <div>Gerenciar Alunos</div>,
+      },
+      {
+        path: 'configuracoes',
+        Component: () => <div>Configurações</div>,
+      }
     );
   }
 
@@ -77,8 +119,13 @@ export const createRouter = (config: RouteConfig) => {
       children: baseChildren,
     },
     {
-      path: '/register',
-      Component: Register,
+    path: '/register',
+    Component: Register, 
+    },
+    {
+      path: '/',
+      element: <Layout userRole={config.role} userName={config.userName} />,
+      children: baseChildren,
     },
   ]);
 };
