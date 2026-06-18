@@ -37,6 +37,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface ICadastrarProfessor {
   nome: string;
@@ -118,28 +119,17 @@ export function DashboardAdmin() {
     setErro(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${BASE_URL}/professores`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          nome: data.nome,
-          email: data.email,
-          senha: data.senha,
-          CRM: data.crm,
-          salario: data.salario,
-          ativo: data.ativo,
-          role: 'PROFESSOR',
-        }),
+      await axios.post(`${BASE_URL}/professores`, {
+        nome: data.nome,
+        email: data.email,
+        senha: data.senha,
+        CRM: data.crm,
+        salario: data.salario,
+        ativo: data.ativo,
+        role: 'PROFESSOR',
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setErro(err.message || 'Erro ao cadastrar professor.');
-        return;
-      }
 
       setProfessores((prev) => [
         ...prev,
@@ -153,8 +143,9 @@ export function DashboardAdmin() {
       ]);
 
       setSucesso(true);
-    } catch {
-      setErro('Erro ao conectar com o servidor.');
+    } catch (err) {
+      const mensagem = axios.isAxiosError(err) ? err.response?.data?.message : null;
+      setErro(mensagem || 'Erro ao conectar com o servidor.');
     } finally {
       setLoading(false);
     }

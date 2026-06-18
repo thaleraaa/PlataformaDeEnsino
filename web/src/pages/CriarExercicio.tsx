@@ -10,6 +10,7 @@ import { Add, Delete } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -74,8 +75,8 @@ export function CriarExercicio() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${BASE_URL}/disciplinas`, { headers: { Authorization: `Bearer ${token()}` } }).then(r => r.json()),
-      fetch(`${BASE_URL}/simulados`, { headers: { Authorization: `Bearer ${token()}` } }).then(r => r.json()),
+      axios.get(`${BASE_URL}/disciplinas`, { headers: { Authorization: `Bearer ${token()}` } }).then(r => r.data),
+      axios.get(`${BASE_URL}/simulados`, { headers: { Authorization: `Bearer ${token()}` } }).then(r => r.data),
     ])
       .then(([d, s]) => { setDisciplinas(d); setSimulados(s); })
       .finally(() => setLoadingInicial(false));
@@ -142,20 +143,17 @@ export function CriarExercicio() {
       if (vinculo === 'aula' || vinculo === 'ambos') body.aula_id = aulaId;
       if (vinculo === 'simulado' || vinculo === 'ambos') body.simulado_id = simuladoId;
 
-      const resEx = await fetch(`${BASE_URL}/exercicios`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` },
-        body: JSON.stringify(body),
+      const resEx = await axios.post(`${BASE_URL}/exercicios`, body, {
+        headers: { Authorization: `Bearer ${token()}` },
       });
-      if (!resEx.ok) throw new Error('Erro ao criar exercício.');
-      const exercicio = await resEx.json();
+      const exercicio = resEx.data;
 
       await Promise.all(
         alternativas.map((alt, idx) =>
-          fetch(`${BASE_URL}/alternativas/exercicio/${exercicio.id}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` },
-            body: JSON.stringify({ texto: alt.texto.trim(), correta: idx === corretaIdx }),
+          axios.post(`${BASE_URL}/alternativas/exercicio/${exercicio.id}`, {
+            texto: alt.texto.trim(), correta: idx === corretaIdx,
+          }, {
+            headers: { Authorization: `Bearer ${token()}` },
           })
         )
       );
@@ -170,7 +168,8 @@ export function CriarExercicio() {
       setErroVinculo(null);
       setSucesso(true);
     } catch (e: any) {
-      setErroApi(e.message ?? 'Erro inesperado.');
+      const mensagem = axios.isAxiosError(e) ? e.response?.data?.message : null;
+      setErroApi(mensagem ?? e.message ?? 'Erro inesperado.');
     } finally {
       setSalvando(false);
     }

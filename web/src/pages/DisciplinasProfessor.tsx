@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import axios from 'axios';
 
 interface Aula { id: string; nome: string; videoAula: string; texto: string; modulo_id: string; }
 interface Modulo { id: string; nome: string; aula: Aula[]; }
@@ -84,9 +85,8 @@ export function DisciplinasProfessor() {
   const carregarDisciplinas = () => {
     const token = localStorage.getItem('token');
     setLoading(true);
-    fetch(`${BASE_URL}/disciplinas`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => res.json())
-      .then(setDisciplinas)
+    axios.get(`${BASE_URL}/disciplinas`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => setDisciplinas(res.data))
       .catch(() => setErro('Erro ao carregar disciplinas.'))
       .finally(() => setLoading(false));
   };
@@ -98,12 +98,20 @@ export function DisciplinasProfessor() {
   };
 
   const token = () => localStorage.getItem('token') ?? '';
+
+  // Helpers que retornam { ok } para manter compatibilidade com o restante do código
   const post = (url: string, body: object) =>
-    fetch(`${BASE_URL}${url}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` }, body: JSON.stringify(body) });
+    axios.post(`${BASE_URL}${url}`, body, { headers: { Authorization: `Bearer ${token()}` } })
+      .then(() => ({ ok: true }))
+      .catch(() => ({ ok: false }));
   const put = (url: string, body: object) =>
-    fetch(`${BASE_URL}${url}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` }, body: JSON.stringify(body) });
+    axios.put(`${BASE_URL}${url}`, body, { headers: { Authorization: `Bearer ${token()}` } })
+      .then(() => ({ ok: true }))
+      .catch(() => ({ ok: false }));
   const del = (url: string) =>
-    fetch(`${BASE_URL}${url}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token()}` } });
+    axios.delete(`${BASE_URL}${url}`, { headers: { Authorization: `Bearer ${token()}` } })
+      .then(() => ({ ok: true }))
+      .catch(() => ({ ok: false }));
 
   // ── CRIAR ────────────────────────────────────────────
   const handleCriarDisciplina = formCriarDisciplina.handleSubmit(async (data) => {

@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { School } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import type { Role } from '../mockData';
 
 const BASE_URL = 'http://localhost:3000';
@@ -25,13 +26,8 @@ export function Login({ onLogin }: LoginProps) {
     setErro(null);
 
     try {
-      const res = await fetch(`${BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha }),
-      });
-
-      const data = await res.json();
+      const res = await axios.post(`${BASE_URL}/auth/login`, { email, senha });
+      const data = res.data;
       localStorage.setItem('token', data.token);
 
       const payload = JSON.parse(atob(data.token.split('.')[1]));

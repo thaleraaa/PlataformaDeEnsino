@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { ExpandMore, PlayCircle, School } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // Mesmas interfaces do mockData — só pra tipar a resposta da API
 interface Aula { id: string; nome: string; videoAula: string; texto: string; modulo_id: string; }
@@ -30,13 +31,13 @@ export function Disciplinas() {
 
     // Busca disciplinas e progressos ao mesmo tempo
     Promise.all([
-      fetch(`${BASE_URL}/disciplinas`, {
+      axios.get(`${BASE_URL}/disciplinas`, {
         headers: { Authorization: `Bearer ${token}` }
-      }).then(res => res.json()),
+      }).then(res => res.data),
 
-      fetch(`${BASE_URL}/progressos/me`, {
+      axios.get(`${BASE_URL}/progressos/me`, {
         headers: { Authorization: `Bearer ${token}` }
-      }).then(res => res.json()),
+      }).then(res => res.data),
     ])
       .then(([disciplinasData, progressosData]) => {
         setDisciplinas(disciplinasData);

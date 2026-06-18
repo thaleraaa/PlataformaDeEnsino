@@ -8,6 +8,7 @@ import { Quiz, AccessTime, CheckCircle } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -61,28 +62,18 @@ export function CriarSimulado() {
 
     try {
       const token = localStorage.getItem('token') ?? '';
-      const res = await fetch(`${BASE_URL}/simulados`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          quantidadeQuestao: data.quantidadeQuestao,
-          tempoMaximo: data.tempoMaximo,
-        }),
+      await axios.post(`${BASE_URL}/simulados`, {
+        quantidadeQuestao: data.quantidadeQuestao,
+        tempoMaximo: data.tempoMaximo,
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setErroApi(err.message || 'Erro ao criar simulado.');
-        return;
-      }
 
       reset();
       setSucesso(true);
-    } catch {
-      setErroApi('Erro ao conectar com o servidor.');
+    } catch (err) {
+      const mensagem = axios.isAxiosError(err) ? err.response?.data?.message : null;
+      setErroApi(mensagem || 'Erro ao conectar com o servidor.');
     } finally {
       setSalvando(false);
     }

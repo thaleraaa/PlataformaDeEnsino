@@ -17,6 +17,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { ArrowBack, CheckCircle } from '@mui/icons-material';
+import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -43,11 +44,10 @@ export function Aula() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch(`${BASE_URL}/aulas/${id}`, {
+    axios.get(`${BASE_URL}/aulas/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then(res => { if (!res.ok) throw new Error(); return res.json(); })
-      .then(data => { console.log('aula:', JSON.stringify(data, null, 2)); setAula(data); })
+      .then(res => { console.log('aula:', JSON.stringify(res.data, null, 2)); setAula(res.data); })
       .catch(() => setErro('Aula não encontrada.'))
       .finally(() => setLoading(false));
   }, [id]);

@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface IRegisterAluno {
   nome: string;
@@ -40,21 +41,11 @@ export function Register() {
     setErro(null);
 
     try {
-      const res = await fetch(`${BASE_URL}/alunos`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setErro(err.message || 'Erro ao cadastrar.');
-        return;
-      }
-
+      await axios.post(`${BASE_URL}/alunos`, data);
       setSucesso(true);
-    } catch {
-      setErro('Erro ao conectar com o servidor.');
+    } catch (err) {
+      const mensagem = axios.isAxiosError(err) ? err.response?.data?.message : null;
+      setErro(mensagem || 'Erro ao conectar com o servidor.');
     } finally {
       setLoading(false);
     }

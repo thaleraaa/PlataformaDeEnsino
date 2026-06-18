@@ -44,6 +44,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useState, useMemo, useEffect } from 'react';
+import axios from 'axios';
 
 interface Professor {
   id: string;
@@ -119,18 +120,13 @@ export function GerenciarProfessores() {
       setErroDados(null);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}/professores`, {
+        const res = await axios.get(`${BASE_URL}/professores`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
 
-        if (!res.ok) {
-          setErroDados('Erro ao carregar professores.');
-          return;
-        }
-
-        const data = await res.json();
+        const data = res.data;
 
         const lista: Professor[] = data.map((p: any) => ({
           id: String(p.id),
@@ -191,30 +187,21 @@ export function GerenciarProfessores() {
     setErro(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${BASE_URL}/professores`, {
-        method: 'POST',
+      const res = await axios.post(`${BASE_URL}/professores`, {
+        nome: data.nome,
+        email: data.email,
+        senha: data.senha,
+        CRM: data.crm,
+        salario: data.salario,
+        ativo: data.ativo,
+        role: 'PROFESSOR',
+      }, {
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          nome: data.nome,
-          email: data.email,
-          senha: data.senha,
-          CRM: data.crm,
-          salario: data.salario,
-          ativo: data.ativo,
-          role: 'PROFESSOR',
-        }),
       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        setErro(err.message || 'Erro ao cadastrar professor.');
-        return;
-      }
-
-      const criado = await res.json();
+      const criado = res.data;
 
       setProfessores((prev) => [
         ...prev,
@@ -229,8 +216,9 @@ export function GerenciarProfessores() {
       ]);
 
       setSucesso(true);
-    } catch {
-      setErro('Erro ao conectar com o servidor.');
+    } catch (err) {
+      const mensagem = axios.isAxiosError(err) ? err.response?.data?.message : null;
+      setErro(mensagem || 'Erro ao conectar com o servidor.');
     } finally {
       setLoading(false);
     }

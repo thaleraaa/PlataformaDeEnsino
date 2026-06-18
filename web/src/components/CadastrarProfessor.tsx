@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface ICadastrarProfessor {
   nome: string;
@@ -66,31 +67,22 @@ export function CadastrarProfessor() {
     setLoading(true);
     setErro(null);
     try {
-      const res = await fetch(`${BASE_URL}/professores`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          CRM: data.crm,
-          salario: data.salario,
-          ativo: data.ativo,
-          conta: {
-            nome: data.nome,
-            email: data.email,
-            senha: data.senha,
-            role: 'PROFESSOR',
-          },
-        }),
+      await axios.post(`${BASE_URL}/professores`, {
+        CRM: data.crm,
+        salario: data.salario,
+        ativo: data.ativo,
+        conta: {
+          nome: data.nome,
+          email: data.email,
+          senha: data.senha,
+          role: 'PROFESSOR',
+        },
       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        setErro(err.message || 'Erro ao cadastrar professor.');
-        return;
-      }
-
       setSucesso(true);
-    } catch {
-      setErro('Erro ao conectar com o servidor.');
+    } catch (err) {
+      const mensagem = axios.isAxiosError(err) ? err.response?.data?.message : null;
+      setErro(mensagem || 'Erro ao conectar com o servidor.');
     } finally {
       setLoading(false);
     }
