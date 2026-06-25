@@ -58,6 +58,7 @@ export function Layout({ userRole, userName }: LayoutProps) {
           { text: 'Professores', icon: <Groups />, path: '/professores' },
           { text: 'Alunos', icon: <School />, path: '/alunos' },
           { text: 'Configurações', icon: <Settings />, path: '/configuracoes' },
+          { text: 'Perfil', icon: <Person />, path: '/perfil' },
         ];
       default:
         return [];

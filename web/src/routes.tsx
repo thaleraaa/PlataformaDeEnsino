@@ -12,6 +12,7 @@ import { DisciplinasProfessor } from './pages/DisciplinasProfessor';
 import { CriarExercicio } from './pages/CriarExercicio';
 import { Register } from './components/Register';
 import { GerenciarProfessores } from './pages/GerenciarProfessores';
+import { Perfil } from './pages/Perfil';
 
 interface RouteConfig {
   role: Role;
@@ -47,7 +48,7 @@ export const createRouter = (config: RouteConfig) => {
       { path: 'aula/:id', Component: Aula },
       { path: 'simulados', Component: Simulados },
       { path: 'resultados', Component: Resultados },
-      { path: 'perfil', Component: () => <div>Perfil do Aluno</div> }
+      { path: 'perfil', Component: () => <Perfil userRole="ALUNO" /> }
     );
   }
 
@@ -57,7 +58,7 @@ export const createRouter = (config: RouteConfig) => {
       { path: 'criar-exercicios', Component: CriarExercicio },
       { path: 'criar-simulados', Component: () => <div>Criar Simulados</div> },
       { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
-      { path: 'perfil', Component: () => <div>Perfil do Professor</div> },
+      { path: 'perfil', Component: () => <Perfil userRole="PROFESSOR" /> },
       { path: 'aula/:id', Component: Aula }
     );
   }
@@ -66,7 +67,8 @@ export const createRouter = (config: RouteConfig) => {
     baseChildren.push(
       { path: 'professores', Component: GerenciarProfessores },
       { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
-      { path: 'configuracoes', Component: () => <div>Configurações</div> }
+      { path: 'configuracoes', Component: () => <div>Configurações</div> },
+      { path: 'perfil', Component: () => <Perfil userRole="ADMINISTRADOR" /> }
     );
   }
 
