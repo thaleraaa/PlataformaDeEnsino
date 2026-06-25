@@ -1,3 +1,50 @@
+export const aulaDetalheSchema = {
+    type: 'object',
+    properties: {
+        id: { type: 'string' },
+        nome: { type: 'string' },
+        videoAula: { type: 'string' },
+        texto: { type: 'string' },
+        modulo_id: { type: 'string' },
+        created_at: { type: 'string', format: 'date-time' },
+        updated_at: { type: 'string', format: 'date-time' },
+        modulo: {
+            type: 'object',
+            properties: {
+                nome: { type: 'string' },
+                disciplina: {
+                    type: 'object',
+                    properties: {
+                        nome: { type: 'string' }
+                    }
+                }
+            }
+        },
+        exercicio: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' },
+                    enunciado: { type: 'string' },
+                    dificuldade: { type: 'string' },
+                    aula_id: { type: 'string' },
+                    alternativa: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                id: { type: 'string' },
+                                texto: { type: 'string' },
+                                correta: { type: 'boolean' }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+} as const;
 import { exercicioComEnunciado } from "./exercicio.schema";
 
 export const aulaSchema = {
@@ -97,7 +144,7 @@ export const getAulaByIdSchema = {
         security: [{ bearerAuth: [] }],
         params: aulaIdParamsSchema,
         response: {
-            200: aulaSchema
+            200: aulaDetalheSchema
         },
     }
 }
