@@ -79,7 +79,7 @@ export const createRouter = (config: RouteConfig) => {
   return createBrowserRouter([
     {
       path: '/',
-      element: <Layout userRole={config.role} userName={config.userName} />,
+      element: <Layout userRole={config.role} userName={config.userName} onLogout={config.onLogout} />,
       children: baseChildren,
     },
     {
@@ -87,4 +87,4 @@ export const createRouter = (config: RouteConfig) => {
       Component: Register,
     },
   ]);
-};
+};  
