@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import {
   School,
-  Dashboard,
   Book,
   Assignment,
   Assessment,
@@ -41,7 +40,6 @@ export function Layout({ userRole, userName }: LayoutProps) {
     switch (userRole) {
       case 'ALUNO':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
           { text: 'Disciplinas', icon: <Book />, path: '/disciplinas' },
           { text: 'Simulados', icon: <Assignment />, path: '/simulados' },
           { text: 'Resultados', icon: <Assessment />, path: '/resultados' },
@@ -49,7 +47,6 @@ export function Layout({ userRole, userName }: LayoutProps) {
         ];
       case 'PROFESSOR':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
           { text: 'Disciplinas', icon: <MenuBook />, path: '/disciplinas' },
           { text: 'Criar Exercícios', icon: <Quiz />, path: '/criar-exercicios' },
           { text: 'Criar Simulados', icon: <Assignment />, path: '/criar-simulados' },
@@ -58,7 +55,6 @@ export function Layout({ userRole, userName }: LayoutProps) {
         ];
       case 'ADMINISTRADOR':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
           { text: 'Professores', icon: <Groups />, path: '/professores' },
           { text: 'Alunos', icon: <School />, path: '/alunos' },
           { text: 'Configurações', icon: <Settings />, path: '/configuracoes' },
