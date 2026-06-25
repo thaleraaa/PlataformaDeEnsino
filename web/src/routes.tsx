@@ -13,6 +13,8 @@ import { CriarExercicio } from './pages/CriarExercicio';
 import { Register } from './components/Register';
 import { GerenciarProfessores } from './pages/GerenciarProfessores';
 import { Perfil } from './pages/Perfil';
+import { GerenciarAdministradores } from './pages/GerenciarAdministradores';
+import { GerenciarAlunos } from './pages/GerenciarAlunos';
 
 interface RouteConfig {
   role: Role;
@@ -67,9 +69,10 @@ export const createRouter = (config: RouteConfig) => {
   if (config.role === 'ADMINISTRADOR') {
     baseChildren.push(
       { path: 'professores', Component: GerenciarProfessores },
-      { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
+      { path: 'alunos', Component: GerenciarAlunos },
       { path: 'configuracoes', Component: () => <div>Configurações</div> },
-      { path: 'perfil', Component: () => <Perfil userRole="ADMINISTRADOR" onLogout={config.onLogout} /> }
+      { path: 'perfil', Component: () => <Perfil userRole="ADMINISTRADOR" onLogout={config.onLogout} /> },
+      { path: 'administradores', Component: GerenciarAdministradores },
     );
   }
 

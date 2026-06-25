@@ -176,12 +176,6 @@ export function GerenciarProfessores() {
     reset();
   };
 
-  const toggleAtivo = (id: string) => {
-    setProfessores((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ativo: !p.ativo } : p))
-    );
-  };
-
   const onSubmit = async (data: ICadastrarProfessor) => {
     setLoading(true);
     setErro(null);
@@ -304,25 +298,24 @@ export function GerenciarProfessores() {
                   <TableCell>E-mail</TableCell>
                   <TableCell>Disciplinas</TableCell>
                   <TableCell align="center">Status</TableCell>
-                  <TableCell align="right">Ações</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {loadingDados ? (
                   <TableRow>
-                    <TableCell colSpan={6} align="center" sx={{ py: 6 }}>
+                      <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
                       <CircularProgress size={32} />
                     </TableCell>
                   </TableRow>
                 ) : erroDados ? (
                   <TableRow>
-                    <TableCell colSpan={6} align="center" sx={{ py: 6 }}>
+                    <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
                       <Typography color="error">{erroDados}</Typography>
                     </TableCell>
                   </TableRow>
                 ) : professoresFiltrados.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} align="center" sx={{ py: 6 }}>
+                    <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
                       <Typography color="text.secondary">
                         {busca ? `Nenhum professor encontrado para "${busca}".` : 'Nenhum professor cadastrado.'}
                       </Typography>
@@ -358,24 +351,6 @@ export function GerenciarProfessores() {
                           color={professor.ativo ? 'success' : 'default'}
                           size="small"
                         />
-                      </TableCell>
-                      <TableCell align="right">
-                        <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                          <Tooltip title="Editar">
-                            <IconButton size="small">
-                              <Edit fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title={professor.ativo ? 'Desativar' : 'Ativar'}>
-                            <IconButton
-                              size="small"
-                              color={professor.ativo ? 'error' : 'success'}
-                              onClick={() => toggleAtivo(professor.id)}
-                            >
-                              {professor.ativo ? <Block fontSize="small" /> : <CheckCircleOutline fontSize="small" />}
-                            </IconButton>
-                          </Tooltip>
-                        </Stack>
                       </TableCell>
                     </TableRow>
                   ))

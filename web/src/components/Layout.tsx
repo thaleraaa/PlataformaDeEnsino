@@ -21,6 +21,7 @@ import {
   MenuBook,
   Groups,
   Quiz,
+  AdminPanelSettings,
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import type { Role } from '../mockData';
@@ -56,6 +57,7 @@ export function Layout({ userRole, userName }: LayoutProps) {
       case 'ADMINISTRADOR':
         return [
           { text: 'Professores', icon: <Groups />, path: '/professores' },
+          { text: 'Administradores', icon: <AdminPanelSettings />, path: '/administradores' },
           { text: 'Alunos', icon: <School />, path: '/alunos' },
           { text: 'Configurações', icon: <Settings />, path: '/configuracoes' },
           { text: 'Perfil', icon: <Person />, path: '/perfil' },
