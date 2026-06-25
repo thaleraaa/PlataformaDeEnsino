@@ -17,6 +17,7 @@ import { Perfil } from './pages/Perfil';
 interface RouteConfig {
   role: Role;
   userName: string;
+  onLogout: () => void;
 }
 
 export const createRouter = (config: RouteConfig) => {
@@ -48,7 +49,7 @@ export const createRouter = (config: RouteConfig) => {
       { path: 'aula/:id', Component: Aula },
       { path: 'simulados', Component: Simulados },
       { path: 'resultados', Component: Resultados },
-      { path: 'perfil', Component: () => <Perfil userRole="ALUNO" /> }
+      { path: 'perfil', Component: () => <Perfil userRole="ALUNO" onLogout={config.onLogout} /> }
     );
   }
 
@@ -58,7 +59,7 @@ export const createRouter = (config: RouteConfig) => {
       { path: 'criar-exercicios', Component: CriarExercicio },
       { path: 'criar-simulados', Component: () => <div>Criar Simulados</div> },
       { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
-      { path: 'perfil', Component: () => <Perfil userRole="PROFESSOR" /> },
+      { path: 'perfil', Component: () => <Perfil userRole="PROFESSOR" onLogout={config.onLogout} /> },
       { path: 'aula/:id', Component: Aula }
     );
   }
@@ -68,7 +69,7 @@ export const createRouter = (config: RouteConfig) => {
       { path: 'professores', Component: GerenciarProfessores },
       { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
       { path: 'configuracoes', Component: () => <div>Configurações</div> },
-      { path: 'perfil', Component: () => <Perfil userRole="ADMINISTRADOR" /> }
+      { path: 'perfil', Component: () => <Perfil userRole="ADMINISTRADOR" onLogout={config.onLogout} /> }
     );
   }
 

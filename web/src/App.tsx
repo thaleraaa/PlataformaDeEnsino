@@ -19,6 +19,17 @@ export default function App() {
     setIsAuthenticated(true);
   };
 
+  // na chamada de createRouter, adiciona onLogout:
+  const router = createRouter({
+    role: userRole,
+    userName,
+    onLogout: () => {
+      setIsAuthenticated(false);
+      setUserRole('ALUNO');
+      setUserName('');
+    },
+  });
+
   // router simples sem path: '*'
   const publicRouter = createBrowserRouter([
     { path: '/', element: <Login onLogin={handleLogin} /> },
@@ -33,8 +44,6 @@ export default function App() {
       </ThemeProvider>
     );
   }
-
-  const router = createRouter({ role: userRole, userName });
 
   return (
     <ThemeProvider theme={theme}>
