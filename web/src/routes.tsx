@@ -1,7 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { DashboardAluno } from './pages/DashboardAluno';
-import { DashboardProfessor } from './pages/DashboardProfessor';
-import { DashboardAdmin } from './pages/DashboardAdmin';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 import { Disciplinas } from './pages/Disciplinas';
 import { Aula } from './pages/Aula';
 import { Simulados } from './pages/Simulados';
@@ -12,32 +9,24 @@ import { DisciplinasProfessor } from './pages/DisciplinasProfessor';
 import { CriarExercicio } from './pages/CriarExercicio';
 import { Register } from './components/Register';
 import { GerenciarProfessores } from './pages/GerenciarProfessores';
+import { Perfil } from './pages/Perfil';
+import { GerenciarAdministradores } from './pages/GerenciarAdministradores';
+import { GerenciarAlunos } from './pages/GerenciarAlunos';
+import { SimuladosProfessor } from './pages/SimuladosProfessor';
 
 interface RouteConfig {
   role: Role;
   userName: string;
+  onLogout: () => void;
 }
 
 export const createRouter = (config: RouteConfig) => {
-  const getDashboard = () => {
-    switch (config.role) {
-      case 'ALUNO':
-        return DashboardAluno;
-      case 'PROFESSOR':
-        return DashboardProfessor;
-      case 'ADMINISTRADOR':
-        return DashboardAdmin;
-    }
-  };
+  const defaultPath = config.role === 'ADMINISTRADOR' ? '/professores' : '/disciplinas';
 
-  const baseChildren = [
+  const baseChildren: any[] = [
     {
       index: true,
-      Component: getDashboard(),
-    },
-    {
-      path: 'dashboard',
-      Component: getDashboard(),
+      loader: () => redirect(defaultPath),
     },
   ];
 
@@ -47,7 +36,7 @@ export const createRouter = (config: RouteConfig) => {
       { path: 'aula/:id', Component: Aula },
       { path: 'simulados', Component: Simulados },
       { path: 'resultados', Component: Resultados },
-      { path: 'perfil', Component: () => <div>Perfil do Aluno</div> }
+      { path: 'perfil', Component: () => <Perfil userRole="ALUNO" onLogout={config.onLogout} /> }
     );
   }
 
@@ -55,9 +44,9 @@ export const createRouter = (config: RouteConfig) => {
     baseChildren.push(
       { path: 'disciplinas', Component: DisciplinasProfessor },
       { path: 'criar-exercicios', Component: CriarExercicio },
-      { path: 'criar-simulados', Component: () => <div>Criar Simulados</div> },
+      { path: 'criar-simulados', Component: SimuladosProfessor },
       { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
-      { path: 'perfil', Component: () => <div>Perfil do Professor</div> },
+      { path: 'perfil', Component: () => <Perfil userRole="PROFESSOR" onLogout={config.onLogout} /> },
       { path: 'aula/:id', Component: Aula }
     );
   }
@@ -65,15 +54,16 @@ export const createRouter = (config: RouteConfig) => {
   if (config.role === 'ADMINISTRADOR') {
     baseChildren.push(
       { path: 'professores', Component: GerenciarProfessores },
-      { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
-      { path: 'configuracoes', Component: () => <div>Configurações</div> }
+      { path: 'alunos', Component: GerenciarAlunos },
+      { path: 'perfil', Component: () => <Perfil userRole="ADMINISTRADOR" onLogout={config.onLogout} /> },
+      { path: 'administradores', Component: GerenciarAdministradores },
     );
   }
 
   return createBrowserRouter([
     {
       path: '/',
-      element: <Layout userRole={config.role} userName={config.userName} />,
+      element: <Layout userRole={config.role} userName={config.userName} onLogout={config.onLogout} />,
       children: baseChildren,
     },
     {

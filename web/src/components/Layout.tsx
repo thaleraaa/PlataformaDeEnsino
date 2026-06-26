@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import {
   School,
-  Dashboard,
   Book,
   Assignment,
   Assessment,
@@ -22,6 +21,8 @@ import {
   MenuBook,
   Groups,
   Quiz,
+  AdminPanelSettings,
+  Logout,
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import type { Role } from '../mockData';
@@ -31,9 +32,10 @@ const DRAWER_WIDTH = 260;
 interface LayoutProps {
   userRole: Role;
   userName: string;
+  onLogout: () => void;
 }
 
-export function Layout({ userRole, userName }: LayoutProps) {
+export function Layout({ userRole, userName, onLogout }: LayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,7 +43,6 @@ export function Layout({ userRole, userName }: LayoutProps) {
     switch (userRole) {
       case 'ALUNO':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
           { text: 'Disciplinas', icon: <Book />, path: '/disciplinas' },
           { text: 'Simulados', icon: <Assignment />, path: '/simulados' },
           { text: 'Resultados', icon: <Assessment />, path: '/resultados' },
@@ -49,7 +50,6 @@ export function Layout({ userRole, userName }: LayoutProps) {
         ];
       case 'PROFESSOR':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
           { text: 'Disciplinas', icon: <MenuBook />, path: '/disciplinas' },
           { text: 'Criar Exercícios', icon: <Quiz />, path: '/criar-exercicios' },
           { text: 'Criar Simulados', icon: <Assignment />, path: '/criar-simulados' },
@@ -58,10 +58,10 @@ export function Layout({ userRole, userName }: LayoutProps) {
         ];
       case 'ADMINISTRADOR':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
           { text: 'Professores', icon: <Groups />, path: '/professores' },
+          { text: 'Administradores', icon: <AdminPanelSettings />, path: '/administradores' },
           { text: 'Alunos', icon: <School />, path: '/alunos' },
-          { text: 'Configurações', icon: <Settings />, path: '/configuracoes' },
+          { text: 'Perfil', icon: <Person />, path: '/perfil' },
         ];
       default:
         return [];
@@ -92,6 +92,8 @@ export function Layout({ userRole, userName }: LayoutProps) {
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
           },
         }}
       >
@@ -120,7 +122,7 @@ export function Layout({ userRole, userName }: LayoutProps) {
 
         <Divider />
 
-        <List sx={{ px: 1, py: 2 }}>
+        <List sx={{ px: 1, py: 2, flexGrow: 1 }}>
           {menuItems.map((item) => (
             <ListItemButton
               key={item.text}
@@ -133,6 +135,24 @@ export function Layout({ userRole, userName }: LayoutProps) {
               <ListItemText primary={item.text} />
             </ListItemButton>
           ))}
+        </List>
+
+        <Divider />
+
+        <List sx={{ px: 1, py: 1 }}>
+          <ListItemButton
+            onClick={onLogout}
+            sx={{
+              color: 'error.main',
+              '&:hover': { bgcolor: 'error.light', color: 'error.contrastText' },
+              borderRadius: 1,
+            }}
+          >
+            <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
+              <Logout />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
         </List>
       </Drawer>
 

@@ -1,3 +1,4 @@
+// Troca o import do useState/useEffect — já existem, só acrescenta
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
@@ -16,7 +17,7 @@ import {
   Chip,
   CircularProgress,
 } from '@mui/material';
-import { ArrowBack, CheckCircle } from '@mui/icons-material';
+import { ArrowBack, CheckCircle, CheckCircleOutline } from '@mui/icons-material';
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000';
@@ -42,15 +43,59 @@ export function Aula() {
   const [respostas, setRespostas] = useState<Record<string, string>>({});
   const [mostrarResultados, setMostrarResultados] = useState(false);
 
+  // ── NOVO ──
+  const [aulaConcluidaId, setAulaConcluidaId] = useState<string | null>(null);
+  const [loadingConclusao, setLoadingConclusao] = useState(false);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     axios.get(`${BASE_URL}/aulas/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then(res => { console.log('aula:', JSON.stringify(res.data, null, 2)); setAula(res.data); })
+      .then(res => { setAula(res.data); })
       .catch(() => setErro('Aula não encontrada.'))
       .finally(() => setLoading(false));
   }, [id]);
+
+  // Verifica se o aluno já concluiu essa aula
+  useEffect(() => {
+    if (!id) return;
+    const token = localStorage.getItem('token');
+    axios.get(`${BASE_URL}/conclusao/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(res => {
+        // O endpoint retorna o objeto de conclusão ou null
+        setAulaConcluidaId(res.data?.id ?? null);
+      })
+      .catch(() => setAulaConcluidaId(null));
+  }, [id]);
+
+  const handleToggleConclusao = async () => {
+    if (!id) return;
+    const token = localStorage.getItem('token');
+    setLoadingConclusao(true);
+    try {
+      if (aulaConcluidaId) {
+        // Já concluída → desconcluir
+        await axios.delete(`${BASE_URL}/conclusao/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAulaConcluidaId(null);
+      } else {
+        // Não concluída → concluir
+        const res = await axios.post(`${BASE_URL}/conclusao/${id}`, {}, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAulaConcluidaId(res.data.id);
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar conclusão:', err);
+    } finally {
+      setLoadingConclusao(false);
+    }
+  };
+  // ── FIM NOVO ──
 
   if (loading) return (
     <Box display="flex" justifyContent="center" mt={8}>
@@ -68,7 +113,6 @@ export function Aula() {
   );
 
   const exerciciosAula = aula.exercicio;
-
   const handleSubmit = () => setMostrarResultados(true);
 
   const calcularNota = () => {
@@ -138,7 +182,7 @@ export function Aula() {
       </Card>
 
       {exerciciosAula.length > 0 && (
-        <Card>
+        <Card sx={{ mb: 3 }}>
           <CardContent>
             <Stack direction="row" alignItems="center" spacing={2} mb={3}>
               <CheckCircle sx={{ fontSize: 32, color: 'primary.main' }} />
@@ -178,12 +222,10 @@ export function Aula() {
                         const isCorreta = alternativa.correta;
                         const isSelecionada = respostas[exercicio.id] === alternativa.id;
                         let color: 'success' | 'error' | 'default' = 'default';
-
                         if (mostrarResultados) {
                           if (isCorreta) color = 'success';
                           else if (isSelecionada && !isCorreta) color = 'error';
                         }
-
                         return (
                           <FormControlLabel
                             key={alternativa.id}
@@ -192,10 +234,7 @@ export function Aula() {
                             label={alternativa.texto}
                             disabled={mostrarResultados}
                             sx={{
-                              p: 1.5,
-                              m: 0,
-                              mb: 1,
-                              borderRadius: 1,
+                              p: 1.5, m: 0, mb: 1, borderRadius: 1,
                               border: '1px solid',
                               borderColor:
                                 color === 'success' ? 'success.main' :
@@ -245,6 +284,26 @@ export function Aula() {
           </CardContent>
         </Card>
       )}
+
+      {/* ── BOTÃO CONCLUIR AULA ── */}
+      <Button
+        variant={aulaConcluidaId ? 'outlined' : 'contained'}
+        color={aulaConcluidaId ? 'success' : 'primary'}
+        size="large"
+        fullWidth
+        startIcon={
+          loadingConclusao
+            ? <CircularProgress size={20} color="inherit" />
+            : aulaConcluidaId
+              ? <CheckCircle />
+              : <CheckCircleOutline />
+        }
+        onClick={handleToggleConclusao}
+        disabled={loadingConclusao}
+        sx={{ mt: 1 }}
+      >
+        {aulaConcluidaId ? 'Aula Concluída ✓' : 'Marcar Aula como Concluída'}
+      </Button>
     </Box>
   );
 }
