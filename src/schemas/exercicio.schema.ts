@@ -58,7 +58,8 @@ export const exercicioComEnunciado = {
                     },
                     texto: {
                         type: 'string'
-                    }
+                    },
+                    correta: { type: 'boolean' }
                 }
             }
         }
