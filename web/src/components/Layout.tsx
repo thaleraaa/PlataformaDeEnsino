@@ -61,7 +61,6 @@ export function Layout({ userRole, userName, onLogout }: LayoutProps) {
           { text: 'Professores', icon: <Groups />, path: '/professores' },
           { text: 'Administradores', icon: <AdminPanelSettings />, path: '/administradores' },
           { text: 'Alunos', icon: <School />, path: '/alunos' },
-          { text: 'Configurações', icon: <Settings />, path: '/configuracoes' },
           { text: 'Perfil', icon: <Person />, path: '/perfil' },
         ];
       default:

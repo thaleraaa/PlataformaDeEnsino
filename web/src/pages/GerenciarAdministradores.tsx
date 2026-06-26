@@ -1,6 +1,7 @@
 import {
   Box,
   Typography,
+  Button,
   Card,
   CardContent,
   Table,
@@ -16,7 +17,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
+  TextField,
   CircularProgress,
   InputBase,
   IconButton,
@@ -26,6 +27,9 @@ import {
   Alert,
 } from '@mui/material';
 import {
+  PersonAdd,
+  Close,
+  CheckCircle,
   Search,
   Block,
   Groups,
@@ -33,6 +37,9 @@ import {
   PersonOff,
   WarningAmber,
 } from '@mui/icons-material';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
 import { useState, useMemo, useEffect } from 'react';
 import axios from 'axios';
 
@@ -43,6 +50,29 @@ interface Administrador {
   ativo: boolean;
 }
 
+interface ICadastrarAdministrador {
+  nome: string;
+  email: string;
+  senha: string;
+}
+
+const schema = yup.object({
+  nome: yup
+    .string()
+    .matches(/^[A-Za-zÀ-ÿ\s]+$/, 'O nome não pode conter números ou símbolos')
+    .min(3, 'Nome deve ter no mínimo 3 caracteres')
+    .required('Nome é obrigatório'),
+  email: yup
+    .string()
+    .email('Formato de e-mail inválido (ex: nome@dominio.com)')
+    .required('E-mail é obrigatório'),
+  senha: yup
+    .string()
+    .min(6, 'Senha deve ter no mínimo 6 caracteres')
+    .matches(/[A-Z]/, 'Deve conter ao menos uma letra maiúscula')
+    .required('Senha é obrigatória'),
+}).required();
+
 const BASE_URL = 'http://localhost:3000';
 
 export function GerenciarAdministradores() {
@@ -51,9 +81,23 @@ export function GerenciarAdministradores() {
   const [erroDados, setErroDados] = useState<string | null>(null);
   const [busca, setBusca] = useState('');
 
+  const [modalAberto, setModalAberto] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+  const [sucesso, setSucesso] = useState(false);
+
   const [admParaDesativar, setAdmParaDesativar] = useState<Administrador | null>(null);
   const [desativando, setDesativando] = useState(false);
   const [erroDesativar, setErroDesativar] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ICadastrarAdministrador>({
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
     const fetchAdministradores = async () => {
@@ -62,14 +106,10 @@ export function GerenciarAdministradores() {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.get(`${BASE_URL}/administradores`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        const data = res.data;
-
-        const lista: Administrador[] = data.map((a: any) => ({
+        const lista: Administrador[] = res.data.map((a: any) => ({
           id: String(a.id),
           nome: a.conta?.nome ?? a.nome ?? '—',
           email: a.conta?.email ?? a.email ?? '—',
@@ -100,6 +140,58 @@ export function GerenciarAdministradores() {
   const totalAtivos = administradores.filter((a) => a.ativo).length;
   const totalInativos = administradores.filter((a) => !a.ativo).length;
 
+  const handleAbrirModal = () => {
+    reset();
+    setErro(null);
+    setSucesso(false);
+    setModalAberto(true);
+  };
+
+  const handleFecharModal = () => {
+    setModalAberto(false);
+    setSucesso(false);
+    setErro(null);
+    reset();
+  };
+
+  const onSubmit = async (data: ICadastrarAdministrador) => {
+    setLoading(true);
+    setErro(null);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.post(
+        `${BASE_URL}/administradores`,
+        {
+          nome: data.nome,
+          email: data.email,
+          senha: data.senha,
+          ativo: true,
+          role: 'ADMINISTRADOR',
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const criado = res.data;
+
+      setAdministradores((prev) => [
+        ...prev,
+        {
+          id: String(criado.id ?? Date.now()),
+          nome: criado.conta?.nome ?? data.nome,
+          email: criado.conta?.email ?? data.email,
+          ativo: true,
+        },
+      ]);
+
+      setSucesso(true);
+    } catch (err) {
+      const mensagem = axios.isAxiosError(err) ? err.response?.data?.message : null;
+      setErro(mensagem || 'Erro ao conectar com o servidor.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAbrirConfirmacao = (adm: Administrador) => {
     setErroDesativar(null);
     setAdmParaDesativar(adm);
@@ -118,9 +210,7 @@ export function GerenciarAdministradores() {
     try {
       const token = localStorage.getItem('token');
       await axios.delete(`${BASE_URL}/administradores/${admParaDesativar.id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setAdministradores((prev) =>
@@ -145,9 +235,12 @@ export function GerenciarAdministradores() {
             Administradores
           </Typography>
           <Typography variant="body1" color="text.secondary" mt={0.5}>
-            Visualize todos os administradores cadastrados na plataforma.
+            Gerencie todos os administradores cadastrados na plataforma.
           </Typography>
         </Box>
+        <Button variant="contained" startIcon={<PersonAdd />} size="large" onClick={handleAbrirModal}>
+          Novo Administrador
+        </Button>
       </Stack>
 
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={4} mb={4}>
@@ -288,6 +381,79 @@ export function GerenciarAdministradores() {
         </CardContent>
       </Card>
 
+      {/* Modal Cadastrar */}
+      <Dialog open={modalAberto} onClose={handleFecharModal} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+        <DialogTitle>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <PersonAdd color="primary" />
+              <Typography variant="h6" fontWeight={600}>Cadastrar Novo Administrador</Typography>
+            </Stack>
+            <IconButton onClick={handleFecharModal} size="small"><Close /></IconButton>
+          </Stack>
+        </DialogTitle>
+
+        <DialogContent dividers>
+          {sucesso ? (
+            <Stack alignItems="center" spacing={2} py={3}>
+              <CheckCircle sx={{ fontSize: 64, color: 'success.main' }} />
+              <Typography variant="h6" fontWeight={600}>Administrador cadastrado com sucesso!</Typography>
+              <Typography variant="body2" color="text.secondary" textAlign="center">
+                O novo administrador já aparece na lista e poderá acessar a plataforma com as credenciais cadastradas.
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack spacing={3} pt={1}>
+              <TextField
+                fullWidth
+                label="Nome Completo"
+                {...register('nome')}
+                error={!!errors.nome}
+                helperText={errors.nome?.message}
+              />
+              <TextField
+                fullWidth
+                label="E-mail"
+                type="email"
+                {...register('email')}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+              <TextField
+                fullWidth
+                label="Senha"
+                type="password"
+                {...register('senha')}
+                error={!!errors.senha}
+                helperText={errors.senha?.message ?? 'Mínimo 6 caracteres, ao menos uma maiúscula'}
+              />
+              {erro && (
+                <Alert severity="error">{erro}</Alert>
+              )}
+            </Stack>
+          )}
+        </DialogContent>
+
+        <DialogActions sx={{ p: 2.5, gap: 1 }}>
+          {sucesso ? (
+            <Button variant="contained" fullWidth onClick={handleFecharModal}>Fechar</Button>
+          ) : (
+            <>
+              <Button variant="outlined" onClick={handleFecharModal} disabled={loading}>Cancelar</Button>
+              <Button
+                variant="contained"
+                onClick={handleSubmit(onSubmit)}
+                disabled={loading}
+                startIcon={loading ? <CircularProgress size={18} color="inherit" /> : <PersonAdd />}
+              >
+                {loading ? 'Cadastrando...' : 'Cadastrar Administrador'}
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog>
+
+      {/* Modal Desativar */}
       <Dialog open={!!admParaDesativar} onClose={handleFecharConfirmacao} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
         <DialogTitle>
           <Stack direction="row" alignItems="center" spacing={1}>

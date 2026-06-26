@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import { Login } from './components/Login';
@@ -19,22 +19,24 @@ export default function App() {
     setIsAuthenticated(true);
   };
 
-  // na chamada de createRouter, adiciona onLogout:
-  const router = createRouter({
-    role: userRole,
-    userName,
-    onLogout: () => {
-      setIsAuthenticated(false);
-      setUserRole('ALUNO');
-      setUserName('');
-    },
-  });
-
-  // router simples sem path: '*'
-  const publicRouter = createBrowserRouter([
+  const publicRouter = useMemo(() => createBrowserRouter([
     { path: '/', element: <Login onLogin={handleLogin} /> },
     { path: '/register', element: <Register /> },
-  ]);
+  ]), []);
+
+  const authenticatedRouter = useMemo(() => {
+    if (!isAuthenticated) return null;
+
+    return createRouter({
+      role: userRole,
+      userName,
+      onLogout: () => {
+        setIsAuthenticated(false);
+        setUserRole('ALUNO');
+        setUserName('');
+      },
+    });
+  }, [isAuthenticated]);
 
   if (!isAuthenticated) {
     return (
@@ -48,7 +50,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RouterProvider router={router} />
+      <RouterProvider router={authenticatedRouter!} />
     </ThemeProvider>
   );
 }

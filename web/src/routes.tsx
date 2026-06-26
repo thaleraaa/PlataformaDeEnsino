@@ -1,7 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { DashboardAluno } from './pages/DashboardAluno';
-import { DashboardProfessor } from './pages/DashboardProfessor';
-import { DashboardAdmin } from './pages/DashboardAdmin';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 import { Disciplinas } from './pages/Disciplinas';
 import { Aula } from './pages/Aula';
 import { Simulados } from './pages/Simulados';
@@ -23,25 +20,12 @@ interface RouteConfig {
 }
 
 export const createRouter = (config: RouteConfig) => {
-  const getDashboard = () => {
-    switch (config.role) {
-      case 'ALUNO':
-        return DashboardAluno;
-      case 'PROFESSOR':
-        return DashboardProfessor;
-      case 'ADMINISTRADOR':
-        return DashboardAdmin;
-    }
-  };
+  const defaultPath = config.role === 'ADMINISTRADOR' ? '/professores' : '/disciplinas';
 
-  const baseChildren = [
+  const baseChildren: any[] = [
     {
       index: true,
-      Component: getDashboard(),
-    },
-    {
-      path: 'dashboard',
-      Component: getDashboard(),
+      loader: () => redirect(defaultPath),
     },
   ];
 
@@ -70,7 +54,6 @@ export const createRouter = (config: RouteConfig) => {
     baseChildren.push(
       { path: 'professores', Component: GerenciarProfessores },
       { path: 'alunos', Component: GerenciarAlunos },
-      { path: 'configuracoes', Component: () => <div>Configurações</div> },
       { path: 'perfil', Component: () => <Perfil userRole="ADMINISTRADOR" onLogout={config.onLogout} /> },
       { path: 'administradores', Component: GerenciarAdministradores },
     );
@@ -87,4 +70,4 @@ export const createRouter = (config: RouteConfig) => {
       Component: Register,
     },
   ]);
-};  
+};
