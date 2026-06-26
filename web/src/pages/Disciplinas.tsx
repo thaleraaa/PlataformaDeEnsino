@@ -5,19 +5,23 @@ import {
   AccordionDetails, CircularProgress, Alert,
 } from '@mui/material';
 import { ExpandMore, PlayCircle, School } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 // Mesmas interfaces do mockData — só pra tipar a resposta da API
 interface Aula { id: string; nome: string; videoAula: string; texto: string; modulo_id: string; }
 interface Modulo { id: string; nome: string; aula: Aula[]; }
 interface Disciplina { id: string; nome: string; modulos: Modulo[]; }
-interface Progresso { disciplina_id: string; porcentagemConcluida: number; }
-
+interface Progresso {
+  id: string;
+  porcentagemConcluida: number;
+  disciplina: { id: string; nome: string };
+}
 const BASE_URL = 'http://localhost:3000';
 
 export function Disciplinas() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [expanded, setExpanded] = useState<string | false>(false);
 
   // Estados pra controlar os dados, loading e erro
@@ -27,6 +31,7 @@ export function Disciplinas() {
   const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     const token = localStorage.getItem('token');
 
     // Busca disciplinas e progressos ao mesmo tempo
@@ -45,7 +50,7 @@ export function Disciplinas() {
       })
       .catch(() => setErro('Erro ao carregar disciplinas. Tente novamente.'))
       .finally(() => setLoading(false));
-  }, []); // [] = roda só uma vez quando o componente abre
+   }, [location.key]); 
 
   const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
@@ -75,7 +80,7 @@ export function Disciplinas() {
       <Grid container spacing={3}>
         {disciplinas.map((disciplina) => {
           // Mesma lógica de antes, só que com dados reais
-          const progresso = progressos.find((p) => p.disciplina_id === disciplina.id);
+          const progresso = progressos.find((p) => p.disciplina?.nome === disciplina.nome);
           const totalAulas = disciplina.modulos.reduce(
             (acc, modulo) => acc + modulo.aula.length, 0
           );

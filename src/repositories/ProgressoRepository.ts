@@ -59,6 +59,7 @@ export class ProgressoRepository {
             include: {
                 disciplina: {
                     select: {
+                        id: true,
                         nome: true,   
                     }
                 }
