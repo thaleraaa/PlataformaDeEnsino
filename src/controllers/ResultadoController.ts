@@ -65,8 +65,16 @@ export class ResultadoController {
         request: FastifyRequest,
         reply: FastifyReply
     ) => {
+        const aluno_id = (request as any).user?.id;
+        if (!aluno_id) {
+            return reply.status(401).send({ message: 'Não autorizado' });
+        }
         const resultado = request.body as Omit<Resultado, 'id' | 'created_at' | 'updated_at'>;
-        const novoResultado = await this.resultadoRepository.create(resultado);
+        const novoResultado = await this.resultadoRepository.create({
+            ...resultado,
+            aluno_id,                                    // ← injeta do JWT
+            dataRealizacao: resultado.dataRealizacao ?? new Date(),
+        });
         return reply.status(201).send(novoResultado);
     };
 

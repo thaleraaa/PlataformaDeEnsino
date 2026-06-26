@@ -43,7 +43,8 @@ export class SimuladoRepository {
                 alternativa: {
                     select: {
                         id: true,
-                        texto: true
+                        texto: true,
+                        correta: true
                     }
                 }
             }
