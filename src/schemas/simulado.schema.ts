@@ -103,3 +103,42 @@ export const getExerciciosBySimuladoSchema = {
         }
     }
 }
+
+// adicionar no final do arquivo
+export const corrigirSimuladoSchema = {
+    schema: {
+        tags: ['Simulados'],
+        summary: '(ALUNO) Envia respostas e recebe nota calculada no backend',
+        security: [{ bearerAuth: [] }],
+        params: simuladoIdParamsSchema,
+        body: {
+            type: 'object',
+            required: ['respostas', 'tempoSegundos'],
+            properties: {
+                tempoSegundos: { type: 'integer' },
+                respostas: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        required: ['exercicio_id', 'alternativa_id'],
+                        properties: {
+                            exercicio_id: { type: 'string' },
+                            alternativa_id: { type: ['string', 'null'] },
+                        }
+                    }
+                }
+            }
+        },
+        response: {
+            201: {
+                type: 'object',
+                properties: {
+                    acertos: { type: 'integer' },
+                    total: { type: 'integer' },
+                    nota: { type: 'number' },
+                    resultado: { type: 'object' },
+                }
+            }
+        }
+    }
+}

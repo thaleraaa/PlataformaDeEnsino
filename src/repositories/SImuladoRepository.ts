@@ -50,4 +50,13 @@ export class SimuladoRepository {
             }
         })
     }
+    
+    public async findExerciciosComCorreta(simulado_id: string) {
+        return prisma.exercicio.findMany({
+            where: { simulado_id },
+            include: {
+                alternativa: { where: { correta: true } }
+            }
+        });
+    }
 }

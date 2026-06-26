@@ -5,7 +5,7 @@ import {
   LinearProgress, Divider, Grid,
 } from '@mui/material';
 import {
-  Assignment, Timer, Quiz, CheckCircle, RocketLaunch, Replay,
+  Assignment, Timer, Quiz, CheckCircle, RocketLaunch,
 } from '@mui/icons-material';
 import axios from 'axios';
 
@@ -13,7 +13,7 @@ const BASE_URL = 'http://localhost:3000';
 const auth = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token') ?? ''}` } });
 
 // ─── Tipos ────────────────────────────────────────────────
-interface Alternativa { id: string; texto: string; correta: boolean; }
+interface Alternativa { id: string; texto: string;}
 interface Exercicio { id: string; enunciado: string; dificuldade: string; alternativa: Alternativa[]; }
 interface Simulado { id: string; titulo: string; quantidadeQuestao: number; tempoMaximo: number; ativo: boolean; }
 interface ResultadoImediato { acertos: number; total: number; nota: number; tempoGasto: number; }
@@ -68,14 +68,11 @@ function ListaSimulados({
                   <Chip icon={<Timer />} label={`${s.tempoMaximo} min`} size="small" variant="outlined" />
                 </Stack>
 
-                <Button
-                  variant={feito ? 'outlined' : 'contained'}
-                  fullWidth
-                  startIcon={feito ? <Replay /> : <RocketLaunch />}
-                  onClick={() => onIniciar(s)}
-                >
-                  {feito ? 'Refazer Simulado' : 'Iniciar Simulado'}
-                </Button>
+                {!feito && (
+                  <Button variant="contained" fullWidth startIcon={<RocketLaunch />} onClick={() => onIniciar(s)}>
+                    Iniciar Simulado
+                  </Button>
+                )}
               </CardContent>
             </Card>
           </Grid>
@@ -119,26 +116,24 @@ function FazendoSimulado({
     if (enviando) return;
     setEnviando(true);
     const t = Math.floor((Date.now() - inicioRef.current) / 1000);
-    let acertos = 0;
-    exercicios.forEach(e => {
-      const escolhida = respostas[e.id];
-      const correta = e.alternativa.find(a => a.correta);
-      if (escolhida && correta && escolhida === correta.id) acertos++;
-    });
-    const nota = exercicios.length > 0 ? (acertos / exercicios.length) * 10 : 0;
 
     try {
-      await axios.post(`${BASE_URL}/resultados`, {
-        nota: parseFloat(nota.toFixed(2)),
-        tempoSegundos: t,
-        simulado_id: simulado.id,
-      }, auth());
-    } catch {
-      // se já existe resultado (@@unique), ignora o erro e mostra resultado
-    }
+        const respostasArray = exercicios.map(e => ({
+            exercicio_id: e.id,
+            alternativa_id: respostas[e.id] ?? null,
+        }));
 
-    onConcluir({ acertos, total: exercicios.length, nota, tempoGasto: t });
-  };
+        const { data } = await axios.post(
+            `${BASE_URL}/simulados/${simulado.id}/corrigir`,
+            { respostas: respostasArray, tempoSegundos: t },
+            auth()
+        );
+
+        onConcluir({ acertos: data.acertos, total: data.total, nota: data.nota, tempoGasto: t });
+    } catch {
+        setEnviando(false); // permite tentar de novo se der erro
+    }
+};
 
   const timerColor = tempoRestante < 60 ? 'error' : tempoRestante < 300 ? 'warning' : 'primary';
 
