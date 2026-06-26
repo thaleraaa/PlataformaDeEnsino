@@ -159,8 +159,11 @@ model Alternativa {
 
 model Simulado {
   id String @id @default(uuid())
+  titulo String
   quantidadeQuestao Int
   tempoMaximo Int
+
+  ativo Boolean @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

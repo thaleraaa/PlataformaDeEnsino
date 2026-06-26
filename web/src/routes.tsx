@@ -12,6 +12,7 @@ import { GerenciarProfessores } from './pages/GerenciarProfessores';
 import { Perfil } from './pages/Perfil';
 import { GerenciarAdministradores } from './pages/GerenciarAdministradores';
 import { GerenciarAlunos } from './pages/GerenciarAlunos';
+import { SimuladosProfessor } from './pages/SimuladosProfessor';
 
 interface RouteConfig {
   role: Role;
@@ -43,7 +44,7 @@ export const createRouter = (config: RouteConfig) => {
     baseChildren.push(
       { path: 'disciplinas', Component: DisciplinasProfessor },
       { path: 'criar-exercicios', Component: CriarExercicio },
-      { path: 'criar-simulados', Component: () => <div>Criar Simulados</div> },
+      { path: 'criar-simulados', Component: SimuladosProfessor },
       { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
       { path: 'perfil', Component: () => <Perfil userRole="PROFESSOR" onLogout={config.onLogout} /> },
       { path: 'aula/:id', Component: Aula }

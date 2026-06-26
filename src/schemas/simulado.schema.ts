@@ -3,53 +3,34 @@ import { exercicioComEnunciado } from "./exercicio.schema";
 export const simuladoSchema = {
     type: 'object',
     properties: {
-        id: { 
-            type: 'string' 
-        },
-        quantidadeQuestao: { 
-            type: 'integer'
-        },
-        tempoMaximo: { 
-            type: 'integer' 
-        },
-        professor_id: {
-            type: 'string'
-        },
-        created_at: {
-            type: 'string',
-            format: 'date-time'
-        },
-        updated_at: {
-            type: 'string',
-            format: 'date-time'
-        }
+        id: { type: 'string' },
+        titulo: { type: 'string' },
+        quantidadeQuestao: { type: 'integer' },
+        tempoMaximo: { type: 'integer' },
+        ativo: { type: 'boolean' },
+        professor_id: { type: 'string' },
+        created_at: { type: 'string', format: 'date-time' },
+        updated_at: { type: 'string', format: 'date-time' },
     }
 } as const;
 
 export const simuladoBodySchema = {
     type: 'object',
-    required: [
-        'quantidadeQuestao', 'tempoMaximo'
-    ],
+    required: ['titulo', 'quantidadeQuestao', 'tempoMaximo'],
     properties: {
-        quantidadeQuestao: {
-            type: 'integer'
-        },
-        tempoMaximo: {
-            type: 'integer'
-        }
+        titulo: { type: 'string' },
+        quantidadeQuestao: { type: 'integer' },
+        tempoMaximo: { type: 'integer' },
     }
 } as const;
 
 export const simuladoUpdateBodySchema = {
     type: 'object',
     properties: {
-        quantidadeQuestao: {
-            type: 'integer'
-        },
-        tempoMaximo: {
-            type: 'integer'
-        }
+        titulo: { type: 'string' },
+        quantidadeQuestao: { type: 'integer' },
+        tempoMaximo: { type: 'integer' },
+        ativo: { type: 'boolean' },
     }
 } as const;
 
@@ -57,9 +38,7 @@ const simuladoIdParamsSchema = {
     type: 'object',
     required: ['simulado_id'],
     properties: {
-        simulado_id: {
-            type: 'string'
-        },
+        simulado_id: { type: 'string' },
     }
 } as const;
 
@@ -67,12 +46,7 @@ export const getSimuladoSchema = {
     schema: {
         tags: ['Simulados'],
         summary: 'Lista todos os simulados',
-        response: {
-            200: {
-                type: 'array',
-                items: simuladoSchema
-            }
-        },
+        response: { 200: { type: 'array', items: simuladoSchema } },
         security: [{ bearerAuth: [] }]
     }
 }
@@ -82,9 +56,7 @@ export const getSimuladoByIdSchema = {
         tags: ['Simulados'],
         summary: 'Busca um simulado por ID',
         params: simuladoIdParamsSchema,
-        response: {
-            200: simuladoSchema
-        },
+        response: { 200: simuladoSchema },
         security: [{ bearerAuth: [] }]
     }
 }
@@ -94,9 +66,7 @@ export const createSimuladoSchema = {
         tags: ['Simulados'],
         summary: '(PROFESSOR) Cria um novo simulado',
         body: simuladoBodySchema,
-        response: {
-            201: simuladoSchema
-        },
+        response: { 201: simuladoSchema },
         security: [{ bearerAuth: [] }]
     }
 }
@@ -107,9 +77,7 @@ export const updateSimuladoSchema = {
         summary: '(PROFESSOR/ADMINISTRADOR) Atualiza um simulado',
         params: simuladoIdParamsSchema,
         body: simuladoUpdateBodySchema,
-        response: {
-            200: simuladoSchema
-        },
+        response: { 200: simuladoSchema },
         security: [{ bearerAuth: [] }]
     }
 }
@@ -119,9 +87,7 @@ export const deleteSimuladoSchema = {
         tags: ['Simulados'],
         summary: '(PROFESSOR/ADMINISTRADOR) Deleta um simulado',
         params: simuladoIdParamsSchema,
-        response: {
-            200: simuladoSchema
-        },
+        response: { 200: simuladoSchema },
         security: [{ bearerAuth: [] }]
     }
 }
@@ -130,13 +96,10 @@ export const getExerciciosBySimuladoSchema = {
     schema: {
         tags: ['Simulados'],
         summary: 'Lista todos os exercicios de um simulado',
-        security: [{bearerAuth: []}],
+        security: [{ bearerAuth: [] }],
         params: simuladoIdParamsSchema,
         response: {
-            200: {
-                type: 'array',
-                items: exercicioComEnunciado
-            }
+            200: { type: 'array', items: exercicioComEnunciado }
         }
     }
 }
