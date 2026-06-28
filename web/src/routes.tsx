@@ -45,7 +45,6 @@ export const createRouter = (config: RouteConfig) => {
       { path: 'disciplinas', Component: DisciplinasProfessor },
       { path: 'criar-exercicios', Component: CriarExercicio },
       { path: 'criar-simulados', Component: SimuladosProfessor },
-      { path: 'alunos', Component: () => <div>Gerenciar Alunos</div> },
       { path: 'perfil', Component: () => <Perfil userRole="PROFESSOR" onLogout={config.onLogout} /> },
       { path: 'aula/:id', Component: Aula }
     );

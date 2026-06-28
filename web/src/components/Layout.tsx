@@ -53,7 +53,6 @@ export function Layout({ userRole, userName, onLogout }: LayoutProps) {
           { text: 'Disciplinas', icon: <MenuBook />, path: '/disciplinas' },
           { text: 'Criar Exercícios', icon: <Quiz />, path: '/criar-exercicios' },
           { text: 'Criar Simulados', icon: <Assignment />, path: '/criar-simulados' },
-          { text: 'Alunos', icon: <Groups />, path: '/alunos' },
           { text: 'Perfil', icon: <Person />, path: '/perfil' },
         ];
       case 'ADMINISTRADOR':
