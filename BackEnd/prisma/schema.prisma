@@ -90,7 +90,7 @@ model Disciplina {
   updated_at DateTime @updatedAt
 
   professor_id String
-  professor Professor @relation(fields: [professor_id], references: [id])
+  professor Professor @relation(fields: [professor_id], references: [id], onDelete: Cascade)
 
   modulos Modulo[]
   progresso Progresso[]
@@ -104,7 +104,7 @@ model Modulo {
   updated_at DateTime @updatedAt
 
   disciplina_id String
-  disciplina Disciplina @relation(fields: [disciplina_id], references: [id])
+  disciplina Disciplina @relation(fields: [disciplina_id], references: [id], onDelete: Cascade)
 
   aula Aula[]
 }
@@ -119,7 +119,7 @@ model Aula {
   updated_at DateTime @updatedAt
 
   modulo_id String
-  modulo Modulo @relation(fields: [modulo_id], references: [id])
+  modulo Modulo @relation(fields: [modulo_id], references: [id], onDelete: Cascade)
 
   exercicio Exercicio[]
   conclusaoAula ConclusaoAula[]
@@ -134,7 +134,7 @@ model Exercicio {
   updated_at DateTime @updatedAt
 
   aula_id String?
-  aula Aula? @relation(fields: [aula_id], references: [id])
+  aula Aula? @relation(fields: [aula_id], references: [id], onDelete: Cascade)
 
   professor_id String
   professor Professor @relation(fields: [professor_id], references: [id])
@@ -154,7 +154,7 @@ model Alternativa {
   updated_at DateTime @updatedAt
 
   exercicio_id String
-  exercicio Exercicio @relation(fields: [exercicio_id], references: [id])
+  exercicio Exercicio @relation(fields: [exercicio_id], references: [id], onDelete: Cascade)
 }
 
 model Simulado {
@@ -205,7 +205,7 @@ model Progresso {
   aluno Aluno @relation(fields: [aluno_id], references: [id], onDelete: Cascade)
 
   disciplina_id String
-  disciplina Disciplina @relation(fields: [disciplina_id], references: [id])
+  disciplina Disciplina @relation(fields: [disciplina_id], references: [id], onDelete: Cascade)
 
   @@unique([aluno_id, disciplina_id])
 }
@@ -221,7 +221,7 @@ model ConclusaoAula {
   aluno Aluno @relation(fields: [aluno_id], references: [id], onDelete: Cascade)
 
   aula_id String
-  aula Aula @relation(fields: [aula_id], references: [id])
+  aula Aula @relation(fields: [aula_id], references: [id], onDelete: Cascade)
 
   @@unique([aluno_id,aula_id])
 }
