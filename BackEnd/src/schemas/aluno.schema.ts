@@ -1,0 +1,152 @@
+export const alunoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        periodo: {
+            type: 'string'
+        },
+        faculdade: {
+            type: 'string'
+        },
+        conta: {
+            type: 'object',
+            properties: {
+                id: { type: 'string' },
+                nome: { type: 'string' },
+                email: { type: 'string' },
+                role: { type: 'string' }
+            }
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time'
+        }
+    }
+} as const;
+
+export const alunoBodySchema = {
+    type: 'object',
+    required: [
+        'nome', 'periodo', 'faculdade',
+        'email'
+    ],
+    properties: {
+        nome: {
+            type: 'string'
+        },
+        periodo: {
+            type: 'string'
+        },
+        faculdade: {
+            type: 'string'
+        },
+        email: {
+            type: 'string'
+        },
+        senha: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const putalunoBodySchema = {
+    type: 'object',
+    properties: {
+        periodo: {
+            type: 'string'
+        },
+        faculdade: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const alunoCreateBodySchema = {
+    type: 'object',
+    required: [
+        'nome', 'periodo', 'faculdade',
+        'email', 'senha'
+    ],
+    properties: {
+        nome: {
+            type: 'string'
+        },
+        periodo: {
+            type: 'string'
+        },
+        faculdade: {
+            type: 'string'
+        },
+        email: {
+            type: 'string'
+        },
+        senha: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const getAlunoSchema = {
+    schema: {
+        tags: ['Alunos'],
+        summary: '(ADMINISTRADOR) Lista todos os alunos',
+        security: [{ bearerAuth: [] }],
+        response: {
+            200: {
+                type: 'array',
+                items: alunoSchema
+            },
+        }
+    }
+}
+
+export const getAlunoByIdSchema = {
+    schema: {
+        tags: ['Alunos'],
+        summary: 'Busca o proprio aluno',
+        security: [{ bearerAuth: [] }],
+        response: {
+            200: alunoSchema
+        },
+    }
+}
+
+export const postAlunoSchema = {
+    schema: {
+        tags: ['Alunos'],
+        summary: 'Cria um aluno',
+        body: alunoCreateBodySchema,
+        response: {
+            201: alunoSchema
+        },
+    }
+}
+
+export const putAlunoSchema = {
+    schema: {
+        tags: ['Alunos'],
+        summary: 'Atualiza os dados do proprio aluno',
+        security: [{ bearerAuth: [] }],
+        body: putalunoBodySchema,
+        response: {
+            200: alunoSchema
+        }
+    }
+}
+
+export const deleteAlunoSchema = {
+    schema: {
+        tags: ['Alunos'],
+        summary: 'Deleta o proprio aluno',
+        security: [{ bearerAuth: [] }],
+        response: {
+            200: alunoSchema
+        },
+    }
+}
