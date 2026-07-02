@@ -13,11 +13,14 @@ import { Perfil } from './pages/Perfil';
 import { GerenciarAdministradores } from './pages/GerenciarAdministradores';
 import { GerenciarAlunos } from './pages/GerenciarAlunos';
 import { SimuladosProfessor } from './pages/SimuladosProfessor';
+import { Navigate } from 'react-router-dom';
 
 interface RouteConfig {
   role: Role;
   userName: string;
   onLogout: () => void;
+  themeMode: 'light' | 'dark';
+  toggleTheme: () => void;
 }
 
 export const createRouter = (config: RouteConfig) => {
@@ -62,8 +65,20 @@ export const createRouter = (config: RouteConfig) => {
   return createBrowserRouter([
     {
       path: '/',
-      element: <Layout userRole={config.role} userName={config.userName} onLogout={config.onLogout} />,
+      element: (
+        <Layout
+          userRole={config.role}
+          userName={config.userName}
+          onLogout={config.onLogout}
+          themeMode={config.themeMode}
+          toggleTheme={config.toggleTheme}
+        />
+      ),
       children: baseChildren,
+    },
+    {
+      path: '/login',
+      element: <Navigate to="/" replace />,
     },
     {
       path: '/register',

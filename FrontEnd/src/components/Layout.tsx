@@ -10,6 +10,7 @@ import {
   ListItemText,
   Avatar,
   Divider,
+  IconButton,
 } from '@mui/material';
 import {
   School,
@@ -17,12 +18,13 @@ import {
   Assignment,
   Assessment,
   Person,
-  Settings,
   MenuBook,
   Groups,
   Quiz,
   AdminPanelSettings,
   Logout,
+  LightMode,
+  DarkMode,
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import type { Role } from '../mockData';
@@ -33,9 +35,11 @@ interface LayoutProps {
   userRole: Role;
   userName: string;
   onLogout: () => void;
+  themeMode: 'light' | 'dark';
+  toggleTheme: () => void;
 }
 
-export function Layout({ userRole, userName, onLogout }: LayoutProps) {
+export function Layout({ userRole, userName, onLogout, themeMode, toggleTheme }: LayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -78,8 +82,12 @@ export function Layout({ userRole, userName, onLogout }: LayoutProps) {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Plataforma MedEdu
+            Plataforma FocoMed
           </Typography>
+
+          <IconButton onClick={toggleTheme} color="inherit" title="Alternar tema">
+            {themeMode === 'dark' ? <LightMode /> : <DarkMode />}
+          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -99,7 +107,7 @@ export function Layout({ userRole, userName, onLogout }: LayoutProps) {
         <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
           <School sx={{ fontSize: 32, color: 'primary.main' }} />
           <Typography variant="h6" fontWeight={600}>
-            MedEdu
+            FocoMed
           </Typography>
         </Box>
 

@@ -64,7 +64,7 @@ export function Register() {
               <Typography variant="body2" color="text.secondary" mb={3}>
                 Sua conta foi criada com sucesso.
               </Typography>
-              <Button variant="contained" fullWidth href="/login">
+              <Button variant="contained" fullWidth href="/">
                 Ir para o Login
               </Button>
             </CardContent>
