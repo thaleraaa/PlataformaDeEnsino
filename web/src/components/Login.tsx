@@ -48,7 +48,7 @@ export function Login({ onLogin }: LoginProps) {
       <Container maxWidth="sm">
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <School sx={{ fontSize: 64, color: 'primary.main', mb: 2 }} />
-          <Typography variant="h3" fontWeight={600} gutterBottom>MedEdu</Typography>
+          <Typography variant="h3" fontWeight={600} gutterBottom>FocoMed</Typography>
           <Typography variant="body1" color="text.secondary">
             Plataforma de Ensino para Estudantes de Medicina
           </Typography>
