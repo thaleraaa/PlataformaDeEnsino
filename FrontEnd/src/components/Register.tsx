@@ -146,7 +146,7 @@ export function Register() {
                 {loading ? <CircularProgress size={24} color="inherit" /> : 'Cadastrar'}
               </Button>
 
-              <Button fullWidth variant="text" href="/login">
+              <Button fullWidth variant="text" href="../">
                 Já tem conta? Entrar
               </Button>
             </Stack>
